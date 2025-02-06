@@ -161,9 +161,7 @@ export const CreateTicketForm: React.FC = () => {
                         }`
                     )
                 }
-            } else {
-                await router.push('/ticket')
-            }
+            } else null
         })
 
     const getCompletedNotification = useCallback(({ ticketId, ticketNumber, paymentUrl }) => ({

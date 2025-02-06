@@ -3208,5 +3208,6 @@
   "tour.viewGuide": "View Guide",
   "trial.startPeriod": "Start trial period",
   "trial.subTitle": "And then...",
-  "trial.title": "Free period of 14 days"
+  "trial.title": "Free period of 14 days",
+  "kanban.title": "Kanban"
 }

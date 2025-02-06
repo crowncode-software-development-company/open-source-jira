@@ -1622,6 +1622,7 @@ export const GetActualOrganizationEmployeesDocument = gql`
     first: 500
   ) {
     id
+    name
     organization {
       id
       name
@@ -2671,6 +2672,7 @@ export const GetTicketByIdDocument = gql`
       ...AddressMetaForTableAddress
     }
     createdAt
+    updatedAt
     isEmergency
     isPayable
     isWarranty
