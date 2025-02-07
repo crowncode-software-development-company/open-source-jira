@@ -13,15 +13,15 @@ import AssigneesReporter from './AssigneesReporter'
 import Comments from './Comments'
 import CopyLinkButton from './CopyLinkButton'
 import Dates from './Dates'
+import Deadline from './Deadline'
 import Delete from './Delete'
 import Description from './Description'
-import EstimateTracking from './EstimateTracking'
 import Priority from './Priority'
 import Status from './Status'
 import Title from './Title'
 import Type from './Type'
 
-import { useGetActualOrganizationEmployeesQuery, useGetTicketByIdQuery, useGetTicketCommentsQuery, useUpdateTicketMutation } from '../../../../gql'
+import { useGetTicketByIdQuery, useGetTicketCommentsQuery, useUpdateTicketMutation } from '../../../../gql'
 import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrErrorPage'
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
 import { usePollTicketComments } from '../../../ticket/hooks/usePollTicketComments'
@@ -97,39 +97,6 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
         'userIds': [],
     }
     
-
-    const projectUsers = [
-        {
-            'id': '995860',
-            'name': 'Pickle Rick',
-            'email': 'rick@jira.guest',
-            'avatarUrl': 'https://i.ibb.co/7JM1P2r/picke-rick.jpg',
-            'createdAt': '2025-01-23T06:54:14.306Z',
-            'updatedAt': '2025-01-23T06:54:14.326Z',
-            'projectId': 331708,
-        },
-        {
-            'id': '995862',
-            'name': 'Baby Yoda',
-            'email': 'yoda@jira.guest',
-            'avatarUrl': 'https://i.ibb.co/6n0hLML/baby-yoda.jpg',
-            'createdAt': '2025-01-23T06:54:14.321Z',
-            'updatedAt': '2025-01-23T06:54:14.326Z',
-            'projectId': 331708,
-        },
-        {
-            'id': '995861',
-            'name': 'Lord Gaben',
-            'email': 'gaben@jira.guest',
-            'avatarUrl': 'https://i.ibb.co/6RJ5hq6/gaben.jpg',
-            'createdAt': '2025-01-23T06:54:14.316Z',
-            'updatedAt': '2025-01-23T06:54:14.326Z',
-            'projectId': 331708,
-        },
-    ]
-
-    const { organization } = useOrganization()
-
     const { user } = useAuth()
     const { query } = useRouter()
     const { ticketId } = query as { ticketId: string }
@@ -155,9 +122,9 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
     const comments = useMemo(() => ticketCommentsData?.ticketComments?.filter(Boolean) || [],
         [ticketCommentsData?.ticketComments])
 
-    const pollCommentsQuery = useMemo(() => ({ ticket: { organization: { id: get(organization, 'id', null) } } }),
-        [organization])
-        
+    const pollCommentsQuery = useMemo(() => ({ ticket: { organization: { id: organizationId } } }),
+        [organizationId])
+
     usePollTicketComments({
         ticket,
         refetchTicketComments,
@@ -189,7 +156,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
 
     const { objs: employeesData, loading: employeesLoading } = OrganizationEmployee.useAllObjects({
         where: {
-            organization: { id: organization.id },
+            organization: { id: organizationId },
             user: { deletedAt: null },
             deletedAt: null,
             isBlocked: false,
@@ -224,15 +191,15 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
             </TopActions>
             <Content>
                 <Left>
-                    <Title issue={ticket} updateIssue={updateTicketTest} />
-                    <Description issue={ticket} updateIssue={updateTicketTest} />
+                    <Title ticket={ticket} updateTicket={updateTicketAction} />
+                    <Description ticket={ticket} updateTicket={updateTicketAction} />
                     <Comments refetchTicketComments={refetchTicketComments} user={user} ticket={ticket} comments={comments} />  
                 </Left>
                 <Right>
                     <Status ticket={ticket} ticketStatuses={ticketStatuses} updateTicket={updateTicketAction}/>
                     <AssigneesReporter ticket={ticket} updateTicket={updateTicketAction} employees={employees} />
                     <Priority issue={issue} updateIssue={updateTicketTest} />
-                    <EstimateTracking issue={issue} updateIssue={updateTicketTest} />
+                    <Deadline ticket={ticket} updateTicket={updateTicketAction} />
                     <Dates issue={ticket} /> 
                 </Right>
             </Content>
