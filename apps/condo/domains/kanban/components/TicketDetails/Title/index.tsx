@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { KeyCodes } from '../../../constants'
 import { color, font } from '../../../styles'
 import { Textarea } from '../../../ui'
-import { truncateDescription } from '../../../utils'
 
 const TitleTextarea = styled(Textarea)`
   margin: 18px 0 0 -12px;
@@ -30,11 +29,7 @@ const ErrorText = styled.div`
   ${font.size(13)}
 `
 
-interface IProps {
-    issue: any
-    updateIssue: () => void
-}
-const ProjectBoardIssueDetailsTitle: React.FC<IProps> = ({ issue, updateIssue }) => {
+const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
     const [error, setError] = useState(null)
 
     const handleTitleChange = () => {
@@ -43,11 +38,14 @@ const ProjectBoardIssueDetailsTitle: React.FC<IProps> = ({ issue, updateIssue })
 
     return (
         <Fragment>
+            {console.log(ticket)
+            }
             <TitleTextarea
                 onChange={() => null}
                 minRows={1}
+                disabled
                 placeholder='Short summary'
-                defaultValue={truncateDescription(issue.details)}
+                defaultValue={`Заявка №${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`}
                 onBlur={handleTitleChange}
                 onKeyDown={event => {
                     if (event.keyCode === KeyCodes.ENTER) {

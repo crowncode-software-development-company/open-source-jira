@@ -74,7 +74,7 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                     {...provided.dragHandleProps}
                 >
                     <Ticket isbeingdragged={snapshot.isDragging && !snapshot.isDropAnimating ? 'true' : undefined}>
-                        <Title><NumberTicket>Заявка №{ticket.number}</NumberTicket> / {truncateDescription(ticket.details, '...', 30)}</Title>
+                        <Title><NumberTicket>Заявка №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</Title>
                         <Bottom>
                             <div>
                                 <TicketTypeIcon type='task' size='medium'/>
