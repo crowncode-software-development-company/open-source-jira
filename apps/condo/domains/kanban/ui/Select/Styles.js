@@ -54,6 +54,7 @@ export const ValueContainer = styled.div`
     `}
 `
 
+
 export const Placeholder = styled.div`
   color: ${color.textLight};
 `
@@ -104,6 +105,7 @@ export const DropdownInput = styled.input`
     outline: none;
   }
 `
+
 
 export const Options = styled.div`
   max-height: 200px;

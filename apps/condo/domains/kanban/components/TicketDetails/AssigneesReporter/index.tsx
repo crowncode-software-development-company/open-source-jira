@@ -6,14 +6,14 @@ import { Close } from '@open-condo/icons'
 import { color, font, mixin } from '../../../styles'
 import { Avatar, Select } from '../../../ui'
 
-const User = styled.div<{ isSelectValue?: boolean, withBottomMargin?: boolean }>`
+const User = styled.div<{ $isselectvalue?: boolean, $withbottommargin?: boolean }>`
   display: flex;
   align-items: center;
   ${mixin.clickable}
   ${props =>
-        props.isSelectValue &&
+        props.$isselectvalue &&
     css`
-      margin: 0 10px ${props.withBottomMargin ? 5 : 0}px 0;
+      margin: 0 10px ${props.$withbottommargin ? 5 : 0}px 0;
       padding: 4px 8px;
       border-radius: 4px;
       background: ${color.backgroundLight};
@@ -36,52 +36,54 @@ const SectionTitle = styled.div`
   ${font.size(12.5)}
 `
 
-interface IProps {
-    issue: any
-    updateIssue: () => void
-    projectUsers: any
-}
+const ProjectBoardIssueDetailsAssigneesReporter = ({ ticket, updateTicket, employees }) => {
+    const getEmployeeById = employeeId => employees.find(employee => employee.user.id === employeeId)
 
-const ProjectBoardIssueDetailsAssigneesReporter: React.FC<IProps> = ({
-    issue,
-    updateIssue,
-    projectUsers,
-}) => {
-    const getUserById = userId => projectUsers.find(user => user.id === userId)
+    const employeesOptions = employees.map(employee => ({ value: employee.user.id, label: employee.user.name }))
 
-    const userOptions = projectUsers.map(user => ({ value: user.id, label: user.name }))
+
+    const handleAssigneeChange = (userId) => {
+        const assignee = {
+            connect: { id: userId },
+        }
+        updateTicket({ assignee })
+    }
+
+    const handleExecutorChange = (userId) => {
+        const executor = {
+            connect: { id:userId },
+        }
+        updateTicket({ executor })
+    }
 
     return (
         <Fragment>
             <SectionTitle>Assignees</SectionTitle>
             <Select
-                isMulti
                 variant='empty'
-                dropdownWidth={343}
+                dropdownWidth={250}
+                withClearValue={false}
                 placeholder='Unassigned'
                 name='assignees'
-                value={issue.userIds}
-                options={userOptions}
-                onChange={userIds => {
-                    updateIssue()
-                }}
-                renderValue={({ value: userId, removeOptionValue }) =>
-                    renderUser(getUserById(userId), true, removeOptionValue)
-                }
-                renderOption={({ value: userId }) => renderUser(getUserById(userId), false)}
+                value={ticket.assignee.id}
+                options={employeesOptions}
+                onChange={employeeIds => handleAssigneeChange(employeeIds)}
+                renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
+                renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
             />
 
             <SectionTitle>Reporter</SectionTitle>
             <Select
                 variant='empty'
-                dropdownWidth={343}
+                dropdownWidth={250}
                 withClearValue={false}
+                placeholder='Unreported'
                 name='reporter'
-                value={issue.reporterId}
-                options={userOptions}
-                onChange={userId => updateIssue()}
-                renderValue={({ value: userId }) => renderUser(getUserById(userId), true)}
-                renderOption={({ value: userId }) => renderUser(getUserById(userId))}
+                value={ticket.executor.id}
+                options={employeesOptions}
+                onChange={employeeIds => handleExecutorChange(employeeIds)}
+                renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
+                renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
             />
         </Fragment>
     )
@@ -90,8 +92,8 @@ const ProjectBoardIssueDetailsAssigneesReporter: React.FC<IProps> = ({
 const renderUser = (user, isSelectValue?, removeOptionValue?) => (
     <User
         key={user.id}
-        isSelectValue={isSelectValue}
-        withBottomMargin={!!removeOptionValue}
+        $isselectvalue={isSelectValue}
+        $withbottommargin={!!removeOptionValue}
         onClick={() => removeOptionValue && removeOptionValue()}
     >
         <Avatar avatarUrl={user.avatarUrl} name={user.name} size={24} />

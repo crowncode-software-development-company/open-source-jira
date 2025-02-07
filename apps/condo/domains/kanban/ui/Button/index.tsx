@@ -3,15 +3,14 @@ import styled, { css } from 'styled-components'
 
 import { color, font, mixin } from '../../styles'
 import Spinner from '../Spinner'
-
-export const StyledButton = styled.button<{ iconOnly?: boolean, variant: string }>`
+export const StyledButton = styled.button<{ $icon?: boolean, $variant: string }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 32px;
   vertical-align: middle;
   line-height: 1;
-  padding: 0 ${props => (props.iconOnly ? 9 : 12)}px;
+  padding: 0 ${props => (props.$icon ? 9 : 12)}px;
   white-space: nowrap;
   border-radius: 3px;
   transition: all 0.1s;
@@ -19,32 +18,32 @@ export const StyledButton = styled.button<{ iconOnly?: boolean, variant: string 
   border: none;
   ${mixin.clickable}
   ${font.size(14.5)}
-  ${props => buttonVariants[props.variant]}
+  ${props => buttonVariants[props.$variant]}
   &:disabled {
     opacity: 0.6;
     cursor: default;
   }
 `
 
-const colored = css<{ variant: string, isActive?: boolean }>`
+const colored = css<{ $variant: string, $isactive?: boolean }>`
   color: #fff;
-  background: ${props => color[props.variant]};
+  background: ${props => color[props.$variant]};
   &:not(:disabled) {
     &:hover {
-      background: ${props => mixin.lighten(color[props.variant], 0.15)};
+      background: ${props => mixin.lighten(color[props.$variant], 0.15)};
     }
     &:active {
-      background: ${props => mixin.darken(color[props.variant], 0.1)};
+      background: ${props => mixin.darken(color[props.$variant], 0.1)};
     }
     ${props =>
-        props.isActive &&
+        props.$isactive &&
       css`
-        background: ${mixin.darken(color[props.variant], 0.1)} !important;
+        background: ${mixin.darken(color[props.$variant], 0.1)} !important;
       `}
   }
 `
 
-const secondaryAndEmptyShared = css<{ isActive?: boolean }>`
+const secondaryAndEmptyShared = css<{ $isactive?: boolean }>`
   color: ${color.textDark};
   &:not(:disabled) {
     &:hover {
@@ -55,7 +54,7 @@ const secondaryAndEmptyShared = css<{ isActive?: boolean }>`
       background: ${color.backgroundLightPrimary};
     }
     ${props =>
-        props.isActive &&
+        props.$isactive &&
       css`
         color: ${color.primary};
         background: ${color.backgroundLightPrimary} !important;
@@ -82,8 +81,8 @@ export const StyledSpinner = styled(Spinner)`
   top: 1px;
 `
 
-export const Text = styled.div<{ withPadding?: boolean }>`
-  padding-left: ${props => (props.withPadding ? 7 : 0)}px;
+export const Text = styled.div<{ $withpadding?: boolean }>`
+  padding-left: ${props => (props.$withpadding ? 7 : 0)}px;
 `
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -123,14 +122,14 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             <StyledButton
                 {...buttonProps}
                 onClick={handleClick}
-                variant={variant}
+                $variant={variant}
                 disabled={disabled || isWorking}
-                iconOnly={!children}
+                $icon={!children}
                 ref={ref}
             >
                 {isWorking && <StyledSpinner size={26} color={getIconColor(variant)} />}
                 {icon}
-                {children && <Text withPadding={isWorking || icon !== undefined}>{children}</Text>}
+                {children && <Text $withpadding={isWorking || icon !== undefined}>{children}</Text>}
             </StyledButton>
         )
     },

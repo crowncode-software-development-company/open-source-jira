@@ -5,11 +5,11 @@ import { IssuePriority, IssuePriorityCopy } from '../../../constants'
 import { color, font } from '../../../styles'
 import { Select, TicketPriorityIcon } from '../../../ui'
 
-const Priority = styled.div<{ isValue?: boolean }>`
+const Priority = styled.div<{ $isvalue?: boolean }>`
 display: flex;
 align-items: center;
 ${props =>
-        props.isValue &&
+        props.$isvalue &&
   css`
     padding: 3px 4px 3px 0px;
     border-radius: 4px;
@@ -59,7 +59,7 @@ const ProjectBoardIssueDetailsPriority: React.FC<IProps> = ({ issue, updateIssue
 )
 
 const renderPriorityItem = (priority, isValue) => (
-    <Priority isValue={isValue}>
+    <Priority $isvalue={isValue}>
         <TicketPriorityIcon priority={priority} size='large' />
         <Label>{IssuePriorityCopy[priority]}</Label>
     </Priority>

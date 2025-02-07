@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "domains/kanban/utils/utils.js", "domains/kanban/shared/components/index.js", "domains/kanban/components/TicketDetails/Title/ProjectBoardIssueDetailsTitle.tsx", "domains/kanban/components/TicketDetails/Title/index.js", "domains/kanban/shared/components/Modal/index.tsx", "domains/kanban/ui/Select/index.jsx"  ],
+, "domains/kanban/utils/utils.js", "domains/kanban/shared/components/index.js", "domains/kanban/components/TicketDetails/Title/ProjectBoardIssueDetailsTitle.tsx", "domains/kanban/components/TicketDetails/Title/index.js", "domains/kanban/shared/components/Modal/index.tsx", "domains/kanban/ui/Select/index.jsx", "domains/kanban/ui/Select/Styles.js"  ],
   "exclude": [
     "node_modules",
     ".next",

@@ -1,4 +1,5 @@
 import { notification } from 'antd'
+import { get } from 'lodash'
 import  { useRouter } from 'next/router'
 import React, { Fragment, useMemo } from 'react'
 import styled from 'styled-components'
@@ -6,6 +7,7 @@ import styled from 'styled-components'
 import { getClientSideSenderInfo } from '@open-condo/codegen/utils/userId'
 import { Close } from '@open-condo/icons'
 import { useAuth } from '@open-condo/next/auth'
+import { useOrganization } from '@open-condo/next/organization'
 
 import AssigneesReporter from './AssigneesReporter'
 import Comments from './Comments'
@@ -21,6 +23,8 @@ import Type from './Type'
 
 import { useGetActualOrganizationEmployeesQuery, useGetTicketByIdQuery, useGetTicketCommentsQuery, useUpdateTicketMutation } from '../../../../gql'
 import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrErrorPage'
+import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
+import { usePollTicketComments } from '../../../ticket/hooks/usePollTicketComments'
 import { Button } from '../../ui'
 
 const Content = styled.div`
@@ -96,7 +100,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
 
     const projectUsers = [
         {
-            'id': 995860,
+            'id': '995860',
             'name': 'Pickle Rick',
             'email': 'rick@jira.guest',
             'avatarUrl': 'https://i.ibb.co/7JM1P2r/picke-rick.jpg',
@@ -105,7 +109,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
             'projectId': 331708,
         },
         {
-            'id': 995862,
+            'id': '995862',
             'name': 'Baby Yoda',
             'email': 'yoda@jira.guest',
             'avatarUrl': 'https://i.ibb.co/6n0hLML/baby-yoda.jpg',
@@ -114,7 +118,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
             'projectId': 331708,
         },
         {
-            'id': 995861,
+            'id': '995861',
             'name': 'Lord Gaben',
             'email': 'gaben@jira.guest',
             'avatarUrl': 'https://i.ibb.co/6RJ5hq6/gaben.jpg',
@@ -123,6 +127,9 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
             'projectId': 331708,
         },
     ]
+
+    const { organization } = useOrganization()
+
     const { user } = useAuth()
     const { query } = useRouter()
     const { ticketId } = query as { ticketId: string }
@@ -148,6 +155,15 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
     const comments = useMemo(() => ticketCommentsData?.ticketComments?.filter(Boolean) || [],
         [ticketCommentsData?.ticketComments])
 
+    const pollCommentsQuery = useMemo(() => ({ ticket: { organization: { id: get(organization, 'id', null) } } }),
+        [organization])
+        
+    usePollTicketComments({
+        ticket,
+        refetchTicketComments,
+        pollCommentsQuery,
+    })
+
     const [updateTicket] = useUpdateTicketMutation({
         onCompleted: async () => {
             await refetchTicket()
@@ -171,37 +187,36 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
         })
     }
 
-    const {
-        loading: employeesLoading,
-        data: employeeData,
-        refetch,
-    } = useGetActualOrganizationEmployeesQuery({
-        variables: {
-            userId:  user.id,
+    const { objs: employeesData, loading: employeesLoading } = OrganizationEmployee.useAllObjects({
+        where: {
+            organization: { id: organization.id },
+            user: { deletedAt: null },
+            deletedAt: null,
+            isBlocked: false,
+            isRejected: false,
         },
-        fetchPolicy: 'network-only',
     })
-    const employees = useMemo(() => employeeData?.actualEmployees?.filter(Boolean) || [], [employeeData?.actualEmployees])
-
-
+    
+    const employees = useMemo(() => employeesData?.filter(Boolean) || [], [employeesData])
 
     const updateTicketTest = () => null
 
-    if (ticketLoading || ticketCommentsLoading || !ticket || employeesLoading) {
+    const loading = ticketLoading || ticketCommentsLoading || !ticket || employeesLoading
+
+    if (loading) {
         return (
             <LoadingOrErrorPage
-                loading={ticketLoading}
+                loading={loading}
                 error={error}
             />
         )
     }
+    
     return (
         <Fragment>
             <TopActions>
-                {console.log(employees)
-                }
                 <Type issue={issue} updateIssue={updateTicketTest} />
-                <TopActionsRight> 
+                <TopActionsRight>
                     <CopyLinkButton />
                     <Delete ticket={ticket} refetchTicketsBoard={refetchTicketsBoard}/>
                     <Button icon={<Close/>} iconSize={24} variant='empty' onClick={modalClose} />
@@ -215,7 +230,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
                 </Left>
                 <Right>
                     <Status ticket={ticket} ticketStatuses={ticketStatuses} updateTicket={updateTicketAction}/>
-                    <AssigneesReporter issue={issue} updateIssue={updateTicketTest} projectUsers={projectUsers} />
+                    <AssigneesReporter ticket={ticket} updateTicket={updateTicketAction} employees={employees} />
                     <Priority issue={issue} updateIssue={updateTicketTest} />
                     <EstimateTracking issue={issue} updateIssue={updateTicketTest} />
                     <Dates issue={ticket} /> 

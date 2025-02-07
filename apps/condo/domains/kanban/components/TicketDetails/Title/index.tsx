@@ -7,7 +7,7 @@ import { Textarea } from '../../../ui'
 import { truncateDescription } from '../../../utils'
 
 const TitleTextarea = styled(Textarea)`
-  margin: 18px 0 0 -8px;
+  margin: 18px 0 0 -12px;
   height: 44px;
   width: 100%;
   textarea {

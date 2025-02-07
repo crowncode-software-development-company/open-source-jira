@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import PropTypes from 'prop-types'
 import React, { forwardRef } from 'react'
 
@@ -18,7 +19,7 @@ const defaultProps = {
     icon: undefined,
     invalid: false,
     filter: undefined,
-    onChange: () => {},
+    onChange: () => null,
 }
 
 const Input = forwardRef(({ icon, className, filter, onChange, ...inputProps }, ref) => {
@@ -31,7 +32,7 @@ const Input = forwardRef(({ icon, className, filter, onChange, ...inputProps }, 
     return (
         <StyledInput className={className}>
             {/* {icon && <StyledIcon type={icon} size={15} />} */}
-            <InputElement {...inputProps} onChange={handleChange} hasIcon={!!icon} ref={ref} />
+            <InputElement {...inputProps} onChange={handleChange} $hasicon={!!icon} ref={ref} />
         </StyledInput>
     )
 })

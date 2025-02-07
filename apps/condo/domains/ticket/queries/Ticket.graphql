@@ -204,9 +204,11 @@ query getTicketById($id: ID!) {
       country
     }
     assignee {
+      name
       id
     }
     executor {
+      name
       id
     }
     property {

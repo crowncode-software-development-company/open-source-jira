@@ -6,7 +6,7 @@ import { color } from '../../styles'
 
 const { TextArea: AntdTextArea } = Input
 
-const StyledTextarea = styled.div<{ invalid?: boolean }>`
+const StyledTextarea = styled.div<{ $invalid?: boolean }>`
   display: inline-block;
   width: 100%;
 
@@ -14,9 +14,9 @@ const StyledTextarea = styled.div<{ invalid?: boolean }>`
     overflow-y: hidden;
     padding: 8px 12px;
     border-radius: 3px;
-    border: 1px solid ${props => (props.invalid ? 'red' : '#d9d9d9')};
+    border: 1px solid ${props => (props.$invalid ? 'red' : '#fff')};
     color: ${color.textDarkest};
-    background: ${color.backgroundLightest};
+    background: #fff;;
 
     &:focus {
       background: #fff;
@@ -25,7 +25,7 @@ const StyledTextarea = styled.div<{ invalid?: boolean }>`
     }
 
     ${props =>
-        props.invalid &&
+        props.$invalid &&
       css`
         &,
         &:focus {
@@ -43,7 +43,7 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 }
   
 const Textarea: React.FC<TextareaProps> = ({ className, invalid, onChange, ...textareaProps }) => (
-    <StyledTextarea className={className} invalid={invalid}>
+    <StyledTextarea className={className} $invalid={invalid}>
         <AntdTextArea
             {...textareaProps}
             onChange={e => onChange(e.target.value)} 

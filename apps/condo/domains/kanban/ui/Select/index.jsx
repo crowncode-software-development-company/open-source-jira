@@ -145,7 +145,6 @@ const Select = ({
         >
             <ValueContainer
                 variant={variant}
-                data-testid={name ? `select:${name}` : 'select'}
                 onClick={activateDropdown}
             >
                 {isValueEmpty && <Placeholder>{placeholder}</Placeholder>}
@@ -165,7 +164,6 @@ const Select = ({
                             ) : (
                                 <ValueMultiItem key={optionValue} onClick={() => removeOptionValue(optionValue)}>
                                     {getOptionLabel(optionValue)}
-                                    <Close size='small' />
                                 </ValueMultiItem>
                             ),
                         )}
@@ -177,7 +175,7 @@ const Select = ({
                 )}
 
                 {(!isMulti || isValueEmpty) && variant !== 'empty' && (
-                    <ChevronDown size='small' />
+                    <ChevronDown size='small'/>
                 )}
             </ValueContainer>
 

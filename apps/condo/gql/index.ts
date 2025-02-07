@@ -2706,9 +2706,11 @@ export const GetTicketByIdDocument = gql`
       country
     }
     assignee {
+      name
       id
     }
     executor {
+      name
       id
     }
     property {

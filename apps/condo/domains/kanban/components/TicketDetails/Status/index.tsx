@@ -6,13 +6,13 @@ import { ChevronDown } from '@open-condo/icons'
 import {  mixin, color, font } from '../../../styles'
 import { Select } from '../../../ui'
 
-const Status = styled.div<{ isValue?: boolean, secondaryColor: string, primaryColor: string }>`
+const Status = styled.div<{ $isvalue?: boolean, $secondaryсolor: string, $primaryсolor: string }>`
   text-transform: uppercase;
   font-weight: bold;
   transition: all 0.1s;
-  ${props => mixin.tag(props.secondaryColor, props.primaryColor)}
+  ${props => mixin.tag(props.$secondaryсolor, props.$primaryсolor)}
   ${props =>
-        props.isValue &&
+        props.$isvalue &&
     css`
       padding: 0 12px;
       height: 32px;
@@ -38,7 +38,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
     
     const getStatusProps = (status) => {
         const { primary, secondary } = ticketStatuses[status].colors
-        return { secondaryColor: primary, primaryColor: secondary }
+        return { $secondaryсolor: primary, $primaryсolor: secondary }
     }
 
     const handleUpdateStatus = (updatedStatus) => {
@@ -62,7 +62,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
                 renderValue={({ value: status }) => {
                     const statusProps = getStatusProps(status)
                     return (
-                        <Status isValue {...statusProps}>
+                        <Status $isvalue {...statusProps}>
                             <div>{status}</div>
                             <ChevronDown size='small' />
                         </Status>

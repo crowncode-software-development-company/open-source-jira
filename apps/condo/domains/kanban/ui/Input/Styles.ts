@@ -2,7 +2,6 @@
 import styled, { css } from 'styled-components'
 
 import { color, font } from '../../styles'
-// import Icon from '../Icon'
 
 
 export const StyledInput = styled.div`
@@ -12,7 +11,7 @@ export const StyledInput = styled.div`
   width: 100%;
 `
 
-export const InputElement = styled.input`
+export const InputElement = styled.input<{ $hasicon?: boolean, $invalid?: boolean }>`
   height: 100%;
   width: 100%;
   padding: 0 7px;
@@ -22,7 +21,7 @@ export const InputElement = styled.input`
   background: ${color.backgroundLightest};
   transition: background 0.1s;
   ${font.size(15)}
-  ${props => props.hasIcon && 'padding-left: 32px;'}
+  ${props => props.$hasicon && 'padding-left: 32px;'}
   &:hover {
     background: ${color.backgroundLight};
   }
@@ -32,7 +31,7 @@ export const InputElement = styled.input`
     box-shadow: 0 0 0 1px ${color.borderInputFocus};
   }
   ${props =>
-        props.invalid &&
+        props.$invalid &&
     css`
       &,
       &:focus {
@@ -41,11 +40,3 @@ export const InputElement = styled.input`
       }
     `}
 `
-
-// export const StyledIcon = styled(Icon)`
-//   position: absolute;
-//   top: 8px;
-//   left: 8px;
-//   pointer-events: none;
-//   color: ${color.textMedium};
-// `

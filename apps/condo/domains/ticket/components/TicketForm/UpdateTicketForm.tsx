@@ -215,9 +215,7 @@ export const UpdateTicketForm: React.FC<IUpdateTicketForm> = ({ id }) => {
             initialValues={initialValues}
             organization={get(obj, 'organization')}
             files={files}
-            afterActionCompleted={(ticket) => {
-                replace(`/ticket/${ticket.id}`)
-            }}
+            afterActionCompleted={(ticket) => null}
             isExisted={Boolean(obj)}
         >
             {({ handleSave, isLoading, form }) => <ApplyChangesActionBar handleSave={handleSave} isLoading={isLoading} form={form} />}
