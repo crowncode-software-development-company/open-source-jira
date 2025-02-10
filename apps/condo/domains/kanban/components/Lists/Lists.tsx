@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
@@ -16,8 +16,15 @@ const Lists = styled.div`
 `
 
 const ProjectBoardLists = ({ tickets, filters, refetch, ticketStatuses }) => {
+    console.log(tickets)
+    
     const [localTickets, setLocalTickets] = useState(tickets)
 
+
+    useEffect(() => {
+        setLocalTickets(tickets)
+    }, [tickets])
+    
     const intl = useIntl()
     const { getSuccessfulChangeNotification } = useNotificationMessages()
 

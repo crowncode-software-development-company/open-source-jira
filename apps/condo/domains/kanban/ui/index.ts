@@ -1,7 +1,6 @@
 export { default as Avatar } from './Avatar'
 export { default as Button } from './Button'
 export { default as ConfirmModal } from './ConfirmModal'
-export { default as DatePicker } from './DatePicker'
 export { default as Input } from './Input'
 export { default as InputDebounced } from './InputDebounced'
 export { default as TicketTypeIcon } from './TicketTypeIcon'

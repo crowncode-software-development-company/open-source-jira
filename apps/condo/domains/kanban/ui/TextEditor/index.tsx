@@ -27,13 +27,19 @@ const EditorCont = styled.div`
 `
 
 
-const TextEditor = ({ value, onChange, placeholder }) => {
+const TextEditor = ({ value, onChange, placeholder, onChangeText }) => {
     const [editorHtml, setEditorHtml] = useState(value || '')
-
     const handleChange = (html) => {
+        console.log('Редактор', html)
+      
         setEditorHtml(html)
         onChange(html)
-        console.log(html)
+
+        const tempDiv = document.createElement('div')
+        tempDiv.innerHTML = html
+        const text = tempDiv.innerText || tempDiv.textContent 
+        onChangeText(text)
+        
     }
 
     return (

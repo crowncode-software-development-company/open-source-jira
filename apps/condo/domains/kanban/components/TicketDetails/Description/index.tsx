@@ -31,13 +31,23 @@ const Actions = styled.div`
   }
 `
 
-const ProjectBoardIssueDetailsDescription = ({ issue, updateIssue }) => {
-    const [description, setDescription] = useState(issue.details)
+const ProjectBoardIssueDetailsDescription = ({ ticket, updateTicket }) => {
+    const [description, setDescription] = useState(ticket.details)
+    const [descriptionText, setDescriptionText] = useState(ticket.details)
     const [isEditing, setEditing] = useState(false)
 
     const handleUpdate = () => {
+        console.log(description)
+        
         setEditing(false)
-        updateIssue()
+        updateTicket({
+            details: description,
+        })
+    }
+
+    const handleCancel = () => {
+        setDescription(ticket.details)
+        setEditing(false)
     }
 
     const isDescriptionEmpty = description.trim().length === 0
@@ -47,10 +57,10 @@ const ProjectBoardIssueDetailsDescription = ({ issue, updateIssue }) => {
             <Title>Description</Title>
             {isEditing ? (
                 <Fragment>
-                    <TextEditor placeholder='Describe the issue' value = {description}  onChange={(value) => setDescription(value)}/>
+                    <TextEditor placeholder='Describe the issue' value = {description}  onChange={(value) => setDescription(value)} onChangeText = {(value) => setDescriptionText(value)}/>
                     <Actions>
                         <Button variant='primary' onClick={handleUpdate}>Save</Button>
-                        <Button variant='empty' onClick={() => setEditing(false)}>Cancel</Button>
+                        <Button variant='empty' onClick={handleCancel}>Cancel</Button>
                     </Actions>
                 </Fragment>
             ) : (

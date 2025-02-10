@@ -75,7 +75,7 @@ const KanbanPage: PageComponentType = () => {
         fetchPolicy: 'network-only',
     })
     const tickets = useMemo(() => ticketsData?.tickets?.filter(Boolean) || [], [ticketsData?.tickets])
-
+    
     const {
         loading: isStatusesFetching,
         data: ticketStatusesData,
