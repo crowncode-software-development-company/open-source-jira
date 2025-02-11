@@ -1,5 +1,3 @@
-import { insertItemIntoArray, moveItemWithinArray } from '../../utils'
-
 export const isPositionChanged = (destination, source) => {
     if (!destination) return false
     const isSameList = destination?.droppableId === source.droppableId
@@ -41,3 +39,16 @@ export const getAfterDropPrevNextIssue = (allIssues, destination, source, droppe
 
 export const getSortedListIssues = (issues, status) =>
     issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition)
+
+const moveItemWithinArray = (arr, item, newIndex) => {
+    const arrClone = [...arr]
+    const oldIndex = arrClone.indexOf(item)
+    arrClone.splice(newIndex, 0, arrClone.splice(oldIndex, 1)[0])
+    return arrClone
+}
+  
+const insertItemIntoArray = (arr, item, index) => {
+    const arrClone = [...arr]
+    arrClone.splice(index, 0, item)
+    return arrClone
+}

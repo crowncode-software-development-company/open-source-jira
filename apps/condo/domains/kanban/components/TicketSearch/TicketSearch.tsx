@@ -18,6 +18,7 @@ import {
     NoResultsTip,
     TicketLink,
     NumberTicket,
+    TicketTypeColor,
 } from './Styles'
 
 import { useGetTicketsQuery } from '../../../../gql'
@@ -70,10 +71,10 @@ const ProjectTicketSearch = () => {
         <TicketLink
             onClick={() => handleOpenModal(ticket.id)}>
             <Ticket >
-                <TicketTypeIcon size='large' type='bug'/>
+                <TicketTypeIcon size='large' type='task'/>
                 <TicketData>
                     <TicketTitle><NumberTicket>Заявка №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</TicketTitle>
-                    <TicketTypeId>{`${ticket.classifier.category.name}-${ticket.id}`}</TicketTypeId>
+                    <TicketTypeId><TicketTypeColor $color={ticket.status.colors.primary}>{ticket.status.name}</TicketTypeColor> / {ticket.assignee.name}</TicketTypeId>
                 </TicketData>
             </Ticket>
         </TicketLink>

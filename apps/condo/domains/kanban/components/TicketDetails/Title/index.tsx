@@ -38,8 +38,6 @@ const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
 
     return (
         <Fragment>
-            {console.log(ticket)
-            }
             <TitleTextarea
                 onChange={() => null}
                 minRows={1}

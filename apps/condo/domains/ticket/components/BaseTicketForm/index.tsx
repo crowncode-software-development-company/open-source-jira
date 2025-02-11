@@ -1007,7 +1007,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
                                                                                         categoryClassifier={categoryClassifier}
                                                                                         form={form}
                                                                                     />
-                                                                                    {
+                                                                                    {/* {
                                                                                         !isResidentTicket && (
                                                                                             <Col span={24}>
                                                                                                 <Form.Item name='canReadByResident' valuePropName='checked' initialValue={initialCanReadByResidentValue}>
@@ -1029,7 +1029,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
                                                                                                 </Form.Item>
                                                                                             </Col>
                                                                                         )
-                                                                                    }
+                                                                                    } */}
                                                                                     {
                                                                                         !isExisted && isCallActive && (
                                                                                             <Col span={24}>

@@ -37,8 +37,6 @@ const ProjectBoardIssueDetailsDescription = ({ ticket, updateTicket }) => {
     const [isEditing, setEditing] = useState(false)
 
     const handleUpdate = () => {
-        console.log(description)
-        
         setEditing(false)
         updateTicket({
             details: description,

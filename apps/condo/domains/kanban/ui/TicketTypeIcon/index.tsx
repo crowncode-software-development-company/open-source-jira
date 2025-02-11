@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { BugIcon, StoryIcon, TaskIcon } from '../../icons'
-import { issueTypeColors } from '../../styles'
 
 interface IProps {
     type: string
@@ -19,7 +18,6 @@ const TicketTypeIcon: React.FC<IProps> = ({ type, size,  ...otherProps }) => {
 
     const props = {
         size,
-        color: issueTypeColors[type],
     }
 
     return <IconComponent {...props} { ...otherProps}/>

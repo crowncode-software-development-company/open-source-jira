@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components'
 
 import { color, mixin } from '../../styles'
 import { Avatar, TicketPriorityIcon, TicketTypeIcon } from '../../ui'
-import { truncateDescription } from '../../utils'
 
 const TicketLink = styled.div`
   display: block;

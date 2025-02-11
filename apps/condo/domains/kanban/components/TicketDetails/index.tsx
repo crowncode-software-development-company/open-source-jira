@@ -182,7 +182,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
     return (
         <Fragment>
             <TopActions>
-                <Type issue={issue} updateIssue={updateTicketTest} />
+                <Type ticket={ticket} />
                 <TopActionsRight>
                     <CopyLinkButton />
                     <Delete ticket={ticket} refetchTicketsBoard={refetchTicketsBoard}/>

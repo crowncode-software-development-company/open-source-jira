@@ -4,15 +4,6 @@ export const IssueType = {
     STORY: 'story',
 }
 
-export const IssueStatus = {
-    'Открыта': 'Открыта',
-    'Отменена': 'Отменена',
-    'В работе': 'В работе',
-    'Закрыта': 'Закрыта',
-    'Выполнена': 'Выполнена',
-    'Отложена':'Отложена',
-}
-
 export const IssuePriority = {
     HIGHEST: '5',
     HIGH: '4',
@@ -25,15 +16,6 @@ export const IssueTypeCopy = {
     [IssueType.TASK]: 'Task',
     [IssueType.BUG]: 'Bug',
     [IssueType.STORY]: 'Story',
-}
-
-export const IssueStatusCopy = {
-    [IssueStatus.Открыта]: 'Открыта',
-    [IssueStatus.Отменена]: 'Отменена',
-    [IssueStatus['В работе']]: 'В работе',
-    [IssueStatus.Закрыта]: 'Закрыта',
-    [IssueStatus.Выполнена]: 'Выполнена',
-    [IssueStatus.Отложена]: 'Отложена',
 }
 
 export const IssuePriorityCopy = {
@@ -55,16 +37,3 @@ export const KeyCodes = {
     ARROW_DOWN: 40,
     M: 77,
 }
-  
-export const ProjectCategory = {
-    SOFTWARE: 'software',
-    MARKETING: 'marketing',
-    BUSINESS: 'business',
-}
-  
-export const ProjectCategoryCopy = {
-    [ProjectCategory.SOFTWARE]: 'Software',
-    [ProjectCategory.MARKETING]: 'Marketing',
-    [ProjectCategory.BUSINESS]: 'Business',
-}
-  

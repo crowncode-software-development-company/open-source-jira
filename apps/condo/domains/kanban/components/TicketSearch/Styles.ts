@@ -59,7 +59,9 @@ export const TicketTitle = styled.div`
   color: ${color.textDark};
   ${font.size(15)}
 `
-
+export const TicketTypeColor = styled.span<{ $color?: string }>`
+ ${props => props.$color && `color: ${props.$color};`}
+`
 export const TicketTypeId = styled.div`
   text-transform: uppercase;
   color: ${color.textMedium};

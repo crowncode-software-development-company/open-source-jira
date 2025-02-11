@@ -176,9 +176,11 @@ export const CreateTicketForm: React.FC = () => {
                 <CopyButton url={paymentUrl} copyMessage={CopyLinkMessage} copiedMessage={CopiedLinkMessage}/>
             </Space>
         ) : (
-            <Typography.Link href={`/ticket/${ticketId}`} target='_blank' rel='noreferrer'>
-                {SuccessNotificationDescription}
-            </Typography.Link>
+            <>
+            </>
+            // <Typography.Link href={`/ticket/${ticketId}`} target='_blank' rel='noreferrer'>
+            //     {SuccessNotificationDescription}
+            // </Typography.Link>
         ),
         duration: paymentUrl && 0,
     }), [CopiedLinkMessage, CopyLinkMessage, SuccessNotificationDescription, SuccessNotificationWithPaymentLinkDescription, intl])

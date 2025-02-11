@@ -58,7 +58,7 @@ const ProjectBoardIssueDetailsAssigneesReporter = ({ ticket, updateTicket, emplo
 
     return (
         <Fragment>
-            <SectionTitle>Assignees</SectionTitle>
+            <SectionTitle>Assignee</SectionTitle>
             <Select
                 variant='empty'
                 dropdownWidth={250}
@@ -72,7 +72,7 @@ const ProjectBoardIssueDetailsAssigneesReporter = ({ ticket, updateTicket, emplo
                 renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
             />
 
-            <SectionTitle>Reporter</SectionTitle>
+            <SectionTitle>Executor</SectionTitle>
             <Select
                 variant='empty'
                 dropdownWidth={250}

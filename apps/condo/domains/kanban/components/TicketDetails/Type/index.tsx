@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { IssueType, IssueTypeCopy } from '../../../constants'
 import { color, font } from '../../../styles'
 import { Button, Select, TicketTypeIcon } from '../../../ui'
 
@@ -23,35 +22,30 @@ export const TypeLabel = styled.div`
   ${font.size(15)}
 `
 
-interface IProps {
-    issue: any
-    updateIssue: (updateData: { type: keyof typeof IssueType }) => void
-}
-
-const ProjectBoardIssueDetailsType: React.FC<IProps> = ({ issue, updateIssue }) => (
-    <Select
-        variant='empty'
-        dropdownWidth={150}
-        withClearValue={false}
-        name='type'
-        value={issue.type}
-        options={Object.values(IssueType).map(type => ({
-            value: type,
-            label: IssueTypeCopy[type],
-        }))}
-        onChange={type => updateIssue({ type })}
-        renderValue={({ value: type }) => (
-            <TypeButton variant='empty' icon={<TicketTypeIcon type={type} size='large'/>}>
-                {`${IssueTypeCopy[type]}-${issue.id}`}
-            </TypeButton>
-        )}
-        renderOption={({ value: type }) => (
-            <Type key={type} onClick={() => updateIssue({ type })}>
-                <TicketTypeIcon type={type} size='large'/>
-                <TypeLabel>{IssueTypeCopy[type]}</TypeLabel>
-            </Type>
-        )}
-    />
+const ProjectBoardIssueDetailsType = ({ ticket }) => (
+    // <Select
+    //     variant='empty'
+    //     dropdownWidth={150}
+    //     withClearValue={false}
+    //     name='type'
+    //     value={issue.type}
+    //     options={Object.values(IssueType).map(type => ({
+    //         value: type,
+    //         label: IssueTypeCopy[type],
+    //     }))}
+    //     onChange={type => updateIssue({ type })}
+    //     renderValue={({ value: type }) => (
+    <TypeButton variant='empty' icon={<TicketTypeIcon type='task' size='large'/>}>
+        {`Task-${ticket.number}`}
+    </TypeButton>
+    //     )}
+    //     renderOption={({ value: type }) => (
+    //         <Type key={type} onClick={() => updateIssue({ type })}>
+    //             <TicketTypeIcon type={type} size='large'/>
+    //             <TypeLabel>{IssueTypeCopy[type]}</TypeLabel>
+    //         </Type>
+    //     )}
+    // />
 )
 
 export default ProjectBoardIssueDetailsType

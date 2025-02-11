@@ -32,7 +32,8 @@ export const ApplyChangesActionBar = ({ handleSave, isLoading, form }) => {
 
     const { push, query: { id } } = useRouter()
     const onCancel = useCallback(() => {
-        push(`/ticket/${id}`)
+        return null
+        // push(`/ticket/${id}`)
     }, [id, push])
 
     const { ticketSetting, ticketSettingLoading } = useTicketFormContext()
