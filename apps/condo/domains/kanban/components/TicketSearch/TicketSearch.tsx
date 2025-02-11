@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { Fragment, useMemo, useState } from 'react'
 
+import { Search } from '@open-condo/icons'
 import { useOrganization } from '@open-condo/next/organization'
 
 import {
@@ -19,11 +20,12 @@ import {
     TicketLink,
     NumberTicket,
     TicketTypeColor,
+    TicketDataContainer,
 } from './Styles'
 
 import { useGetTicketsQuery } from '../../../../gql'
-import { NoResult } from '../../icons'
-import { TicketTypeIcon } from '../../ui'
+import { color } from '../../styles'
+import { Avatar, TicketTypeIcon } from '../../ui'
 import { sortByNewest } from '../../utils'
 
 const ProjectTicketSearch = () => {
@@ -41,12 +43,12 @@ const ProjectTicketSearch = () => {
             where: { 
                 organization: { id: organization.id },
                 OR: [
-                    { details_contains: searchValue },
+                    { details_contains_i: searchValue },
                     { number: +searchValue  }, 
-                    { classifier: { category: { name_contains: searchValue } } }, 
-                    { classifier: { place: { name_contains: searchValue } } },
-                    { assignee: { name_contains: searchValue  } },
-                    { executor: { name_contains: searchValue  } },
+                    { classifier: { category: { name_contains_i: searchValue } } }, 
+                    { classifier: { place: { name_contains_i: searchValue } } },
+                    { assignee: { name_contains_i: searchValue  } },
+                    { executor: { name_contains_i: searchValue  } },
                 ],
             },
         },
@@ -70,12 +72,17 @@ const ProjectTicketSearch = () => {
     const renderTicket = (ticket) =>  (
         <TicketLink
             onClick={() => handleOpenModal(ticket.id)}>
-            <Ticket >
+            <Ticket>
                 <TicketTypeIcon size='large' type='task'/>
-                <TicketData>
-                    <TicketTitle><NumberTicket>Заявка №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</TicketTitle>
-                    <TicketTypeId><TicketTypeColor $color={ticket.status.colors.primary}>{ticket.status.name}</TicketTypeColor> / {ticket.assignee.name}</TicketTypeId>
-                </TicketData>
+                <TicketDataContainer>
+                    <TicketData>
+                        <TicketTitle><NumberTicket>Заявка №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</TicketTitle>
+                        <TicketTypeId>
+                            <TicketTypeColor $color={ticket.status.colors.primary}>{ticket.status.name}</TicketTypeColor> / {ticket.assignee.name}
+                        </TicketTypeId>
+                    </TicketData>
+                    <Avatar name={ticket.assignee.name} size={30}/>
+                </TicketDataContainer>
             </Ticket>
         </TicketLink>
     )
@@ -108,7 +115,7 @@ const ProjectTicketSearch = () => {
 
             {!isSearchTermEmpty && !isTicketsFetching && tickets.length === 0 && (
                 <NoResults>
-                    <NoResult size='large' />
+                    <Search size='large' color={color.textMedium} />
                     <NoResultsTitle>We couldn&apos;t find anything matching your search</NoResultsTitle>
                     <NoResultsTip>Try again with a different term.</NoResultsTip>
                 </NoResults>

@@ -44,13 +44,20 @@ export const Ticket = styled.div`
   align-items: center;
   padding: 4px 10px;
   border-radius: 4px;
+  border: 1px solid ${color.backgroundLight};
   transition: background 0.1s;
   ${mixin.clickable}
   &:hover {
     background: ${color.backgroundLight};
   }
 `
-
+export const TicketDataContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
 export const TicketData = styled.div`
   padding-left: 15px;
 `
@@ -63,7 +70,6 @@ export const TicketTypeColor = styled.span<{ $color?: string }>`
  ${props => props.$color && `color: ${props.$color};`}
 `
 export const TicketTypeId = styled.div`
-  text-transform: uppercase;
   color: ${color.textMedium};
   ${font.size(12.5)}
 `
@@ -81,10 +87,12 @@ export const NoResults = styled.div`
 
 export const NoResultsTitle = styled.div`
   ${font.size(20)}
+   color: ${color.textMedium};
 `
 
 export const NoResultsTip = styled.div`
   ${font.size(15)}
+   color: ${color.textMedium};
 `
 
 

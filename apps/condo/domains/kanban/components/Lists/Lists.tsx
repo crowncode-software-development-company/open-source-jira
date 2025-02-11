@@ -15,28 +15,13 @@ import { useNotificationMessages } from '../../../common/hooks/useNotificationMe
 import { runMutation } from '../../../common/utils/mutations.utils'
 import { Ticket } from '../../../ticket/utils/clientSchema'
 import { color, font } from '../../styles'
+import { DeferredUntilModal } from '../DeferredUntilModal/DeferredUntilModal'
 import { List } from '../List'
 
 const Lists = styled.div`
   display: flex;
   gap: 5px;
 `
-
-const DateBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 15px;
-`
-
-const DateText = styled.p`
-  font-weigth: 600;
-  color: ${color.textMedium};
-  ${font.size(18)}
-`
-
-const INPUT_STYLE: CSSProperties = { width: '250px', height: '48px', borderRadius: '5px', alignSelf: 'center' }
-
 
 type UpdateData = {
     status: {
@@ -112,20 +97,8 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
 
     return (
         <>
-            <Modal open={isOpenUntil} closable={true} transitionName='' onCancel={handleUntilClose} onOk={handleUntilDateChange}>
-                <DateBody>
-                    <DateText>До какой даты отложить заявку?</DateText>
-                    <DatePicker
-                        style={INPUT_STYLE}
-                        value={deferredUntil}
-                        onChange={(newDate) => setDeferredUntil(newDate)}
-                        disabledDate={(date) => date < dayjs()}
-                        clearIcon={false}
-                        suffixIcon={<DownOutlined />}
-                        format='DD.MM.YYYY'
-                    />
-                </DateBody>
-            </Modal>
+            <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={handleUntilClose} onOk={handleUntilDateChange} />
+        
             <DragDropContext onDragEnd={handleTicketDrop}>
                 <Lists>
                     {Object.keys(ticketStatuses).map((key) => (

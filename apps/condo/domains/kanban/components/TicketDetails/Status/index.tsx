@@ -1,10 +1,12 @@
-import React, { Fragment } from 'react'
+import dayjs from 'dayjs'
+import React, { Fragment, useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import { ChevronDown } from '@open-condo/icons'
 
 import {  mixin, color, font } from '../../../styles'
 import { Select } from '../../../ui'
+import { DeferredUntilModal } from '../../DeferredUntilModal/DeferredUntilModal'
 
 const Status = styled.div<{ $isvalue?: boolean, $secondaryсolor: string, $primaryсolor: string }>`
   text-transform: uppercase;
@@ -31,6 +33,9 @@ export const SectionTitle = styled.div`
 `
 
 const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket }) => {
+    const [deferredUntil, setDeferredUntil] = useState(dayjs())
+    const [isOpenUntil, setOpenUntil] = useState(false)
+    
     const options = Object.entries(ticketStatuses).map(([name, id]) => ({
         value: name,
         label: name,
@@ -42,14 +47,32 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
     }
 
     const handleUpdateStatus = (updatedStatus) => {
-        const status = {
-            connect: { id: ticketStatuses[updatedStatus].id },
+        if (updatedStatus === 'Отложена') {
+            setOpenUntil(true)
+        } else {
+            const status = {
+                connect: { id: ticketStatuses[updatedStatus].id },
+            }
+            updateTicket({ status })
         }
-        updateTicket({ status })
+    }
+
+    const handleUntilClose = () => {
+        setOpenUntil(false)
+    }
+
+    const handleUntilDateChange = () => {
+        const status = {
+            connect: { id: ticketStatuses['Отложена'].id },
+        }
+        updateTicket({ status, deferredUntil: deferredUntil })
+        setOpenUntil(false)
+        setDeferredUntil(dayjs())
     }
 
     return (
         <Fragment>
+            <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={handleUntilClose} onOk={handleUntilDateChange} />
             <SectionTitle>Status</SectionTitle>
             <Select
                 variant='empty'
