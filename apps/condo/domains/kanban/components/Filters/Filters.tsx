@@ -54,7 +54,7 @@ const ProjectBoardFilters = ({ defaultFilters, filters, mergeFilters }) => {
 
             <StyledButton
                 variant='empty'
-                onClick={() => mergeFilters({ myOnly: !myOnly })}
+                onClick={() => mergeFilters({ myOnly: !myOnly, userIds: [] })}
             >
         Only My Tickets
             </StyledButton>

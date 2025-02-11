@@ -19,7 +19,7 @@ const HeaderContainer = styled.div`
   gap: 30px;
 `
 
-const ProjectBoard = ({ tickets, ticketStatuses, refetchTicket }) => {
+const ProjectBoard = ({ tickets, ticketStatuses, refetchAllTickets }) => {
 
     const [filters, mergeFilters] = useMergeState(defaultFilters)
 
@@ -35,7 +35,7 @@ const ProjectBoard = ({ tickets, ticketStatuses, refetchTicket }) => {
             <Lists
                 tickets={tickets}
                 filters={filters}
-                refetch={refetchTicket}
+                refetchAllTickets={refetchAllTickets}
                 ticketStatuses={ticketStatuses}
             />
         </>

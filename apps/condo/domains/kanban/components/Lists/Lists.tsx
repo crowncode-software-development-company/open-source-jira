@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import { UUID } from 'crypto'
+
+import { DownOutlined } from '@ant-design/icons'
+import { Modal } from 'antd'
+import dayjs from 'dayjs'
+import React, { CSSProperties, useEffect, useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { isPositionChanged } from './utils'
 
+import DatePicker from '../../../common/components/Pickers/DatePicker'
 import { useNotificationMessages } from '../../../common/hooks/useNotificationMessages'
 import { runMutation } from '../../../common/utils/mutations.utils'
 import { Ticket } from '../../../ticket/utils/clientSchema'
+import { color, font } from '../../styles'
 import { List } from '../List'
 
 const Lists = styled.div`
@@ -15,10 +22,39 @@ const Lists = styled.div`
   gap: 5px;
 `
 
-const ProjectBoardLists = ({ tickets, filters, refetch, ticketStatuses }) => {
+const DateBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 15px;
+`
+
+const DateText = styled.p`
+  font-weigth: 600;
+  color: ${color.textMedium};
+  ${font.size(18)}
+`
+
+const INPUT_STYLE: CSSProperties = { width: '250px', height: '48px', borderRadius: '5px', alignSelf: 'center' }
+
+
+type UpdateData = {
+    status: {
+        connect: {
+            id: UUID
+        }
+    }
+    deferredUntil?: string
+}
+
+const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses }) => {
     const intl = useIntl()
     const { getSuccessfulChangeNotification } = useNotificationMessages()
     const [localTickets, setLocalTickets] = useState(tickets)
+    const [deferredUntil, setDeferredUntil] = useState(dayjs())
+    const [isOpenUntil, setOpenUntil] = useState(false)
+    const [currentDraggableTicketId, setCurrentDraggableTicketId] = useState('')
+
 
     useEffect(() => {
         setLocalTickets(tickets)
@@ -26,22 +62,22 @@ const ProjectBoardLists = ({ tickets, filters, refetch, ticketStatuses }) => {
     
     const update = Ticket.useUpdate({})
     
-    const updateTicketStatus = (newType, id) => {
+    const updateTicketStatus = (newType, id, deferUntil?) => {
         const statusObject = {
             connect: { id: ticketStatuses[newType].id },
         }
-
-        setLocalTickets(prevTickets =>
-            prevTickets.map(ticket =>
-                ticket.id === id ? { ...ticket, status: { ...ticket.status, name: newType } } : ticket
-            )
-        )
+    
+        const updateData: UpdateData = { status: statusObject }
+    
+        if (deferUntil) {
+            updateData.deferredUntil = deferUntil
+        }
         
         runMutation({
-            action:() => update({ status: statusObject }, tickets.find((ticket) => ticket.id === id)),
+            action:() => update(updateData, tickets.find((ticket) => ticket.id === id)),
             intl,
             OnCompletedMsg: getSuccessfulChangeNotification,
-            onCompleted: () => refetch(),
+            onCompleted: () => {refetchAllTickets(), setCurrentDraggableTicketId(''), setDeferredUntil(dayjs())},
             onError: () => setLocalTickets(tickets),
             OnErrorMsg: 'Ошибка смены статуса',
         })
@@ -49,22 +85,60 @@ const ProjectBoardLists = ({ tickets, filters, refetch, ticketStatuses }) => {
     
     const handleTicketDrop = ({ draggableId, destination, source }) => {
         if (!destination || !isPositionChanged(source, destination)) return
-        updateTicketStatus(destination.droppableId, draggableId)     
+        setLocalTickets(prevTickets =>
+            prevTickets.map(ticket =>
+                ticket.id === draggableId ? { ...ticket, status: { ...ticket.status, name: destination.droppableId } } : ticket
+            )
+        )
+        if (destination.droppableId === 'Отложена') {
+            setCurrentDraggableTicketId(draggableId)
+            setOpenUntil(true)
+        }
+        else {
+            updateTicketStatus(destination.droppableId, draggableId)
+        }  
+    }
+
+    const handleUntilClose = () => {
+        setCurrentDraggableTicketId('')
+        setLocalTickets(tickets)
+        setOpenUntil(false)
+    }
+
+    const handleUntilDateChange = () => {
+        updateTicketStatus('Отложена', currentDraggableTicketId, deferredUntil )
+        setOpenUntil(false)
     }
 
     return (
-        <DragDropContext onDragEnd={handleTicketDrop}>
-            <Lists>
-                {Object.keys(ticketStatuses).map((key) => (
-                    <List
-                        key={key}
-                        status={key}
-                        tickets={localTickets}
-                        filters={filters}
+        <>
+            <Modal open={isOpenUntil} closable={true} transitionName='' onCancel={handleUntilClose} onOk={handleUntilDateChange}>
+                <DateBody>
+                    <DateText>До какой даты отложить заявку?</DateText>
+                    <DatePicker
+                        style={INPUT_STYLE}
+                        value={deferredUntil}
+                        onChange={(newDate) => setDeferredUntil(newDate)}
+                        disabledDate={(date) => date < dayjs()}
+                        clearIcon={false}
+                        suffixIcon={<DownOutlined />}
+                        format='DD.MM.YYYY'
                     />
-                ))}
-            </Lists>
-        </DragDropContext>
+                </DateBody>
+            </Modal>
+            <DragDropContext onDragEnd={handleTicketDrop}>
+                <Lists>
+                    {Object.keys(ticketStatuses).map((key) => (
+                        <List
+                            key={key}
+                            status={key}
+                            tickets={localTickets}
+                            filters={filters}
+                        />
+                    ))}
+                </Lists>
+            </DragDropContext>
+        </>
     )
 }
 export default ProjectBoardLists

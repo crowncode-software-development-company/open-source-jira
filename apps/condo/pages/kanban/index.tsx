@@ -20,7 +20,7 @@ import { useGetTicketsQuery, useGetTicketStatusesQuery } from '../../gql'
 
 const WRAPPER_GUTTER: Gutter | [Gutter, Gutter] = [0, 60]
 
-export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, refetchTicket }) => {
+export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, refetchAllTickets }) => {
     const router = useRouter()
     const [isTicketOpen, setTicketOpen] = useState(false)
     const [isCreateTicketOpen, setCreateTicketOpen] = useState(false)
@@ -59,11 +59,11 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
             </Modal>
 
             <Modal width={1040} open={isTicketOpen} onCancel={handleCloseModal} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
-                <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} modalClose = {handleCloseModal} refetchTicketsBoard={refetchTicket}/>
+                <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} modalClose = {handleCloseModal} refetchTicketsBoard={refetchAllTickets}/>
             </Modal>
 
             
-            <ProjectBoard tickets={tickets} ticketStatuses={ticketStatuses} refetchTicket={refetchTicket}/>
+            <ProjectBoard tickets={tickets} ticketStatuses={ticketStatuses} refetchAllTickets={refetchAllTickets}/>
         </>
     )
 }
@@ -78,7 +78,7 @@ const KanbanPage: PageComponentType = () => {
     const {
         loading: isTicketsFetching,
         data: ticketsData,
-        refetch,
+        refetch: refetchAllTickets,
     } = useGetTicketsQuery({
         variables: {
             where: { organization: { id: organization.id } },
@@ -119,7 +119,7 @@ const KanbanPage: PageComponentType = () => {
                             <Typography.Title>{kanbanTitle}</Typography.Title>
                         }
                     />
-                    <KanbanPageContent organizationId={organization.id} tickets={tickets} ticketStatuses={ticketStatuses} refetchTicket={refetch}/>
+                    <KanbanPageContent organizationId={organization.id} tickets={tickets} ticketStatuses={ticketStatuses} refetchAllTickets={refetchAllTickets}/>
                 </PageContent>
             </PageWrapper>
         </>
