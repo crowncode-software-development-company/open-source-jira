@@ -16,9 +16,18 @@ export const Avatars = styled.div`
   margin: 2px 12px 0 2px;
 `
 
-export const AvatarIsActiveBorder = styled.div<{ $isactive?: boolean }>`
+const getMarginLeft = (total) => {
+    if (total >= 15) return -12
+    if (total >= 10) return -8
+    if (total >= 5) return -4
+    return -2
+}
+
+
+export const AvatarIsActiveBorder = styled.div<{ $isactive?: boolean, $index?: number, $total?: number }>`
   display: inline-flex;
   margin-left: -2px;
+ margin-left: ${props => `${getMarginLeft(props.$total)}px`};
   border-radius: 50%;
   transition: transform 0.1s;
   ${mixin.clickable};

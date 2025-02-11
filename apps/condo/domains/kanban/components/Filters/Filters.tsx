@@ -30,7 +30,6 @@ const ProjectBoardFilters = ({ defaultFilters, filters, mergeFilters }) => {
     })
     
     const employees = useMemo(() => employeesData?.filter(Boolean) || [], [employeesData])
-
     const areFiltersCleared = userIds.length === 0 && !myOnly
 
     if (employeesLoading) {
@@ -40,8 +39,13 @@ const ProjectBoardFilters = ({ defaultFilters, filters, mergeFilters }) => {
     return (
         <Filters>
             <Avatars>
-                {employees.map(employee => (
-                    <AvatarIsActiveBorder key={employee.id} $isactive={userIds.includes(employee.user.id)}>
+                {employees.map((employee, index) => (
+                    <AvatarIsActiveBorder
+                        key={employee.id}
+                        $isactive={userIds.includes(employee.user.id)}
+                        $index={index}
+                        $total={employees.length}
+                    >
                         <StyledAvatar
                             size={26}
                             name={employee.user.name}
