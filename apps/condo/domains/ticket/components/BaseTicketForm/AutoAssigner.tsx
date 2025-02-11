@@ -137,14 +137,5 @@ export const AutoAssigner = ({
         propertyScopeEmployees, propertyScopes, currentUserId, currentUserCanBeAssignee, allLoaded, rule,
     ])
 
-    return autoAssigneePropertyScopeName ? (
-        <Col span={24}>
-            <Alert
-                showIcon
-                type='info'
-                message={AutoAssignAlertTitle}
-                description={AutoAssignAlertMessage.replace('{name}', autoAssigneePropertyScopeName)}
-            />
-        </Col>
-    ) : null
+    return null
 }

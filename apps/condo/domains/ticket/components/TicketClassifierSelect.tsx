@@ -407,14 +407,14 @@ export const useTicketThreeLevelsClassifierHook = ({ initialValues: {
                             <CategorySelect disabled={disabled} />
                         </TicketFormItem>
                     </Col>
-                    <Col span={24} data-cy='ticket-problem-select-item'>
+                    {/* <Col span={24} data-cy='ticket-problem-select-item'>
                         <TicketFormItem
                             name='problemClassifier'
                             label={ProblemClassifierLabel}
                         >
                             <ProblemSelect disabled={disabled} />
                         </TicketFormItem>
-                    </Col>
+                    </Col> */}
                 </Row>
             )
         }

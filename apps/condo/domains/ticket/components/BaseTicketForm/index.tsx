@@ -150,9 +150,9 @@ const UPLOAD_COMPONENT_WRAPPER_STYLES = { paddingTop: '24px' }
 const SPAN_STYLES = { 'color': colors.brightRed }
 const TICKET_INFO_FRONT_LAYOUT_CONTAINER_STYLE = { paddingBottom: 0 }
 
-const BIG_VERTICAL_GUTTER: [Gutter, Gutter] = [0, 60]
+const BIG_VERTICAL_GUTTER: [Gutter, Gutter] = [0, 30]
 const MEDIUM_VERTICAL_GUTTER: [Gutter, Gutter] = [0, 24]
-const SMALL_VERTICAL_GUTTER: [Gutter, Gutter] = [0, 10]
+const SMALL_VERTICAL_GUTTER: [Gutter, Gutter] = [0, 5]
 const BIG_HORIZONTAL_GUTTER: [Gutter, Gutter] = [60, 0]
 const MEDIUM_HORIZONTAL_GUTTER: [Gutter, Gutter] = [40, 0]
 
@@ -490,7 +490,7 @@ export const TicketInfo = ({ organizationId, form, validations, UploadComponent,
                                             </Col>
                                         </Row>
                                     </Col>
-                                    <Col span={24}>
+                                    {/* <Col span={24}>
                                         <Row gutter={MEDIUM_HORIZONTAL_GUTTER}>
                                             <Col span={24} lg={6}>
                                                 <Form.Item name='isEmergency' valuePropName='checked'>
@@ -531,7 +531,7 @@ export const TicketInfo = ({ organizationId, form, validations, UploadComponent,
                                                 </Form.Item>
                                             </Col>
                                         </Row>
-                                    </Col>
+                                    </Col> */}
                                 </Row>
                             </Col>
                             {
@@ -907,7 +907,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
                         <Col span={24}>
                             <Row gutter={BIG_HORIZONTAL_GUTTER} justify='space-between'>
                                 <Col span={propertyInfoColSpan}>
-                                    <Row gutter={[0, 20]}>
+                                    <Row gutter={[0, 15]}>
                                         <Col>
                                             <Row gutter={BIG_VERTICAL_GUTTER}>
                                                 <Col span={24} lg={7}>
@@ -936,7 +936,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
                                                                                 />
                                                                             </TicketFormItem>
                                                                         </Col>
-                                                                        {selectedPropertyId && (
+                                                                        {/* {selectedPropertyId && (
                                                                             <UnitInfo
                                                                                 property={property}
                                                                                 loading={organizationPropertiesLoading}
@@ -950,7 +950,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
                                                                                 form={form}
                                                                                 disabled={!isEmpty(initialNotDraftInvoices)}
                                                                             />
-                                                                        )}
+                                                                        )} */}
                                                                     </Row>
                                                                 </Col>
                                                                 {

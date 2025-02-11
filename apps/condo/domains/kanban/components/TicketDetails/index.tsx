@@ -198,7 +198,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
                 <Right>
                     <Status ticket={ticket} ticketStatuses={ticketStatuses} updateTicket={updateTicketAction}/>
                     <AssigneesReporter ticket={ticket} updateTicket={updateTicketAction} employees={employees} />
-                    <Priority issue={issue} updateIssue={updateTicketTest} />
+                    <Priority ticket={ticket} />
                     <Deadline ticket={ticket} updateTicket={updateTicketAction} />
                     <Dates issue={ticket} /> 
                 </Right>

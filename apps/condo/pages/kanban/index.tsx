@@ -25,7 +25,7 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     const [isTicketOpen, setTicketOpen] = useState(false)
     const [isCreateTicketOpen, setCreateTicketOpen] = useState(false)
     const [isSearchTicketOpen, setSearchTicketOpen] = useState(false)
-
+    const [ticketKey, setTicketKey] = useState(0)
     useEffect(() => {
         const { query } = router
         
@@ -42,6 +42,7 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     const handleCloseModal = () => {
         setCreateTicketOpen(false)
         setTicketOpen(false)
+        setTicketKey(prevKey => prevKey + 1)
         setSearchTicketOpen(false)
         router.push('/kanban', undefined, { shallow: true })
     }
@@ -50,7 +51,7 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
         <>
             <Modal width={1040} open={isCreateTicketOpen} onCancel={handleCloseModal} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
                 <Row gutter={WRAPPER_GUTTER}>
-                    <TicketForm/>
+                    <TicketForm key={ticketKey}/>
                 </Row>
             </Modal>
 

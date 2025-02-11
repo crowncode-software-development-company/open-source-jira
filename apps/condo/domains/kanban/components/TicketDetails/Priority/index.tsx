@@ -33,12 +33,7 @@ color: ${color.textMedium};
 ${font.size(12.5)}
 `
 
-interface IProps {
-    issue: any
-    updateIssue: () => void
-}
-
-const ProjectBoardIssueDetailsPriority: React.FC<IProps> = ({ issue, updateIssue }) => (
+const ProjectBoardIssueDetailsPriority = ({ ticket }) => (
     <Fragment>
         <SectionTitle>Priority</SectionTitle>
         <Select
@@ -46,12 +41,12 @@ const ProjectBoardIssueDetailsPriority: React.FC<IProps> = ({ issue, updateIssue
             withClearValue={false}
             dropdownWidth={343}
             name='priority'
-            value={issue.priority}
+            value='3'
             options={Object.values(IssuePriority).map(priority => ({
                 value: priority,
                 label: IssuePriorityCopy[priority],
             }))}
-            onChange={priority => updateIssue()}
+            onChange={priority => null}
             renderValue={({ value: priority }) => renderPriorityItem(priority, true)}
             renderOption={({ value: priority }) => renderPriorityItem(priority, false)}
         />
