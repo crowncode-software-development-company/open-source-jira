@@ -16,18 +16,14 @@ const Lists = styled.div`
 `
 
 const ProjectBoardLists = ({ tickets, filters, refetch, ticketStatuses }) => {
-    console.log(tickets)
-    
+    const intl = useIntl()
+    const { getSuccessfulChangeNotification } = useNotificationMessages()
     const [localTickets, setLocalTickets] = useState(tickets)
-
 
     useEffect(() => {
         setLocalTickets(tickets)
     }, [tickets])
     
-    const intl = useIntl()
-    const { getSuccessfulChangeNotification } = useNotificationMessages()
-
     const update = Ticket.useUpdate({})
     
     const updateTicketStatus = (newType, id) => {

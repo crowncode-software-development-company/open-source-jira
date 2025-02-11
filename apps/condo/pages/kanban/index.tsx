@@ -13,6 +13,7 @@ import LoadingOrErrorPage from '@condo/domains/common/components/containers/Load
 import { PageComponentType } from '@condo/domains/common/types'
 import { ProjectBoard } from '@condo/domains/kanban/components/Board'
 import ProjectBoardTicketDetails from '@condo/domains/kanban/components/TicketDetails'
+import ProjectTicketSearch from '@condo/domains/kanban/components/TicketSearch/TicketSearch'
 import { TicketForm } from '@condo/domains/ticket/components/TicketForm'
 
 import { useGetTicketsQuery, useGetTicketStatusesQuery } from '../../gql'
@@ -23,20 +24,25 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     const router = useRouter()
     const [isTicketOpen, setTicketOpen] = useState(false)
     const [isCreateTicketOpen, setCreateTicketOpen] = useState(false)
+    const [isSearchTicketOpen, setSearchTicketOpen] = useState(false)
 
     useEffect(() => {
         const { query } = router
         
-        if (query.ticketId && !isTicketOpen && !isCreateTicketOpen) {    
+        if (query.ticketId && !isTicketOpen && !isCreateTicketOpen) {  
+            setSearchTicketOpen(false)
             setTicketOpen(true)
         } else if (query['create-modal']) {
             setCreateTicketOpen(true)
+        } else if (query['search-modal']) {
+            setSearchTicketOpen(true)
         }
     }, [router.query]) 
 
     const handleCloseModal = () => {
         setCreateTicketOpen(false)
         setTicketOpen(false)
+        setSearchTicketOpen(false)
         router.push('/kanban', undefined, { shallow: true })
     }
     
@@ -48,9 +54,14 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
                 </Row>
             </Modal>
 
+            <Modal width={720} open={isSearchTicketOpen} onCancel={handleCloseModal} footer={null} style={{ top: 20 }} transitionName=''>
+                <ProjectTicketSearch />
+            </Modal>
+
             <Modal width={1040} open={isTicketOpen} onCancel={handleCloseModal} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
                 <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} modalClose = {handleCloseModal} refetchTicketsBoard={refetchTicket}/>
             </Modal>
+
             
             <ProjectBoard tickets={tickets} ticketStatuses={ticketStatuses} refetchTicket={refetchTicket}/>
         </>
