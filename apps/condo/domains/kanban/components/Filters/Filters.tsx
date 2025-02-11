@@ -15,7 +15,7 @@ import {
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
 import { Spinner } from '../../ui'
 
-const ProjectBoardFilters = ({ defaultFilters, filters, mergeFilters }) => {
+const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters }) => {
     const { myOnly, userIds } = filters
     const { organization } = useOrganization()
 
@@ -30,21 +30,31 @@ const ProjectBoardFilters = ({ defaultFilters, filters, mergeFilters }) => {
     })
     
     const employees = useMemo(() => employeesData?.filter(Boolean) || [], [employeesData])
+
+    const uniqueEmployeesInTickets = useMemo(() => {
+        const ticketAssigneesAndExecutors = new Set(
+            tickets.flatMap(ticket => [ticket.assignee?.id, ticket.executor?.id])
+        )
+        return employees.filter(employee => 
+            ticketAssigneesAndExecutors.has(employee.user.id)
+        )
+    }, [tickets, employees])
+
     const areFiltersCleared = userIds.length === 0 && !myOnly
 
-    if (employeesLoading) {
+    if (employeesLoading) { 
         return <Spinner />
     }
 
     return (
         <Filters>
             <Avatars>
-                {employees.map((employee, index) => (
+                {uniqueEmployeesInTickets.map((employee, index) => (
                     <AvatarIsActiveBorder
                         key={employee.id}
                         $isactive={userIds.includes(employee.user.id)}
                         $index={index}
-                        $total={employees.length}
+                        $total={uniqueEmployeesInTickets.length}
                     >
                         <StyledAvatar
                             size={26}
