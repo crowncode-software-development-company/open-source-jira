@@ -245,7 +245,7 @@ const MenuItems: React.FC = () => {
                 {
                     id: 'menuitem-kanban',
                     path: 'kanban',
-                    icon: AllIcons['Employee'],
+                    icon: AllIcons['CreditCard'],
                     label: 'kanban.title',
                 },
             ],
