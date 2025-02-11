@@ -1,22 +1,37 @@
+import styled from 'styled-components'
+
 import useMergeState from '../../hooks/useMergeState'
+import Filters from '../Filters/Filters'
 import { Header } from '../Header'
 import Lists from '../Lists/Lists'
 import { IFilters } from '../types'
 
 const defaultFilters: IFilters = {
-    searchTerm: '',
     userIds: [],
     myOnly: false,
-    recent: false,
 }
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+`
 
 const ProjectBoard = ({ tickets, ticketStatuses, refetchTicket }) => {
 
-    const [filters] = useMergeState(defaultFilters)
+    const [filters, mergeFilters] = useMergeState(defaultFilters)
 
     return (
         <>
-            <Header />
+            <HeaderContainer>
+                <Header />
+                <Filters 
+                    defaultFilters={defaultFilters}
+                    filters={filters}
+                    mergeFilters={mergeFilters}/>
+            </HeaderContainer>
             <Lists
                 tickets={tickets}
                 filters={filters}

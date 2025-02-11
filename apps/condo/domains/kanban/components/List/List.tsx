@@ -2,7 +2,9 @@ import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 
-import { formatTicketsCount, getSortedListTickets } from './utils'
+import { useAuth } from '@open-condo/next/auth'
+
+import { filterTickets, formatTicketsCount, getSortedListTickets } from './utils'
 
 import { color } from '../../styles'
 import { Ticket } from '../Ticket'
@@ -38,8 +40,9 @@ const Tickets = styled.div`
 `
 
 const ProjectBoardList = ({ status, tickets, filters }) => {
-    // const filteredIssues = filterIssues(tickets, filters, currentUserId, intl)
-    const filteredListTickets = getSortedListTickets(tickets, status)
+    const { user } = useAuth()
+    const filteredTickets = filterTickets(tickets, filters, user.id)
+    const filteredListTickets = getSortedListTickets(filteredTickets, status)
     const allListTickets = getSortedListTickets(tickets, status)
 
     return (

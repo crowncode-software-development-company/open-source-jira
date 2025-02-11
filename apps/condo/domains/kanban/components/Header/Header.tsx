@@ -27,7 +27,8 @@ const ProjectBoardHeader = () => {
         <Header>
             <Button icon={<PlusCircle size='small'/>} onClick = {handleCreateModal}>Create Ticket</Button>
             <Button icon={<Search size='small'/>} onClick = {handleSearchModal}>Search Ticket</Button>
-        </Header>)
+        </Header>
+    )
 }
   
 export default ProjectBoardHeader
