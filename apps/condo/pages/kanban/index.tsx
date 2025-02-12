@@ -14,7 +14,7 @@ import { PageComponentType } from '@condo/domains/common/types'
 import { ProjectBoard } from '@condo/domains/kanban/components/Board'
 import ProjectBoardTicketDetails from '@condo/domains/kanban/components/TicketDetails'
 import ProjectTicketSearch from '@condo/domains/kanban/components/TicketSearch/TicketSearch'
-import { TicketForm } from '@condo/domains/ticket/components/TicketForm'
+import { CreateTicketForm } from '@condo/domains/ticket/components/TicketForm/CreateTicketForm'
 
 import { useGetTicketsQuery, useGetTicketStatusesQuery } from '../../gql'
 
@@ -26,9 +26,9 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     const [isCreateTicketOpen, setCreateTicketOpen] = useState(false)
     const [isSearchTicketOpen, setSearchTicketOpen] = useState(false)
     const [ticketKey, setTicketKey] = useState(0)
+    const { query } = router
+
     useEffect(() => {
-        const { query } = router
-        
         if (query.ticketId && !isTicketOpen && !isCreateTicketOpen) {  
             setSearchTicketOpen(false)
             setTicketOpen(true)
@@ -39,7 +39,7 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
         }
     }, [router.query]) 
 
-    const handleCloseModal = () => {
+    const handleCloseModals = () => {
         setCreateTicketOpen(false)
         setTicketOpen(false)
         setTicketKey(prevKey => prevKey + 1)
@@ -49,18 +49,18 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     
     return (
         <>
-            <Modal width={1040} open={isCreateTicketOpen} onCancel={handleCloseModal} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
+            <Modal width={1040} open={isCreateTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
                 <Row gutter={WRAPPER_GUTTER}>
-                    <TicketForm key={ticketKey}/>
+                    <CreateTicketForm closeModal={handleCloseModals}/>
                 </Row>
             </Modal>
 
-            <Modal width={720} open={isSearchTicketOpen} onCancel={handleCloseModal} footer={null} style={{ top: 20 }} transitionName=''>
+            <Modal width={720} open={isSearchTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} transitionName=''>
                 <ProjectTicketSearch />
             </Modal>
 
-            <Modal width={1040} open={isTicketOpen} onCancel={handleCloseModal} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
-                <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} modalClose = {handleCloseModal} refetchTicketsBoard={refetchAllTickets}/>
+            <Modal width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
+                <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} modalClose = {handleCloseModals} refetchTicketsBoard={refetchAllTickets}/>
             </Modal>
 
             

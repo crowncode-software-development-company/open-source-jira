@@ -12,7 +12,6 @@ import {
 } from '@app/condo/schema'
 import { Affix, Col, ColProps, Form, FormItemProps, Row } from 'antd'
 import { Gutter } from 'antd/es/grid/row'
-import dayjs from 'dayjs'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import isFunction from 'lodash/isFunction'
@@ -23,11 +22,11 @@ import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState
 import { useCachePersistor } from '@open-condo/apollo'
 import { useDeepCompareEffect } from '@open-condo/codegen/utils/useDeepCompareEffect'
 import { useFeatureFlags } from '@open-condo/featureflags/FeatureFlagsContext'
-import { PlusCircle, QuestionCircle } from '@open-condo/icons'
+import { PlusCircle } from '@open-condo/icons'
 import { useApolloClient } from '@open-condo/next/apollo'
 import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
-import { Typography, Alert, Space, Tooltip } from '@open-condo/ui'
+import { Typography, Alert, Space } from '@open-condo/ui'
 
 import { CONTEXT_FINISHED_STATUS } from '@condo/domains/acquiring/constants/context'
 import { AcquiringIntegrationContext } from '@condo/domains/acquiring/utils/clientSchema'
@@ -54,7 +53,6 @@ import { INVOICE_STATUS_DRAFT, INVOICE_STATUS_CANCELED } from '@condo/domains/ma
 import { Invoice } from '@condo/domains/marketplace/utils/clientSchema'
 import { MANAGING_COMPANY_TYPE, SERVICE_PROVIDER_TYPE } from '@condo/domains/organization/constants/common'
 import { PropertyAddressSearchInput } from '@condo/domains/property/components/PropertyAddressSearchInput'
-import { UnitInfo, UnitInfoMode } from '@condo/domains/property/components/UnitInfo'
 import { PropertyFormItemTooltip } from '@condo/domains/property/PropertyFormItemTooltip'
 import { IncidentHints } from '@condo/domains/ticket/components/IncidentHints'
 import { useTicketThreeLevelsClassifierHook } from '@condo/domains/ticket/components/TicketClassifierSelect'
@@ -68,7 +66,6 @@ import { VISIBLE_TICKET_SOURCE_TYPES_IN_TICKET_FORM } from '@condo/domains/ticke
 import { useActiveCall } from '@condo/domains/ticket/contexts/ActiveCallContext'
 import { TicketFile } from '@condo/domains/ticket/utils/clientSchema'
 import { ITicketFormState } from '@condo/domains/ticket/utils/clientSchema/Ticket'
-import { getTicketDefaultDeadline } from '@condo/domains/ticket/utils/helpers'
 import { RESIDENT } from '@condo/domains/user/constants/common'
 
 import { TicketAssignments } from './TicketAssignments'
@@ -154,7 +151,6 @@ const BIG_VERTICAL_GUTTER: [Gutter, Gutter] = [0, 30]
 const MEDIUM_VERTICAL_GUTTER: [Gutter, Gutter] = [0, 24]
 const SMALL_VERTICAL_GUTTER: [Gutter, Gutter] = [0, 5]
 const BIG_HORIZONTAL_GUTTER: [Gutter, Gutter] = [60, 0]
-const MEDIUM_HORIZONTAL_GUTTER: [Gutter, Gutter] = [40, 0]
 
 export const TicketFormItem: React.FC<FormItemProps> = (props) => (
     <Form.Item labelCol={FORM_FILED_COL_PROPS} wrapperCol={FORM_FILED_COL_PROPS} {...props} />
@@ -381,16 +377,12 @@ export const TicketInfo = ({ organizationId, form, validations, UploadComponent,
     const TicketDeadlineLabel = intl.formatMessage({ id: 'TicketDeadline' })
     const TicketDeferredDeadlineLabel = intl.formatMessage({ id: 'TicketDeferredDeadline' })
     const DescriptionLabel = intl.formatMessage({ id: 'pages.condo.ticket.field.Description' })
-    const EmergencyLabel = intl.formatMessage({ id: 'Emergency' })
-    const WarrantyLabel = intl.formatMessage({ id: 'Warranty' })
-    const PayableLabel = intl.formatMessage({ id: 'Payable' })
     const DescriptionPlaceholder = intl.formatMessage({ id: 'placeholder.Description' })
     const ClassifierLabel = intl.formatMessage({ id: 'Classifier' })
-    const CancelTicketInvoicesMessage = intl.formatMessage({ id: 'pages.condo.marketplace.invoice.ticketInvoice.form.disableIsPayableTooltip' })
 
     const { organization } = useOrganization()
     const { breakpoints } = useLayoutContext()
-    const { setIsAutoDetectedDeadlineValue, ticketSetting, setClassifier } = useTicketFormContext()
+    const { setClassifier } = useTicketFormContext()
 
     const afterUpdateRuleId = useCallback(({ ruleId, placeId, categoryId, problemId }) => {
         setClassifier({
@@ -412,34 +404,13 @@ export const TicketInfo = ({ organizationId, form, validations, UploadComponent,
     const classifierColSpan = !breakpoints.TABLET_LARGE ? 24 : 18
     const deadlineColSpan = !breakpoints.TABLET_LARGE ? 24 : 18
 
-    const createdAt = get(initialValues, 'createdAt', null)
-
-    const handleChangeType = useCallback(() => {
-        const { isPayable, isEmergency, isWarranty } = form.getFieldsValue(['isPayable', 'isEmergency', 'isWarranty'])
-        const autoAddDays = getTicketDefaultDeadline(ticketSetting, isPayable, isEmergency, isWarranty)
-        const startDate = createdAt ? dayjs(createdAt) : dayjs()
-        const autoDeadlineValue = isNull(autoAddDays) ? autoAddDays : startDate.add(autoAddDays, 'day')
-        form.setFields([{ name: 'deadline', value: autoDeadlineValue }])
-        setIsAutoDetectedDeadlineValue(true)
-    }, [createdAt, form, setIsAutoDetectedDeadlineValue, ticketSetting])
 
     const [isPayable, setIsPayable] = useState<boolean>(get(initialValues, 'isPayable'))
-
-    const handlePayableChange = useCallback((e) => {
-        const value = get(e, 'target.checked')
-
-        setIsPayable(value)
-        handleChangeType()
-    }, [handleChangeType])
 
     const { useFlag } = useFeatureFlags()
     const isMarketplaceEnabled = useFlag(MARKETPLACE)
     const isNoServiceProviderOrganization = useMemo(() => (get(organization, 'type', MANAGING_COMPANY_TYPE) !== SERVICE_PROVIDER_TYPE), [organization])
 
-    const invoicesInNotCanceledStatus = Form.useWatch('invoicesInNotCanceledStatus', form)
-    const disableIsPayableCheckbox = useMemo(() =>
-        isPayable && invoicesInNotCanceledStatus && invoicesInNotCanceledStatus.length > 0,
-    [invoicesInNotCanceledStatus, isPayable])
 
     return (
         <Col span={24}>
@@ -490,48 +461,6 @@ export const TicketInfo = ({ organizationId, form, validations, UploadComponent,
                                             </Col>
                                         </Row>
                                     </Col>
-                                    {/* <Col span={24}>
-                                        <Row gutter={MEDIUM_HORIZONTAL_GUTTER}>
-                                            <Col span={24} lg={6}>
-                                                <Form.Item name='isEmergency' valuePropName='checked'>
-                                                    <Checkbox
-                                                        disabled={disableUserInteraction}
-                                                        eventName='TicketCreateCheckboxEmergency'
-                                                        onChange={handleChangeType}
-                                                    >
-                                                        {EmergencyLabel}
-                                                    </Checkbox>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={24} lg={6}>
-                                                <Tooltip title={disableIsPayableCheckbox && CancelTicketInvoicesMessage}>
-                                                    <Form.Item
-                                                        name='isPayable'
-                                                        valuePropName='checked'
-                                                    >
-                                                        <Checkbox
-                                                            disabled={disableUserInteraction || disableIsPayableCheckbox}
-                                                            eventName='TicketCreateCheckboxIsPayable'
-                                                            onChange={handlePayableChange}
-                                                        >
-                                                            {PayableLabel}
-                                                        </Checkbox>
-                                                    </Form.Item>
-                                                </Tooltip>
-                                            </Col>
-                                            <Col span={24} lg={6}>
-                                                <Form.Item name='isWarranty' valuePropName='checked'>
-                                                    <Checkbox
-                                                        disabled={disableUserInteraction}
-                                                        eventName='TicketCreateCheckboxIsWarranty'
-                                                        onChange={handleChangeType}
-                                                    >
-                                                        {WarrantyLabel}
-                                                    </Checkbox>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                    </Col> */}
                                 </Row>
                             </Col>
                             {
@@ -674,8 +603,6 @@ export const TicketSourceSelect: React.FC = () => {
 const FORM_VALIDATE_TRIGGER = ['onBlur', 'onSubmit']
 const TICKET_PROPERTY_HINT_STYLES: CSSProperties = { maxHeight: '11em', maxWidth: '250px' }
 const HINTS_WRAPPER_STYLE: CSSProperties = { overflow: 'auto', maxHeight: 'calc(100vh - 220px)', paddingRight: 8 }
-const CAN_READ_BY_RESIDENT_WRAPPER_STYLE: CSSProperties = { display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'center' }
-const CAN_READ_BY_RESIDENT_ICON_WRAPPER_STYLE: CSSProperties = { padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }
 
 export interface ITicketFormProps {
     organization?: Pick<Organization, 'id'>
@@ -685,6 +612,7 @@ export interface ITicketFormProps {
     afterActionCompleted?: (ticket: Ticket) => void
     OnCompletedMsg?: OnCompletedMsgType<Ticket>
     autoAssign?: boolean
+    closeModal?: () => void
     isExisted?: boolean
 }
 
@@ -695,9 +623,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
     const AddressNotSelected = intl.formatMessage({ id: 'field.Property.nonSelectedError' })
     const PromptTitle = intl.formatMessage({ id: 'pages.condo.ticket.warning.modal.Title' })
     const PromptHelpMessage = intl.formatMessage({ id: 'pages.condo.ticket.warning.modal.HelpMessage' })
-    const CanReadByResidentMessage = intl.formatMessage({ id: 'pages.condo.ticket.field.CanReadByResident' })
     const AttachCallRecordMessage = intl.formatMessage({ id: 'pages.condo.ticket.field.AttachCallRecord' })
-    const CanReadByResidentTooltip = intl.formatMessage({ id: 'pages.condo.ticket.field.CanReadByResident.tooltip' })
     const TicketNotFromResidentMessage = intl.formatMessage({ id: 'pages.condo.ticket.title.TicketNotFromResident' })
     const TicketFromResidentMessage = intl.formatMessage({ id: 'pages.condo.ticket.title.TicketFromResident' })
 
@@ -715,6 +641,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
         autoAssign,
         OnCompletedMsg,
         isExisted,
+        closeModal,
     } = props
     const validations = useTicketValidations()
     const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(get(initialValues, 'property', null))
@@ -813,9 +740,6 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
         return result
     }
 
-    const initialCanReadByResidentValue = useMemo(() => get(initialValues, 'canReadByResident', true), [initialValues])
-
-    const isResidentTicket = useMemo(() => get(initialValues, ['createdByType']) === RESIDENT, [initialValues])
     const ErrorToFormFieldMsgMapping = useMemo(() => ({
         [PROPERTY_REQUIRED_ERROR]: {
             name: 'property',
@@ -886,6 +810,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
         <>
             <FormWithAction
                 action={action}
+                closeModal={closeModal}
                 initialValues={initialTicketValues}
                 validateTrigger={FORM_VALIDATE_TRIGGER}
                 formValuesToMutationDataPreprocessor={formValuesToMutationDataPreprocessor}
@@ -936,21 +861,6 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
                                                                                 />
                                                                             </TicketFormItem>
                                                                         </Col>
-                                                                        {/* {selectedPropertyId && (
-                                                                            <UnitInfo
-                                                                                property={property}
-                                                                                loading={organizationPropertiesLoading}
-                                                                                setSelectedUnitName={setSelectedUnitName}
-                                                                                setSelectedUnitType={setSelectedUnitType}
-                                                                                selectedUnitName={selectedUnitName}
-                                                                                setSelectedSectionType={setSelectedSectionType}
-                                                                                selectedSectionType={selectedSectionType}
-                                                                                mode={UnitInfoMode.All}
-                                                                                initialValues={initialTicketValues}
-                                                                                form={form}
-                                                                                disabled={!isEmpty(initialNotDraftInvoices)}
-                                                                            />
-                                                                        )} */}
                                                                     </Row>
                                                                 </Col>
                                                                 {
@@ -1007,29 +917,6 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
                                                                                         categoryClassifier={categoryClassifier}
                                                                                         form={form}
                                                                                     />
-                                                                                    {/* {
-                                                                                        !isResidentTicket && (
-                                                                                            <Col span={24}>
-                                                                                                <Form.Item name='canReadByResident' valuePropName='checked' initialValue={initialCanReadByResidentValue}>
-                                                                                                    <Checkbox
-                                                                                                        disabled={disableUserInteraction}
-                                                                                                        eventName='TicketCreateCheckboxCanReadByResident'
-                                                                                                    >
-                                                                                                        <div style={CAN_READ_BY_RESIDENT_WRAPPER_STYLE}>
-                                                                                                            <Typography.Text>
-                                                                                                                {CanReadByResidentMessage}
-                                                                                                            </Typography.Text>
-                                                                                                            <Tooltip title={CanReadByResidentTooltip}>
-                                                                                                                <div style={CAN_READ_BY_RESIDENT_ICON_WRAPPER_STYLE}>
-                                                                                                                    <QuestionCircle size='small' />
-                                                                                                                </div>
-                                                                                                            </Tooltip>
-                                                                                                        </div>
-                                                                                                    </Checkbox>
-                                                                                                </Form.Item>
-                                                                                            </Col>
-                                                                                        )
-                                                                                    } */}
                                                                                     {
                                                                                         !isExisted && isCallActive && (
                                                                                             <Col span={24}>

@@ -31,7 +31,6 @@ import { Button as CommonButton } from '@condo/domains/common/components/Button'
 import { colors } from '@condo/domains/common/constants/style'
 import { runMutation } from '@condo/domains/common/utils/mutations.utils'
 
-
 const identity = (x) => !!x
 const NON_FIELD_ERROR_NAME = '_NON_FIELD_ERROR_'
 const IGNORE_FIELD_PREFIX = 'IGNORE'
@@ -253,6 +252,7 @@ interface IFormWithAction<TRecordFormState, TRecordUIState> extends FormProps {
     children: IFormWithActionChildren
     formInstance?: FormInstance
     scrollToFirstError?: Options | boolean
+    closeModal: () => void
 }
 
 const FormWithAction: React.FC<IFormWithAction> = (props) => {
@@ -281,7 +281,7 @@ const FormWithAction: React.FC<IFormWithAction> = (props) => {
         layout = 'vertical',
         validateTrigger,
         style,
-        onFieldsChange,
+        closeModal,
         formInstance,
         isNonFieldErrorHidden,
         ...formProps
@@ -359,9 +359,12 @@ const FormWithAction: React.FC<IFormWithAction> = (props) => {
                 if (resetOnComplete) {
                     form.resetFields()
                 }
+                console.log(closeModal)
+                closeModal()
             },
             onFinally: () => {
                 setIsLoading(false)
+                form.resetFields()
             },
             intl,
             form,

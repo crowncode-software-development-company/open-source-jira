@@ -123,8 +123,11 @@ export const CreateTicketActionBar = ({ handleSave, isLoading, form }) => {
     )
 }
 
+export interface ICreateTicketFormProps {
+    closeModal?: () => void
+}
 
-export const CreateTicketForm: React.FC = () => {
+export const CreateTicketForm: React.FC<ICreateTicketFormProps> = ({ closeModal }) => {
     const intl = useIntl()
     const SuccessNotificationDescription = intl.formatMessage({ id: 'pages.condo.ticket.notification.success.description' })
     const CopyLinkMessage = intl.formatMessage({ id: 'pages.condo.marketplace.invoice.form.create.notification.copyLink' })
@@ -262,6 +265,7 @@ export const CreateTicketForm: React.FC = () => {
                 initialValues={initialValues}
                 organization={organization}
                 autoAssign
+                closeModal={closeModal ? closeModal : () => null}
                 OnCompletedMsg={null}
                 isExisted={false}
             >
