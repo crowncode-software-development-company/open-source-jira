@@ -423,9 +423,9 @@ export default function GlobalStyle () {
               .ant-typography a[disabled], 
               a.ant-typography.ant-typography-disabled, 
               .ant-typography a.ant-typography-disabled {
-                color: ${colors.green[6]};
+                  color: ${colors.orange[6]};
                 &:hover {
-                  color: ${colors.green[6]};
+                  color: ${colors.orange[6]};
                 }
               }
               
