@@ -5,6 +5,7 @@ import { Close } from '@open-condo/icons'
 
 import { color, font, mixin } from '../../../styles'
 import { Avatar, Select } from '../../../ui'
+import { SectionTitle } from '../Styles'
 
 const User = styled.div<{ $isselectvalue?: boolean, $withbottommargin?: boolean }>`
   display: flex;
@@ -28,15 +29,8 @@ const Username = styled.div`
   padding: 0 3px 0 8px;
   ${font.size(14.5)}
 `
-const SectionTitle = styled.div`
-  margin: 24px 0 5px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: ${color.textMedium};
-  ${font.size(12.5)}
-`
 
-const ProjectBoardIssueDetailsAssigneesReporter = ({ ticket, updateTicket, employees }) => {
+const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, employees }) => {
     const getEmployeeById = employeeId => employees.find(employee => employee.user.id === employeeId)
 
     const employeesOptions = employees.map(employee => ({ value: employee.user.id, label: employee.user.name }))
@@ -102,4 +96,4 @@ const renderUser = (user, isSelectValue?, removeOptionValue?) => (
     </User>
 )
 
-export default ProjectBoardIssueDetailsAssigneesReporter
+export default ProjectBoardIssueDetailsAssigneesExecutor

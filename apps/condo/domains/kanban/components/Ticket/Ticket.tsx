@@ -77,7 +77,7 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                         <Bottom>
                             <div>
                                 <TicketTypeIcon type='task' size='medium'/>
-                                <TicketPriorityIcon priority='5' size='large'/>
+                                <TicketPriorityIcon priority={ticket.order || 1} size='large'/>
                             </div>
                             <Assignees>
                                 <AssigneeAvatar

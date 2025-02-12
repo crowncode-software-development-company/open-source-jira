@@ -2632,7 +2632,7 @@
   "pages.condo.ticket.title.TicketInfo": "Информация о заявке",
   "pages.condo.ticket.title.TicketNotFromResident": "Заявка не от жителя",
   "pages.condo.ticket.title.UserInfo": "Информация о жителе",
-  "pages.condo.ticket.warning.modal.HelpMessage": "Заявка не сохранится. Если в заявке есть счет — он тоже не сохранится.",
+  "pages.condo.ticket.warning.modal.HelpMessage": "Заявка не сохранится.",
   "pages.condo.ticket.warning.modal.Title": "Не сохранять заявку?",
   "pages.condo.tls.back": "Назад на страницу входа",
   "pages.condo.tls.button": "Перейти к инструкции",

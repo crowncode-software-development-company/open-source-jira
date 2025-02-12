@@ -5,7 +5,7 @@ import { ArrowUp, ArrowDown } from '../../icons'
 import { issuePriorityColors } from '../../styles'
 
 interface IProps  {
-    priority: string
+    priority: number
     size: 'large' | 'medium' | 'small' | 'auto'
 }
 

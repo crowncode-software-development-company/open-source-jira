@@ -4,9 +4,10 @@ import styled, { css } from 'styled-components'
 
 import { ChevronDown } from '@open-condo/icons'
 
-import {  mixin, color, font } from '../../../styles'
+import {  mixin } from '../../../styles'
 import { Select } from '../../../ui'
 import { DeferredUntilModal } from '../../DeferredUntilModal/DeferredUntilModal'
+import { SectionTitle } from '../Styles'
 
 const Status = styled.div<{ $isvalue?: boolean, $secondaryсolor: string, $primaryсolor: string }>`
   text-transform: uppercase;
@@ -22,14 +23,6 @@ const Status = styled.div<{ $isvalue?: boolean, $secondaryсolor: string, $prima
         transform: scale(1.05);
       }
     `}
-`
-
-export const SectionTitle = styled.div`
-  margin: 24px 0 5px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: ${color.textMedium};
-  ${font.size(12.5)}
 `
 
 const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket }) => {

@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import { IssuePriority, IssuePriorityCopy } from '../../../constants'
 import { color, font } from '../../../styles'
 import { Select, TicketPriorityIcon } from '../../../ui'
+import { SectionTitle } from '../Styles'
 
 const Priority = styled.div<{ $isvalue?: boolean }>`
 display: flex;
@@ -25,33 +26,33 @@ padding: 0 3px 0 3px;
 ${font.size(14.5)}
 `
 
-export const SectionTitle = styled.div`
-margin: 24px 0 5px;
-text-transform: uppercase;
-font-weight: bold;
-color: ${color.textMedium};
-${font.size(12.5)}
-`
+const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
+    const handleUpdatePriority = (updatedPriority) => {
+        console.log(updatedPriority)
+        
+        updateTicket({ order: updatedPriority  })
+    }
 
-const ProjectBoardIssueDetailsPriority = ({ ticket }) => (
-    <Fragment>
-        <SectionTitle>Priority</SectionTitle>
-        <Select
-            variant='empty'
-            withClearValue={false}
-            dropdownWidth={343}
-            name='priority'
-            value='3'
-            options={Object.values(IssuePriority).map(priority => ({
-                value: priority,
-                label: IssuePriorityCopy[priority],
-            }))}
-            onChange={priority => null}
-            renderValue={({ value: priority }) => renderPriorityItem(priority, true)}
-            renderOption={({ value: priority }) => renderPriorityItem(priority, false)}
-        />
-    </Fragment>
-)
+    return ( 
+        <Fragment>
+            <SectionTitle>Priority</SectionTitle>
+            <Select
+                variant='empty'
+                withClearValue={false}
+                dropdownWidth={250}
+                name='priority'
+                value={ticket.order || 1}
+                options={Object.values(IssuePriority).map(priority => ({
+                    value: priority,
+                    label: IssuePriorityCopy[priority],
+                }))}
+                onChange={priority => handleUpdatePriority(priority)}
+                renderValue={({ value: priority }) => renderPriorityItem(priority, true)}
+                renderOption={({ value: priority }) => renderPriorityItem(priority, false)}
+            />
+        </Fragment>
+    )
+}
 
 const renderPriorityItem = (priority, isValue) => (
     <Priority $isvalue={isValue}>

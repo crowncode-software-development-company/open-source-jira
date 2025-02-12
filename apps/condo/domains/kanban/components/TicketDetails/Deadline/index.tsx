@@ -4,20 +4,13 @@ import React, { CSSProperties, Fragment, useState } from 'react'
 import styled from 'styled-components'
 
 import DatePicker from '../../../../common/components/Pickers/DatePicker'
-import { color, font } from '../../../styles'
+import { color } from '../../../styles'
+import { SectionTitle } from '../Styles'
 
 
 export const InputCont = styled.div`
   margin: 0 5px;
   width: 50%;
-`
-
-export const SectionTitle = styled.div`
-  margin: 24px 0 15px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: ${color.textMedium};
-  ${font.size(12.5)}
 `
 
 const INPUT_STYLE: CSSProperties = { width: '250px', height: '32px', borderRadius: '5px', backgroundColor: color.backgroundLightest, marginLeft: '-5px' }

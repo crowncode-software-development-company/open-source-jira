@@ -2357,6 +2357,7 @@ export const GetTicketsDocument = gql`
     id
     number
     createdAt
+    order
     isEmergency
     isPayable
     isWarranty
@@ -2676,6 +2677,7 @@ export const GetTicketByIdDocument = gql`
     isEmergency
     isPayable
     isWarranty
+    order
     statusReopenedCounter
     statusUpdatedAt
     canReadByResident

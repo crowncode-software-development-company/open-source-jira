@@ -2632,7 +2632,7 @@
   "pages.condo.ticket.title.TicketInfo": "Información de la solicitud",
   "pages.condo.ticket.title.TicketNotFromResident": "Solicitud de no vecino",
   "pages.condo.ticket.title.UserInfo": "Información del vecino",
-  "pages.condo.ticket.warning.modal.HelpMessage": "La solicitud no se guardará. Una factura, si hay en la solicitud, tampoco se guardará.",
+  "pages.condo.ticket.warning.modal.HelpMessage": "La solicitud no se guardará.",
   "pages.condo.ticket.warning.modal.Title": "¿No guardar la solicitud?",
   "pages.condo.tls.back": "Volver a la página de inicio de sesión",
   "pages.condo.tls.button": "Ir a instrucciones",

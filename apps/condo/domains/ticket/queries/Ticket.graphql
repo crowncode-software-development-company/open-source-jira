@@ -13,6 +13,7 @@ query getTickets(
     id
     number
     createdAt
+    order
     isEmergency
     isPayable
     isWarranty
@@ -173,6 +174,7 @@ query getTicketById($id: ID!) {
     isEmergency
     isPayable
     isWarranty
+    order
     statusReopenedCounter
     statusUpdatedAt
     canReadByResident

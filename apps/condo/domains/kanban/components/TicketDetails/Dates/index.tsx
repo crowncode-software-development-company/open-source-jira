@@ -14,14 +14,10 @@ const Dates = styled.div`
   ${font.size(13)}
 `
 
-interface IProps {
-    issue: any
-}
-
-const ProjectBoardIssueDetailsDates: React.FC<IProps> = ({ issue }) => (
+const ProjectBoardIssueDetailsDates = ({ ticket }) => (
     <Dates>
-        <div>Created at {formatDateTimeConversational(issue.createdAt)}</div>
-        <div>Updated at {formatDateTimeConversational(issue.updatedAt)}</div>
+        <div>Created at {formatDateTimeConversational(ticket.createdAt)}</div>
+        <div>Updated at {formatDateTimeConversational(ticket.updatedAt)}</div>
     </Dates>
 )
 

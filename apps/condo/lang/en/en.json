@@ -2632,7 +2632,7 @@
   "pages.condo.ticket.title.TicketInfo": "Task information",
   "pages.condo.ticket.title.TicketNotFromResident": "Ticket not from resident",
   "pages.condo.ticket.title.UserInfo": "Resident information",
-  "pages.condo.ticket.warning.modal.HelpMessage": "Ticket will not be saved. If there’s an invoices in the ticket, will not be saved.",
+  "pages.condo.ticket.warning.modal.HelpMessage": "Ticket will not be saved.",
   "pages.condo.ticket.warning.modal.Title": "Do not save ticket?",
   "pages.condo.tls.back": "Back to auth page",
   "pages.condo.tls.button": "Go to instructions",
