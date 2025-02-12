@@ -1,6 +1,7 @@
 import { xor } from 'lodash'
 import React, { useMemo } from 'react'
 
+import { useAuth } from '@open-condo/next/auth'
 import { useOrganization } from '@open-condo/next/organization'
 
 import {
@@ -18,7 +19,7 @@ import { Spinner } from '../../ui'
 const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters }) => {
     const { myOnly, userIds } = filters
     const { organization } = useOrganization()
-
+    const { user } = useAuth()
     const { objs: employeesData, loading: employeesLoading } = OrganizationEmployee.useAllObjects({
         where: {
             organization: { id: organization.id },
@@ -36,7 +37,7 @@ const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters })
             tickets.flatMap(ticket => [ticket.assignee?.id, ticket.executor?.id])
         )
         return employees.filter(employee => 
-            ticketAssigneesAndExecutors.has(employee.user.id)
+            ticketAssigneesAndExecutors.has(employee.user.id) && employee.user.id !== user.id
         )
     }, [tickets, employees])
 
