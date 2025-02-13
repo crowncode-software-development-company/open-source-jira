@@ -1,10 +1,9 @@
-import { Input } from 'antd'
+/* eslint-disable react/display-name */
+import TextArea from 'antd/lib/input/TextArea'
 import React from 'react'
 import styled, { css } from 'styled-components'
 
 import { color } from '../../styles'
-
-const { TextArea: AntdTextArea } = Input
 
 const StyledTextarea = styled.div<{ $invalid?: boolean }>`
   display: inline-block;
@@ -35,21 +34,24 @@ const StyledTextarea = styled.div<{ $invalid?: boolean }>`
   }`
 
 
-interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps {
     className?: string
     invalid?: boolean
-    minRows?: number
-    onChange: any
+    onChange: (value: string) => void
+    value: string
+    [key: string]: any
 }
-  
-const Textarea: React.FC<TextareaProps> = ({ className, invalid, onChange, ...textareaProps }) => (
+
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ value, className, invalid, onChange, ...textareaProps }, ref) => (
     <StyledTextarea className={className} $invalid={invalid}>
-        <AntdTextArea
+        <TextArea
+            ref={ref}
             {...textareaProps}
+            value={value}
             onChange={e => onChange(e.target.value)} 
             autoSize={{ minRows: textareaProps.minRows || 2 }} 
         />
     </StyledTextarea>
-)
-  
+))
+
 export default Textarea

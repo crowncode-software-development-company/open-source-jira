@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { Button, Textarea } from '../../../../ui'
@@ -24,10 +24,18 @@ interface IProps {
 }
 
 const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onChange, isWorking, onSubmit, onCancel }) => {
+    const textareaRef = useRef(null)
+    
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.focus( { cursor: 'end' })
+        }
+    }, [])
 
     return (
         <Fragment>
             <Textarea
+                ref={textareaRef}
                 value={value}
                 autoFocus
                 placeholder='Add a comment...'
