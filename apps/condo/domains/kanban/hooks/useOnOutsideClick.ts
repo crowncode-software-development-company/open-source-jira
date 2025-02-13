@@ -9,7 +9,7 @@ const useOnOutsideClick = (
     $listeningElementRef,
 ) => {
     const $mouseDownTargetRef = useRef()
-    const $ignoredElementRefsMemoized = useDeepCompareMemoize([$ignoredElementRefs].flat())
+    const $ignoredElementRefsMemoized = useDeepCompareMemoize([$ignoredElementRefs].flat()) || []
 
     useEffect(() => {
         const handleMouseDown = event => {
@@ -17,13 +17,16 @@ const useOnOutsideClick = (
         }
 
         const handleMouseUp = event => {
-            const isAnyIgnoredElementAncestorOfTarget = $ignoredElementRefsMemoized.some(
-                $elementRef =>
-                    $elementRef.current.contains($mouseDownTargetRef.current) ||
-          $elementRef.current.contains(event.target),
-            )
-            if (event.button === 0 && !isAnyIgnoredElementAncestorOfTarget) {
-                onOutsideClick()
+            if ($ignoredElementRefsMemoized) { // Проверка на undefined
+                const isAnyIgnoredElementAncestorOfTarget = $ignoredElementRefsMemoized.some(
+                    $elementRef =>
+                        $elementRef.current.contains($mouseDownTargetRef.current) || 
+                        $elementRef.current.contains(event.target)
+                )
+    
+                if (event.button === 0 && !isAnyIgnoredElementAncestorOfTarget) {
+                    onOutsideClick()
+                }
             }
         }
 

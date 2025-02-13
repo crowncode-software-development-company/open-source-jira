@@ -63,6 +63,13 @@ export const mixin = {
     cursor: pointer;
     user-select: none;
   `,
+    backgroundImage: imageURL => css`
+    background-image: url("${imageURL}");
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: ${color.backgroundLight};
+  `,
     scrollableY: css`
     overflow-x: hidden;
     overflow-y: auto;
