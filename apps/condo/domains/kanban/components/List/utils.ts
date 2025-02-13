@@ -20,9 +20,9 @@ export const getSortedListTickets = (ticket, status) => ticket.filter(ticket => 
     return dateB - dateA
 })
 
-export const formatTicketsCount = (allListIssues, filteredListIssues) => {
+export const formatTicketsCount = (allListIssues, filteredListIssues, TicketsOfTitle) => {
     if (allListIssues.length !== filteredListIssues.length) {
-        return `${filteredListIssues.length} из ${allListIssues.length}`
+        return `${filteredListIssues.length} ${TicketsOfTitle} ${allListIssues.length}`
     }
     return allListIssues.length
 }

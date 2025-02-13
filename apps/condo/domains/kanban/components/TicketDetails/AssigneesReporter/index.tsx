@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 
 import { Close } from '@open-condo/icons'
@@ -31,6 +32,10 @@ const Username = styled.div`
 `
 
 const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, employees }) => {
+    const intl = useIntl()
+    const AssigneeMessage = intl.formatMessage({ id: 'pages.ticket.autoAssignment.columns.assignee.title' })
+    const ExecutorMessage = intl.formatMessage({ id: 'pages.ticket.autoAssignment.columns.executor.title' })
+
     const getEmployeeById = employeeId => employees.find(employee => employee.user.id === employeeId)
 
     const employeesOptions = employees.map(employee => ({ value: employee.user.id, label: employee.user.name }))
@@ -52,7 +57,7 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
 
     return (
         <Fragment>
-            <SectionTitle>Assignee</SectionTitle>
+            <SectionTitle>{AssigneeMessage}</SectionTitle>
             <Select
                 variant='empty'
                 dropdownWidth={250}
@@ -66,7 +71,7 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
                 renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
             />
 
-            <SectionTitle>Executor</SectionTitle>
+            <SectionTitle>{ExecutorMessage}</SectionTitle>
             <Select
                 variant='empty'
                 dropdownWidth={250}

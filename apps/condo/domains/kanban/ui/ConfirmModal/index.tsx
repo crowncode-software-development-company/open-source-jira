@@ -1,30 +1,19 @@
 import { Modal, Button } from 'antd'
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
+import { useIntl } from 'react-intl'
 
-const propTypes = {
-    className: PropTypes.string,
-    variant: PropTypes.oneOf(['primary', 'danger']),
-    title: PropTypes.string,
-    message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    confirmText: PropTypes.string,
-    cancelText: PropTypes.string,
-    onConfirm: PropTypes.func.isRequired,
-    renderLink: PropTypes.func.isRequired,
+interface ConfirmModalProps {
+    className?: string
+    title: string
+    message: string | React.ReactNode
+    confirmText: string
+    cancelText?: string
+    onConfirm: (options: { close: () => void }) => void
+    renderLink: (options: { open: () => void }) => React.ReactNode
 }
 
-const defaultProps = {
-    className: undefined,
-    variant: 'primary',
-    title: 'Warning',
-    message: 'Are you sure you want to continue with this action?',
-    confirmText: 'Confirm',
-    cancelText: 'Cancel',
-}
-
-const ConfirmModal = ({
+const ConfirmModal: React.FC<ConfirmModalProps> = ({
     className,
-    variant,
     title,
     message,
     confirmText,
@@ -34,6 +23,8 @@ const ConfirmModal = ({
 }) => {
     const [isWorking, setWorking] = useState(false)
     const [visible, setVisible] = useState(false)
+    const intl = useIntl()
+    const CancelTitle = intl.formatMessage({ id: 'Cancel' })
 
     const handleConfirm = () => {
         setWorking(true)
@@ -64,11 +55,11 @@ const ConfirmModal = ({
                 onCancel={handleCancel}
                 footer={[
                     <Button key='cancel' onClick={handleCancel}>
-                        {cancelText}
+                        {cancelText || CancelTitle}
                     </Button>,
                     <Button
+                        danger={true}
                         key='confirm'
-                        type={variant === 'danger' ? 'danger' : 'primary'}
                         loading={isWorking}
                         onClick={handleConfirm}
                     >
@@ -81,8 +72,5 @@ const ConfirmModal = ({
         </>
     )
 }
-
-ConfirmModal.propTypes = propTypes
-ConfirmModal.defaultProps = defaultProps
 
 export default ConfirmModal

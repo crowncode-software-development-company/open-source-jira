@@ -1,5 +1,6 @@
 import { notification } from 'antd'
 import React from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import Comment from './Comment'
@@ -20,6 +21,8 @@ const Title = styled.div`
 `
 
 const ProjectBoardIssueDetailsComments = ({ refetchTicketComments, ticket, comments, user }) => {
+    const intl = useIntl()
+    const CommentsTitle = intl.formatMessage({ id: 'Comments.title' })
     const { getSuccessfulChangeNotification } = useNotificationMessages()
     
     const onCompleted = async () => {
@@ -29,7 +32,7 @@ const ProjectBoardIssueDetailsComments = ({ refetchTicketComments, ticket, comme
 
     return (
         <Comments>
-            <Title>Comments</Title>
+            <Title>{CommentsTitle}</Title>
             <Create ticketId={ticket.id} user={user} onCompleted={onCompleted} />
 
             {sortByNewest(comments, 'createdAt').map(comment => (

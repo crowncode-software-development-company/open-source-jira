@@ -1,6 +1,7 @@
 import { notification } from 'antd'
 import  { useRouter } from 'next/router'
 import React, { Fragment, useMemo } from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { getClientSideSenderInfo } from '@open-condo/codegen/utils/userId'
@@ -50,11 +51,11 @@ const TopActionsRight = styled.div`
   margin-left: 30px;
 `
 
-
 const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose, refetchTicketsBoard }) => {
-
     const { user } = useAuth()
     const { query } = useRouter()
+    const intl = useIntl()
+    const ErrorTitle = intl.formatMessage({ id: 'ErrorOccurred' })
     const { ticketId } = query as { ticketId: string }
     const {
         data: ticketByIdData,
@@ -94,7 +95,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
         },
 
         onError: async () => {
-            notification.error({ message: 'Ошибка' })
+            notification.error({ message: ErrorTitle })
         },
     })
         

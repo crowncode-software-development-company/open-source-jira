@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { PlusCircle, Search } from '@open-condo/icons'
@@ -14,6 +15,9 @@ export const Header = styled.div`
 
 
 const ProjectBoardHeader = () => {
+    const intl = useIntl()
+    const CreateTicketTitle = intl.formatMessage({ id: 'CreateTicket' })
+    const SearchTicketTitle = intl.formatMessage({ id: 'kanban.SearchTicket' })
     const router = useRouter()
     const handleCreateModal = () => {
         router.push('?create-modal=true', undefined, { shallow: true })
@@ -25,8 +29,8 @@ const ProjectBoardHeader = () => {
 
     return (
         <Header>
-            <Button icon={<PlusCircle size='small'/>} onClick = {handleCreateModal}>Create Ticket</Button>
-            <Button icon={<Search size='small'/>} onClick = {handleSearchModal}>Search Ticket</Button>
+            <Button icon={<PlusCircle size='small'/>} onClick = {handleCreateModal}>{CreateTicketTitle}</Button>
+            <Button icon={<Search size='small'/>} onClick = {handleSearchModal}>{SearchTicketTitle}</Button>
         </Header>
     )
 }

@@ -1,5 +1,4 @@
-import { Modal, Row } from 'antd'
-import { Gutter } from 'antd/es/grid/row'
+import { Modal } from 'antd'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -18,14 +17,11 @@ import { CreateTicketForm } from '@condo/domains/ticket/components/TicketForm/Cr
 
 import { useGetTicketsQuery, useGetTicketStatusesQuery } from '../../gql'
 
-const WRAPPER_GUTTER: Gutter | [Gutter, Gutter] = [0, 60]
-
 export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, refetchAllTickets }) => {
     const router = useRouter()
     const [isTicketOpen, setTicketOpen] = useState(false)
     const [isCreateTicketOpen, setCreateTicketOpen] = useState(false)
     const [isSearchTicketOpen, setSearchTicketOpen] = useState(false)
-    const [ticketKey, setTicketKey] = useState(0)
     const { query } = router
 
     useEffect(() => {
@@ -42,7 +38,6 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     const handleCloseModals = () => {
         setCreateTicketOpen(false)
         setTicketOpen(false)
-        setTicketKey(prevKey => prevKey + 1)
         setSearchTicketOpen(false)
         router.push('/kanban', undefined, { shallow: true })
     }
@@ -50,9 +45,7 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     return (
         <>
             <Modal width={1040} open={isCreateTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
-                <Row gutter={WRAPPER_GUTTER}>
-                    <CreateTicketForm closeModal={handleCloseModals}/>
-                </Row>
+                <CreateTicketForm closeModal={handleCloseModals}/>
             </Modal>
 
             <Modal width={720} open={isSearchTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} transitionName=''>
@@ -62,7 +55,6 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
             <Modal width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
                 <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} modalClose = {handleCloseModals} refetchTicketsBoard={refetchAllTickets}/>
             </Modal>
-
             
             <ProjectBoard tickets={tickets} ticketStatuses={ticketStatuses} refetchAllTickets={refetchAllTickets}/>
         </>
@@ -74,7 +66,7 @@ const KanbanPage: PageComponentType = () => {
     const { organization } = useOrganization()
     const intl = useIntl()
 
-    const kanbanTitle = intl.formatMessage({ id: 'kanban.title' })
+    const kanbanTitle = intl.formatMessage({ id: 'kanban.title.description' })
 
     const {
         loading: isTicketsFetching,

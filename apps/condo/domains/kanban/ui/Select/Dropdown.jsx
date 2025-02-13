@@ -1,6 +1,7 @@
 import { uniq } from 'lodash'
 import PropTypes from 'prop-types'
 import React, { useState, useRef, useLayoutEffect } from 'react'
+import { useIntl } from 'react-intl'
 
 import { Close } from '@open-condo/icons'
 
@@ -48,7 +49,8 @@ const SelectDropdown = ({
     propsRenderOption,
 }) => {
     const [isCreatingOption, setCreatingOption] = useState(false)
-
+    const intl = useIntl()
+    const SearchTitle = intl.formatMessage({ id: 'filters.FullSearch' })
     const $optionsRef = useRef()
 
     useLayoutEffect(() => {
@@ -181,7 +183,7 @@ const SelectDropdown = ({
         <Dropdown width={dropdownWidth}>
             <DropdownInput
                 type='text'
-                placeholder='Search'
+                placeholder={SearchTitle}
                 ref={$inputRef}
                 autoFocus
                 onKeyDown={handleInputKeyDown}

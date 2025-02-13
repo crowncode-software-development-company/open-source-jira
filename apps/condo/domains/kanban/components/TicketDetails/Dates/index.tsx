@@ -1,4 +1,5 @@
 import React from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { color, font } from '../../../styles'
@@ -14,11 +15,14 @@ const Dates = styled.div`
   ${font.size(13)}
 `
 
-const ProjectBoardIssueDetailsDates = ({ ticket }) => (
-    <Dates>
-        <div>Created at {formatDateTimeConversational(ticket.createdAt)}</div>
-        <div>Updated at {formatDateTimeConversational(ticket.updatedAt)}</div>
-    </Dates>
-)
+const ProjectBoardIssueDetailsDates = ({ ticket }) => {
+    const intl = useIntl()
+    const CreatedAtTitle = intl.formatMessage({ id: 'kanban.ticket.createdAt.title' })
+    const UpdatedAtTitle = intl.formatMessage({ id: 'kanban.ticket.updatedAt.title' })
+    return (<Dates>
+        <div>{CreatedAtTitle} {formatDateTimeConversational(ticket.createdAt)}</div>
+        <div>{UpdatedAtTitle} {formatDateTimeConversational(ticket.updatedAt)}</div>
+    </Dates>)
+}
 
 export default ProjectBoardIssueDetailsDates

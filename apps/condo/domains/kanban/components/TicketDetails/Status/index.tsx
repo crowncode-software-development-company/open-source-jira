@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import React, { Fragment, useState } from 'react'
+import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 
 import { ChevronDown } from '@open-condo/icons'
@@ -26,6 +27,9 @@ const Status = styled.div<{ $isvalue?: boolean, $secondaryсolor: string, $prima
 `
 
 const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket }) => {
+    const intl = useIntl()
+    const StatusTitle = intl.formatMessage({ id: 'Status' })
+    const DefferedStatusTitle = intl.formatMessage({ id: 'ticket.status.DEFERRED.name' })
     const [deferredUntil, setDeferredUntil] = useState(dayjs())
     const [isOpenUntil, setOpenUntil] = useState(false)
     
@@ -40,7 +44,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
     }
 
     const handleUpdateStatus = (updatedStatus) => {
-        if (updatedStatus === 'Отложена') {
+        if (updatedStatus === DefferedStatusTitle) {
             setOpenUntil(true)
         } else {
             const status = {
@@ -56,7 +60,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
 
     const handleUntilDateChange = () => {
         const status = {
-            connect: { id: ticketStatuses['Отложена'].id },
+            connect: { id: ticketStatuses[DefferedStatusTitle].id },
         }
         updateTicket({ status, deferredUntil: deferredUntil })
         setOpenUntil(false)
@@ -66,7 +70,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
     return (
         <Fragment>
             <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={handleUntilClose} onOk={handleUntilDateChange} />
-            <SectionTitle>Status</SectionTitle>
+            <SectionTitle>{StatusTitle}</SectionTitle>
             <Select
                 variant='empty'
                 dropdownWidth={250}

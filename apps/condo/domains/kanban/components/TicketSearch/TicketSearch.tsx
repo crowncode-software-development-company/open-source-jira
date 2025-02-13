@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { Fragment, useMemo, useState } from 'react'
+import { useIntl } from 'react-intl'
 
 import { Search } from '@open-condo/icons'
 import { useOrganization } from '@open-condo/next/organization'
@@ -11,7 +12,7 @@ import {
     SearchSpinner,
     Ticket,
     TicketData,
-    TicketTitle,
+    TicketTitleText,
     TicketTypeId,
     SectionTitle,
     NoResults,
@@ -29,6 +30,13 @@ import { Avatar, TicketTypeIcon } from '../../ui'
 import { sortByNewest } from '../../utils'
 
 const ProjectTicketSearch = () => {
+    const intl = useIntl()
+    const TicketTitle = intl.formatMessage({ id: 'Ticket' })
+    const SearchTitle = intl.formatMessage({ id: 'kanban.ticket.searchTicket.placeholder' })
+    const RecentTicketTitle = intl.formatMessage({ id: 'kanban.ticket.recentTicket.title' })
+    const MatchingTicketTitle = intl.formatMessage({ id: 'kanban.ticket.matchingTicket.title' })
+    const NoResultTitle = intl.formatMessage({ id: 'kanban.ticket.noResults.title' })
+    const NoResultTipTitle = intl.formatMessage({ id: 'kanban.ticket.noResults.Tip.title' })
     const router = useRouter()
     const { organization } = useOrganization()
     const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(true)
@@ -76,7 +84,7 @@ const ProjectTicketSearch = () => {
                 <TicketTypeIcon size='large' type='task'/>
                 <TicketDataContainer>
                     <TicketData>
-                        <TicketTitle><NumberTicket>Заявка №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</TicketTitle>
+                        <TicketTitleText><NumberTicket>{TicketTitle} №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</TicketTitleText>
                         <TicketTypeId>
                             <TicketTypeColor $color={ticket.status.colors.primary}>{ticket.status.name}</TicketTypeColor> / {ticket.assignee.name}
                         </TicketTypeId>
@@ -93,7 +101,7 @@ const ProjectTicketSearch = () => {
                 <SearchInputDebounced
                     autoFocus
                     value={searchValue} 
-                    placeholder='Search ticket by description...'
+                    placeholder={SearchTitle}
                     onChange={handleSearchChange}
                 />
                 {isTicketsFetching && <SearchSpinner />}
@@ -101,14 +109,14 @@ const ProjectTicketSearch = () => {
 
             {isSearchTermEmpty && recentTicket.length > 0 && (
                 <Fragment>
-                    <SectionTitle>Recent Tickets</SectionTitle>
+                    <SectionTitle>{RecentTicketTitle}</SectionTitle>
                     {recentTicket.map(renderTicket)}
                 </Fragment>
             )}
 
             {!isSearchTermEmpty && tickets.length > 0 && (
                 <Fragment>
-                    <SectionTitle>Matching Tickets</SectionTitle>
+                    <SectionTitle>{MatchingTicketTitle}</SectionTitle>
                     {tickets.map(renderTicket)}
                 </Fragment>
             )}
@@ -116,8 +124,8 @@ const ProjectTicketSearch = () => {
             {!isSearchTermEmpty && !isTicketsFetching && tickets.length === 0 && (
                 <NoResults>
                     <Search size='large' color={color.textMedium} />
-                    <NoResultsTitle>We couldn&apos;t find anything matching your search</NoResultsTitle>
-                    <NoResultsTip>Try again with a different term.</NoResultsTip>
+                    <NoResultsTitle>{NoResultTitle}</NoResultsTitle>
+                    <NoResultsTip>{NoResultTipTitle}</NoResultsTip>
                 </NoResults>
             )}
         </TicketSearch>

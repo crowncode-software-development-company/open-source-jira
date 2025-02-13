@@ -1,6 +1,7 @@
 import { DownOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import React, { CSSProperties, Fragment, useState } from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import DatePicker from '../../../../common/components/Pickers/DatePicker'
@@ -16,6 +17,9 @@ export const InputCont = styled.div`
 const INPUT_STYLE: CSSProperties = { width: '250px', height: '32px', borderRadius: '5px', backgroundColor: color.backgroundLightest, marginLeft: '-5px' }
 
 const ProjectBoardIssueDetailsDeadline = ({ ticket, updateTicket }) => {
+    const intl = useIntl()
+    const DeadlineTitle = intl.formatMessage({ id: 'kanban.ticket.deadline.title' })
+    
     const [deadline, setDeadline] = useState(dayjs(ticket.deadline))
 
     const onPeriodChange = (newDate) => {
@@ -26,7 +30,7 @@ const ProjectBoardIssueDetailsDeadline = ({ ticket, updateTicket }) => {
     }
     return (
         <Fragment>
-            <SectionTitle>Deadline</SectionTitle>
+            <SectionTitle>{DeadlineTitle}</SectionTitle>
             <InputCont>
                 <DatePicker
                     style={INPUT_STYLE}

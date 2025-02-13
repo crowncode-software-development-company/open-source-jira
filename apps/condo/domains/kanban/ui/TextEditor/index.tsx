@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { color } from '../../styles'
@@ -27,7 +28,9 @@ const EditorCont = styled.div`
 `
 
 
-const TextEditor = ({ value, onChange, placeholder, onChangeText }) => {
+const TextEditor = ({ value, onChange, onChangeText }) => {
+    const intl = useIntl()
+    const PlaceholderTitle = intl.formatMessage({ id: 'kanban.ticket.description.placeholder' })
     const [editorHtml, setEditorHtml] = useState(value || '')
     const handleChange = (html) => {
         setEditorHtml(html)
@@ -46,7 +49,7 @@ const TextEditor = ({ value, onChange, placeholder, onChangeText }) => {
                 theme='snow'
                 value={editorHtml}
                 onChange={handleChange}
-                placeholder={placeholder}
+                placeholder={PlaceholderTitle}
                 modules={TextEditor.modules}
             />
         </EditorCont>

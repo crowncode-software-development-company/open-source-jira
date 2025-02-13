@@ -1,5 +1,6 @@
 import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { useAuth } from '@open-condo/next/auth'
@@ -40,6 +41,8 @@ const Tickets = styled.div`
 `
 
 const ProjectBoardList = ({ status, tickets, filters }) => {
+    const intl = useIntl()
+    const TicketsOfTitle = intl.formatMessage({ id: 'kanban.ticket.tickets.of' })
     const { user } = useAuth()
     const filteredTickets = filterTickets(tickets, filters, user.id)
     const filteredListTickets = getSortedListTickets(filteredTickets, status)
@@ -51,7 +54,7 @@ const ProjectBoardList = ({ status, tickets, filters }) => {
                 <List>
                     <Title>
                         <TicketStatus>{status} </TicketStatus>
-                        <TicketCount>({formatTicketsCount(allListTickets, filteredListTickets)})</TicketCount>
+                        <TicketCount>({formatTicketsCount(allListTickets, filteredListTickets, TicketsOfTitle)})</TicketCount>
                     </Title>
                     <Tickets
                         {...provided.droppableProps}

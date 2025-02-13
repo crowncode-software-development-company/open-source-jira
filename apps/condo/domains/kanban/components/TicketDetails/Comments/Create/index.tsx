@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { getClientSideSenderInfo } from '@open-condo/codegen/utils/userId'
@@ -39,6 +40,8 @@ const FakeTextarea = styled.div`
 `
 
 const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted }) => {
+    const intl = useIntl()
+    const AddCommentTitle = intl.formatMessage({ id: 'kanban.ticket.addComment.title' })
     const [isFormOpen, setFormOpen] = useState(false)
     const [isCreating, setCreating] = useState(false)
     const [body, setBody] = useState<any>('')
@@ -78,7 +81,7 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted })
                     />
                 ) : (
                     <Fragment>
-                        <FakeTextarea onClick={() => setFormOpen(true)}>Add a comment...</FakeTextarea>
+                        <FakeTextarea onClick={() => setFormOpen(true)}>{AddCommentTitle}</FakeTextarea>
                         <ProTip setFormOpen={setFormOpen} />
                     </Fragment>
                 )}

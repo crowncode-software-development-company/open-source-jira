@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useEffect } from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { KeyCodes } from '../../../../../constants'
@@ -38,6 +39,11 @@ interface IProps {
 }
 
 const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setFormOpen }) => {
+    const intl = useIntl()
+    const TipTitle = intl.formatMessage({ id: 'kanban.ticket.proTip.title' })
+    const PressTitle = intl.formatMessage({ id: 'kanban.ticket.proTip.press.title' })
+    const CreateTitle = intl.formatMessage({ id: 'kanban.ticket.proTip.create.title' })
+
     useEffect(() => {
         const handleKeyDown = event => {
             if (!isFocusedElementEditable() && event.keyCode === KeyCodes.M) {
@@ -55,7 +61,7 @@ const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setFor
 
     return (
         <Tip>
-            <strong>Pro tip:</strong>press<TipLetter>M</TipLetter>to comment
+            <strong>{TipTitle}:</strong>{PressTitle}<TipLetter>M</TipLetter>{CreateTitle}
         </Tip>
     )
 }

@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { KeyCodes } from '../../../constants'
@@ -30,6 +31,8 @@ const ErrorText = styled.div`
 `
 
 const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
+    const intl = useIntl()
+    const TicketTitle = intl.formatMessage({ id: 'Ticket' })
     const [error, setError] = useState(null)
 
     const handleTitleChange = () => {
@@ -43,7 +46,7 @@ const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
                 minRows={1}
                 disabled
                 placeholder='Short summary'
-                defaultValue={`Заявка №${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`}
+                defaultValue={`${TicketTitle} №${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`}
                 onBlur={handleTitleChange}
                 onKeyDown={event => {
                     if (event.keyCode === KeyCodes.ENTER) {

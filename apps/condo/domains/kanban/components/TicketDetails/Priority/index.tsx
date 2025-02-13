@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 
 import { IssuePriority, IssuePriorityCopy } from '../../../constants'
@@ -27,6 +28,9 @@ ${font.size(14.5)}
 `
 
 const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
+    const intl = useIntl()
+    const PriorityTitle = intl.formatMessage({ id: 'kanban.ticket.priority.title' })
+
     const handleUpdatePriority = (updatedPriority) => {
         console.log(updatedPriority)
         
@@ -35,7 +39,7 @@ const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
 
     return ( 
         <Fragment>
-            <SectionTitle>Priority</SectionTitle>
+            <SectionTitle>{PriorityTitle}</SectionTitle>
             <Select
                 variant='empty'
                 withClearValue={false}

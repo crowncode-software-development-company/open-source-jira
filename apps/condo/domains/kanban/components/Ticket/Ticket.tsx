@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { Draggable } from 'react-beautiful-dnd'
+import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 
 import { color, mixin } from '../../styles'
@@ -59,6 +60,8 @@ const Assignees = styled.div`
 `
 
 const ProjectBoardListTicket = ({ ticket, index }) => {
+    const intl = useIntl()
+    const TicketsTitle = intl.formatMessage({ id: 'Ticket' })
     const router = useRouter()
     const handleOpenModal = () => {
         router.push(`?ticketId=${ticket.id}`, undefined, { shallow: true })
@@ -73,7 +76,7 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                     {...provided.dragHandleProps}
                 >
                     <Ticket isbeingdragged={snapshot.isDragging && !snapshot.isDropAnimating ? 'true' : undefined}>
-                        <Title><NumberTicket>Заявка №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</Title>
+                        <Title><NumberTicket>{TicketsTitle} №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</Title>
                         <Bottom>
                             <div>
                                 <TicketTypeIcon type='task' size='medium'/>

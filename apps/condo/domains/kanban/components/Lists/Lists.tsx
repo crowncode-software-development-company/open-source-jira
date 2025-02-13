@@ -1,20 +1,16 @@
 import { UUID } from 'crypto'
 
-import { DownOutlined } from '@ant-design/icons'
-import { Modal } from 'antd'
 import dayjs from 'dayjs'
-import React, { CSSProperties, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { isPositionChanged } from './utils'
 
-import DatePicker from '../../../common/components/Pickers/DatePicker'
 import { useNotificationMessages } from '../../../common/hooks/useNotificationMessages'
 import { runMutation } from '../../../common/utils/mutations.utils'
 import { Ticket } from '../../../ticket/utils/clientSchema'
-import { color, font } from '../../styles'
 import { DeferredUntilModal } from '../DeferredUntilModal/DeferredUntilModal'
 import { List } from '../List'
 
@@ -34,6 +30,8 @@ type UpdateData = {
 
 const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses }) => {
     const intl = useIntl()
+    const DefferedStatusTitle = intl.formatMessage({ id: 'ticket.status.DEFERRED.name' })
+    const ErrorTitle = intl.formatMessage({ id: 'ErrorOccurred' })
     const { getSuccessfulChangeNotification } = useNotificationMessages()
     const [localTickets, setLocalTickets] = useState(tickets)
     const [deferredUntil, setDeferredUntil] = useState(dayjs())
@@ -64,7 +62,7 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
             OnCompletedMsg: getSuccessfulChangeNotification,
             onCompleted: () => {refetchAllTickets(), setCurrentDraggableTicketId(''), setDeferredUntil(dayjs())},
             onError: () => setLocalTickets(tickets),
-            OnErrorMsg: 'Ошибка смены статуса',
+            OnErrorMsg: ErrorTitle,
         })
     }
     
@@ -75,7 +73,7 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
                 ticket.id === draggableId ? { ...ticket, status: { ...ticket.status, name: destination.droppableId } } : ticket
             )
         )
-        if (destination.droppableId === 'Отложена') {
+        if (destination.droppableId === DefferedStatusTitle) {
             setCurrentDraggableTicketId(draggableId)
             setOpenUntil(true)
         }
@@ -91,7 +89,7 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
     }
 
     const handleUntilDateChange = () => {
-        updateTicketStatus('Отложена', currentDraggableTicketId, deferredUntil )
+        updateTicketStatus(DefferedStatusTitle, currentDraggableTicketId, deferredUntil )
         setOpenUntil(false)
     }
 

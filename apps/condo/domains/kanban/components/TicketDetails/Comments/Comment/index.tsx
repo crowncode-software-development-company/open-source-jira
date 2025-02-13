@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 
 import { getClientSideSenderInfo } from '@condo/domains/common/utils/userid.utils'
@@ -69,6 +70,12 @@ const DeleteLink = styled.div`
 `
 
 const ProjectBoardIssueDetailsComment = ({ comment, userId, onCompleted }) => {
+    const intl = useIntl()
+    const EditTitle = intl.formatMessage({ id: 'Change' })
+    const DeleteTitle = intl.formatMessage({ id: 'Delete' })
+    const DeleteСonfirmText = intl.formatMessage({ id: 'kanban.comment.delete.confirmText' })
+    const DeleteModalTitle = intl.formatMessage({ id: 'kanban.comment.delete.title' })
+    const DeleteMessage = intl.formatMessage({ id: 'kanban.comment.delete.message' })
     const [isFormOpen, setFormOpen] = useState(false)
     const [isUpdating, setUpdating] = useState(false)
     const [body, setBody] = useState(comment.content)
@@ -76,6 +83,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, userId, onCompleted }) => {
     const [updateComment] = useUpdateTicketCommentMutation({
         onCompleted: onCompleted,
     })
+    
 
     const updateAction = async ({ updateData }) => {
         await updateComment({
@@ -133,13 +141,13 @@ const ProjectBoardIssueDetailsComment = ({ comment, userId, onCompleted }) => {
                         <Body>{comment.content}</Body>
                         {userId === comment.user.id && (
                             <>
-                                <EditLink onClick={() => setFormOpen(true)}>Edit</EditLink>
+                                <EditLink onClick={() => setFormOpen(true)}>{EditTitle}</EditLink>
                                 <ConfirmModal
-                                    title='Are you sure you want to delete this comment?'
-                                    message="Once you delete, it's gone for good."
-                                    confirmText='Delete comment'
+                                    title={DeleteModalTitle}
+                                    message={DeleteMessage}
+                                    confirmText={DeleteСonfirmText}
                                     onConfirm={handleDelete}
-                                    renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
+                                    renderLink={modal => <DeleteLink onClick={modal.open}>{DeleteTitle}</DeleteLink>}
                                 />
                             </>
                         )}

@@ -1,5 +1,6 @@
 import { xor } from 'lodash'
 import React, { useMemo } from 'react'
+import { useIntl } from 'react-intl'
 
 import { useAuth } from '@open-condo/next/auth'
 import { useOrganization } from '@open-condo/next/organization'
@@ -17,6 +18,9 @@ import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
 import { Spinner } from '../../ui'
 
 const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters }) => {
+    const intl = useIntl()
+    const MyTicketTitle = intl.formatMessage({ id: 'kanban.myTicket' })
+    const ClearTitle = intl.formatMessage({ id: 'kanban.clearAll' })
     const { myOnly, userIds } = filters
     const { organization } = useOrganization()
     const { user } = useAuth()
@@ -71,10 +75,10 @@ const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters })
                 variant='empty'
                 onClick={() => mergeFilters({ myOnly: !myOnly, userIds: [] })}
             >
-        Only My Tickets
+                {MyTicketTitle}
             </StyledButton>
             {!areFiltersCleared && (
-                <ClearAll onClick={() => mergeFilters(defaultFilters)}>Clear all</ClearAll>
+                <ClearAll onClick={() => mergeFilters(defaultFilters)}>{ClearTitle}</ClearAll>
             )}
         </Filters>
     )

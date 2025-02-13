@@ -1,4 +1,5 @@
 import React from 'react'
+import { useIntl } from 'react-intl'
 
 import { Trash } from '@open-condo/icons'
 
@@ -8,6 +9,10 @@ import { useUpdateTicketMutation } from '../../../../gql'
 import { Button, ConfirmModal } from '../../ui'
 
 const ProjectBoardTicketDetailsDelete = ({ ticket, refetchTicketsBoard }) => {
+    const intl = useIntl()
+    const DeleteСonfirmText = intl.formatMessage({ id: 'kanban.ticket.delete.confirmText' })
+    const DeleteTitle = intl.formatMessage({ id: 'kanban.ticket.delete.title' })
+    const DeleteMessage = intl.formatMessage({ id: 'kanban.ticket.delete.message' })
 
     const handleTicketDelete = () => {
         deleteAction({ id: ticket.id })
@@ -33,9 +38,9 @@ const ProjectBoardTicketDetailsDelete = ({ ticket, refetchTicketsBoard }) => {
 
     return (
         <ConfirmModal
-            title='Are you sure you want to delete this ticket?'
-            message="Once you delete, it's gone for good."
-            confirmText='Delete ticket'
+            title={DeleteTitle}
+            message={DeleteMessage}
+            confirmText={DeleteСonfirmText}
             onConfirm={handleTicketDelete}
             renderLink={({ open }) => (
                 <Button icon={<Trash size='small'/>} iconSize={19} variant='empty' onClick={open} />

@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { color, font, mixin } from '../../../styles'
@@ -32,6 +33,11 @@ const Actions = styled.div`
 `
 
 const ProjectBoardIssueDetailsDescription = ({ ticket, updateTicket }) => {
+    const intl = useIntl()
+    const DescriptionTitle = intl.formatMessage({ id: 'Description' })
+    const AddDescriptionTitle = intl.formatMessage({ id: 'kanban.ticket.addDescription.title' })
+    const SaveTitle = intl.formatMessage({ id: 'Save' })
+    const CancelTitle = intl.formatMessage({ id: 'Cancel' })
     const [description, setDescription] = useState(ticket.details)
     const [descriptionText, setDescriptionText] = useState(ticket.details)
     const [isEditing, setEditing] = useState(false)
@@ -52,19 +58,19 @@ const ProjectBoardIssueDetailsDescription = ({ ticket, updateTicket }) => {
 
     return (
         <Fragment>
-            <Title>Description</Title>
+            <Title>{DescriptionTitle}</Title>
             {isEditing ? (
                 <Fragment>
-                    <TextEditor placeholder='Describe the issue' value = {description}  onChange={(value) => setDescription(value)} onChangeText = {(value) => setDescriptionText(value)}/>
+                    <TextEditor value = {description}  onChange={(value) => setDescription(value)} onChangeText = {(value) => setDescriptionText(value)}/>
                     <Actions>
-                        <Button variant='primary' onClick={handleUpdate}>Save</Button>
-                        <Button variant='empty' onClick={handleCancel}>Cancel</Button>
+                        <Button variant='primary' onClick={handleUpdate}>{SaveTitle}</Button>
+                        <Button variant='empty' onClick={handleCancel}>{CancelTitle}</Button>
                     </Actions>
                 </Fragment>
             ) : (
                 <Fragment>
                     {isDescriptionEmpty ? (
-                        <EmptyLabel onClick={() => setEditing(true)}>Add a description...</EmptyLabel>
+                        <EmptyLabel onClick={() => setEditing(true)}>{AddDescriptionTitle}</EmptyLabel>
                     ) : (
                         <TextEditedContent content={description} onClick={() => setEditing(true)} />
                     )}

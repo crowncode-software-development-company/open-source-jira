@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useRef } from 'react'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import { Button, Textarea } from '../../../../ui'
@@ -24,8 +25,12 @@ interface IProps {
 }
 
 const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onChange, isWorking, onSubmit, onCancel }) => {
+    const intl = useIntl()
+    const AddCommentTitle = intl.formatMessage({ id: 'kanban.ticket.addComment.title' })
+    const SaveTitle = intl.formatMessage({ id: 'Save' })
+    const CancelTitle = intl.formatMessage({ id: 'Cancel' })
     const textareaRef = useRef(null)
-    
+
     useEffect(() => {
         if (textareaRef.current) {
             textareaRef.current.focus( { cursor: 'end' })
@@ -38,15 +43,15 @@ const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onC
                 ref={textareaRef}
                 value={value}
                 autoFocus
-                placeholder='Add a comment...'
+                placeholder={AddCommentTitle}
                 onChange={onChange}
             />
             <Actions>
                 <FormButton variant='primary' isWorking={isWorking} onClick={onSubmit}>
-          Save
+                    {SaveTitle}
                 </FormButton>
                 <FormButton variant='empty' onClick={onCancel}>
-          Cancel
+                    {CancelTitle}
                 </FormButton>
             </Actions>
         </Fragment>

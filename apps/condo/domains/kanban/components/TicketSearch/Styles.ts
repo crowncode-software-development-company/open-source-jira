@@ -62,7 +62,7 @@ export const TicketData = styled.div`
   padding-left: 15px;
 `
 
-export const TicketTitle = styled.div`
+export const TicketTitleText = styled.div`
   color: ${color.textDark};
   ${font.size(15)}
 `
