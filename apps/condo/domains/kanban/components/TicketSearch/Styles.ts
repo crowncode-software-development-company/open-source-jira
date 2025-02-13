@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import { color, font, mixin } from '../../styles'
-import { InputDebounced, Spinner } from '../../ui'
+import { Avatar, InputDebounced, Spinner } from '../../ui'
 
 
 export const TicketSearch = styled.div`
@@ -51,6 +51,16 @@ export const Ticket = styled.div`
     background: ${color.backgroundLight};
   }
 `
+export const Avatars = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+`
+
+export const StyledAvatar = styled(Avatar)`
+  box-shadow: 0 0 0 1px #fff;
+  margin-left: -15px;
+`
+
 export const TicketDataContainer = styled.div`
   width: 100%;
   display: flex;

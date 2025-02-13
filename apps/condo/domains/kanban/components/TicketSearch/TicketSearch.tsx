@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { Fragment, useMemo, useState } from 'react'
+import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { useIntl } from 'react-intl'
 
 import { Search } from '@open-condo/icons'
@@ -22,14 +22,16 @@ import {
     NumberTicket,
     TicketTypeColor,
     TicketDataContainer,
+    Avatars,
+    StyledAvatar,
 } from './Styles'
 
 import { useGetTicketsQuery } from '../../../../gql'
 import { color } from '../../styles'
-import { Avatar, TicketTypeIcon } from '../../ui'
+import { TicketTypeIcon } from '../../ui'
 import { sortByNewest } from '../../utils'
 
-const ProjectTicketSearch = () => {
+const ProjectTicketSearch = ({ isOpen }) => {
     const intl = useIntl()
     const TicketTitle = intl.formatMessage({ id: 'Ticket' })
     const SearchTitle = intl.formatMessage({ id: 'kanban.ticket.searchTicket.placeholder' })
@@ -42,6 +44,12 @@ const ProjectTicketSearch = () => {
     const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(true)
     const [searchValue, setSearchValue] = useState('')
 
+    useEffect(() => {
+        console.log(searchValue)
+        
+        setSearchValue('')
+    }, [isOpen])
+    
     const {
         loading: isTicketsFetching,
         data: ticketsData,
@@ -77,8 +85,9 @@ const ProjectTicketSearch = () => {
    
     const recentTicket = sortByNewest(tickets, 'createdAt').slice(0, 10)
     
-    const renderTicket = (ticket) =>  (
+    const renderTicket = (ticket, index) =>  (
         <TicketLink
+            key={index}
             onClick={() => handleOpenModal(ticket.id)}>
             <Ticket>
                 <TicketTypeIcon size='large' type='task'/>
@@ -89,7 +98,10 @@ const ProjectTicketSearch = () => {
                             <TicketTypeColor $color={ticket.status.colors.primary}>{ticket.status.name}</TicketTypeColor> / {ticket.assignee.name}
                         </TicketTypeId>
                     </TicketData>
-                    <Avatar name={ticket.assignee.name} size={30}/>
+                    <Avatars>
+                        <StyledAvatar name={ticket.assignee.name} size={30}/>
+                        <StyledAvatar name={ticket.executor.name} size={30}/>
+                    </Avatars>
                 </TicketDataContainer>
             </Ticket>
         </TicketLink>
@@ -110,14 +122,14 @@ const ProjectTicketSearch = () => {
             {isSearchTermEmpty && recentTicket.length > 0 && (
                 <Fragment>
                     <SectionTitle>{RecentTicketTitle}</SectionTitle>
-                    {recentTicket.map(renderTicket)}
+                    {recentTicket.map((tickets, index) => renderTicket(tickets, index))}
                 </Fragment>
             )}
 
             {!isSearchTermEmpty && tickets.length > 0 && (
                 <Fragment>
                     <SectionTitle>{MatchingTicketTitle}</SectionTitle>
-                    {tickets.map(renderTicket)}
+                    {tickets.map((tickets, index) => renderTicket(tickets, index))}
                 </Fragment>
             )}
 

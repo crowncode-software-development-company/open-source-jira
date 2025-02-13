@@ -44,15 +44,15 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     
     return (
         <>
-            <Modal width={1040} open={isCreateTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
+            <Modal zIndex={100} width={1040} open={isCreateTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
                 <CreateTicketForm closeModal={handleCloseModals}/>
             </Modal>
 
-            <Modal width={720} open={isSearchTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} transitionName=''>
-                <ProjectTicketSearch />
+            <Modal zIndex={100} width={720} open={isSearchTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} transitionName=''>
+                <ProjectTicketSearch isOpen = {isSearchTicketOpen}/>
             </Modal>
 
-            <Modal width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
+            <Modal zIndex={100} width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
                 <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} modalClose = {handleCloseModals} refetchTicketsBoard={refetchAllTickets}/>
             </Modal>
             

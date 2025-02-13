@@ -27,7 +27,7 @@ const getMarginLeft = (total) => {
 export const AvatarIsActiveBorder = styled.div<{ $isactive?: boolean, $index?: number, $total?: number }>`
   display: inline-flex;
   margin-left: -2px;
- margin-left: ${props => `${getMarginLeft(props.$total)}px`};
+  margin-left: ${props => `${getMarginLeft(props.$total)}px`};
   border-radius: 50%;
   transition: transform 0.1s;
   ${mixin.clickable};
