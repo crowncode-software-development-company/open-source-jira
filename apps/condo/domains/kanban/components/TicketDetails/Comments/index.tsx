@@ -22,6 +22,7 @@ const Title = styled.div`
 
 const ProjectBoardIssueDetailsComments = ({ refetchTicketComments, ticket, comments, user }) => {
     const intl = useIntl()
+    
     const CommentsTitle = intl.formatMessage({ id: 'Comments.title' })
     const { getSuccessfulChangeNotification } = useNotificationMessages()
     
@@ -32,6 +33,7 @@ const ProjectBoardIssueDetailsComments = ({ refetchTicketComments, ticket, comme
 
     return (
         <Comments>
+            {console.log(comments)}
             <Title>{CommentsTitle}</Title>
             <Create ticketId={ticket.id} user={user} onCompleted={onCompleted} />
 

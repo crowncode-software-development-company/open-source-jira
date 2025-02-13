@@ -76,6 +76,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, userId, onCompleted }) => {
     const DeleteСonfirmText = intl.formatMessage({ id: 'kanban.comment.delete.confirmText' })
     const DeleteModalTitle = intl.formatMessage({ id: 'kanban.comment.delete.title' })
     const DeleteMessage = intl.formatMessage({ id: 'kanban.comment.delete.message' })
+    const ChangeTitle = intl.formatMessage({ id: 'kanban.comment.change.title' })
     const [isFormOpen, setFormOpen] = useState(false)
     const [isUpdating, setUpdating] = useState(false)
     const [body, setBody] = useState(comment.content)
@@ -126,7 +127,11 @@ const ProjectBoardIssueDetailsComment = ({ comment, userId, onCompleted }) => {
             <UserAvatar name={comment.user.name} avatarUrl={comment.user.avatarUrl}/>
             <Content>
                 <Username>{comment.user.name}</Username>
-                <CreatedAt>{formatDateTimeConversational(comment.createdAt)}</CreatedAt>
+                {comment.createdAt === comment.updatedAt ?
+                    <CreatedAt>{formatDateTimeConversational(comment.createdAt)}</CreatedAt> 
+                    : 
+                    <CreatedAt>({ChangeTitle} {formatDateTimeConversational(comment.updatedAt)})</CreatedAt>
+                }
 
                 {isFormOpen ? (
                     <BodyForm

@@ -3235,5 +3235,6 @@
   "kanban.ticket.delete.message": "Una vez eliminado, el ticket no se puede recuperar.",
   "kanban.comment.delete.confirmText": "Eliminar comentario",
   "kanban.comment.delete.title": "¿Está seguro de que desea eliminar este comentario?",
-  "kanban.comment.delete.message": "Una vez eliminado, el comentario no se puede recuperar."
+  "kanban.comment.delete.message": "Una vez eliminado, el comentario no se puede recuperar.",
+  "kanban.comment.change.title": "camb."
 }

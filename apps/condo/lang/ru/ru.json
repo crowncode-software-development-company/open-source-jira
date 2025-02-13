@@ -3235,5 +3235,6 @@
   "kanban.ticket.delete.message": "После удаления заявку невозможно восстановить.",
   "kanban.comment.delete.confirmText": "Удалить комментарий",
   "kanban.comment.delete.title": "Вы уверены, что хотите удалить этот комментарий?",
-  "kanban.comment.delete.message": "После удаления комментарий невозможно восстановить."
+  "kanban.comment.delete.message": "После удаления комментарий невозможно восстановить.",
+  "kanban.comment.change.title": "изм."
 }
