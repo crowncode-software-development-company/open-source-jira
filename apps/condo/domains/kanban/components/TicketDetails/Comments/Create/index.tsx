@@ -48,6 +48,7 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted })
     const [createCommentAction] = useCreateTicketCommentMutation({ onCompleted: onCompleted })
 
     const handleCommentCreate = async () => {
+        setCreating(true)
         await createCommentAction({
             variables: {
                 data: {
@@ -60,6 +61,7 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted })
             },
         })
         clearForm()
+        setCreating(false)
     }
 
     const clearForm = () => {

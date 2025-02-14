@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 
 import { Close } from '@open-condo/icons'
 
 import { color, font, mixin } from '../../../styles'
-import { Avatar, Select } from '../../../ui'
+import { Avatar, Select, Spinner } from '../../../ui'
 import { SectionTitle } from '../Styles'
 
 const User = styled.div<{ $isselectvalue?: boolean, $withbottommargin?: boolean }>`
@@ -31,59 +31,78 @@ const Username = styled.div`
   ${font.size(14.5)}
 `
 
+const SelectCont = styled.div`
+width: 100;
+display: flex;
+flex-direction:row;
+align-items:center;
+gap: 5px;
+`
+
+
 const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, employees }) => {
     const intl = useIntl()
     const AssigneeMessage = intl.formatMessage({ id: 'pages.ticket.autoAssignment.columns.assignee.title' })
     const ExecutorMessage = intl.formatMessage({ id: 'pages.ticket.autoAssignment.columns.executor.title' })
-
+    const [assigneeLoading, setAssigneeLoading] = useState(false)
+    const [executorLoading, setExecutorLoading] = useState(false)
     const getEmployeeById = employeeId => employees.find(employee => employee.user.id === employeeId)
 
     const employeesOptions = employees.map(employee => ({ value: employee.user.id, label: employee.user.name }))
 
 
-    const handleAssigneeChange = (userId) => {
+    const handleAssigneeChange = async (userId) => {
+        setAssigneeLoading(true)
         const assignee = {
             connect: { id: userId },
         }
-        updateTicket({ assignee })
+        await updateTicket({ assignee })
+        setAssigneeLoading(false)
     }
 
-    const handleExecutorChange = (userId) => {
+    const handleExecutorChange = async (userId) => {
+        setExecutorLoading(true)
         const executor = {
             connect: { id:userId },
         }
-        updateTicket({ executor })
+        await updateTicket({ executor })
+        setExecutorLoading(false)
     }
 
     return (
         <Fragment>
             <SectionTitle>{AssigneeMessage}</SectionTitle>
-            <Select
-                variant='empty'
-                dropdownWidth={250}
-                withClearValue={false}
-                placeholder='Unassigned'
-                name='assignees'
-                value={ticket.assignee.id}
-                options={employeesOptions}
-                onChange={employeeIds => handleAssigneeChange(employeeIds)}
-                renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
-                renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
-            />
-
+            <SelectCont>
+                <Select
+                    variant='empty'
+                    dropdownWidth={250}
+                    withClearValue={false}
+                    placeholder='Unassigned'
+                    name='assignees'
+                    value={ticket.assignee.id}
+                    options={employeesOptions}
+                    onChange={employeeIds => handleAssigneeChange(employeeIds)}
+                    renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
+                    renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
+                />
+                {assigneeLoading && <Spinner size={20}/> }
+            </SelectCont>
             <SectionTitle>{ExecutorMessage}</SectionTitle>
-            <Select
-                variant='empty'
-                dropdownWidth={250}
-                withClearValue={false}
-                placeholder='Unreported'
-                name='reporter'
-                value={ticket.executor.id}
-                options={employeesOptions}
-                onChange={employeeIds => handleExecutorChange(employeeIds)}
-                renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
-                renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
-            />
+            <SelectCont>
+                <Select
+                    variant='empty'
+                    dropdownWidth={250}
+                    withClearValue={false}
+                    placeholder='Unreported'
+                    name='reporter'
+                    value={ticket.executor.id}
+                    options={employeesOptions}
+                    onChange={employeeIds => handleExecutorChange(employeeIds)}
+                    renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
+                    renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
+                />
+                {executorLoading && <Spinner size={20}/> }
+            </SelectCont>
         </Fragment>
     )
 }

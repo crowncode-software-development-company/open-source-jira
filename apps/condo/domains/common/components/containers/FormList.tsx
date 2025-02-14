@@ -359,7 +359,6 @@ const FormWithAction: React.FC<IFormWithAction> = (props) => {
                 if (resetOnComplete) {
                     form.resetFields()
                 }
-                console.log(closeModal)
                 closeModal()
             },
             onFinally: () => {

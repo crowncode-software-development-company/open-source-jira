@@ -6,11 +6,13 @@ import styled, { css } from 'styled-components'
 import { ChevronDown } from '@open-condo/icons'
 
 import {  mixin } from '../../../styles'
-import { Select } from '../../../ui'
+import { Select, Spinner } from '../../../ui'
 import { DeferredUntilModal } from '../../DeferredUntilModal/DeferredUntilModal'
 import { SectionTitle } from '../Styles'
 
 const Status = styled.div<{ $isvalue?: boolean, $secondaryсolor: string, $primaryсolor: string }>`
+  display:flex;
+  gap: 5px;
   text-transform: uppercase;
   font-weight: bold;
   transition: all 0.1s;
@@ -32,6 +34,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
     const DefferedStatusTitle = intl.formatMessage({ id: 'ticket.status.DEFERRED.name' })
     const [deferredUntil, setDeferredUntil] = useState(dayjs())
     const [isOpenUntil, setOpenUntil] = useState(false)
+    const [loading, setLoading] = useState(false)
     
     const options = Object.entries(ticketStatuses).map(([name, id]) => ({
         value: name,
@@ -43,15 +46,17 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
         return { $secondaryсolor: primary, $primaryсolor: secondary }
     }
 
-    const handleUpdateStatus = (updatedStatus) => {
+    const handleUpdateStatus = async (updatedStatus) => {
         if (updatedStatus === DefferedStatusTitle) {
             setOpenUntil(true)
         } else {
+            setLoading(true)
             const status = {
                 connect: { id: ticketStatuses[updatedStatus].id },
             }
-            updateTicket({ status })
+            await updateTicket({ status })
         }
+        setLoading(false)
     }
 
     const handleUntilClose = () => {
@@ -59,10 +64,12 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
     }
 
     const handleUntilDateChange = () => {
+        setLoading(true)
         const status = {
             connect: { id: ticketStatuses[DefferedStatusTitle].id },
         }
         updateTicket({ status, deferredUntil: deferredUntil })
+        setLoading(false)
         setOpenUntil(false)
         setDeferredUntil(dayjs())
     }
@@ -84,7 +91,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
                     return (
                         <Status $isvalue {...statusProps}>
                             <div>{status}</div>
-                            <ChevronDown size='small' />
+                            {loading ? <Spinner size={16} color='#fff'/> : <ChevronDown size='small' />}
                         </Status>
                     )
                 }}

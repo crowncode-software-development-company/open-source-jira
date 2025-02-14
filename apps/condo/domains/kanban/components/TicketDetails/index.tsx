@@ -91,18 +91,14 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
     })
 
     const [updateTicket] = useUpdateTicketMutation({
-        
         onCompleted: async () => {
             await refetchTicket()
             await refetchTicketsBoard()
             notification.success(getSuccessfulChangeNotification())
         },
-
         onError: async () => {
             notification.error({ message: ErrorTitle })
-        },
-
-    
+        },    
     })
         
     const updateTicketAction = async (updatedData) => {

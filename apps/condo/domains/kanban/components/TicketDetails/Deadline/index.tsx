@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import DatePicker from '../../../../common/components/Pickers/DatePicker'
 import { color } from '../../../styles'
+import { Spinner } from '../../../ui'
 import { SectionTitle } from '../Styles'
 
 
@@ -14,19 +15,20 @@ export const InputCont = styled.div`
   width: 50%;
 `
 
-const INPUT_STYLE: CSSProperties = { width: '250px', height: '32px', borderRadius: '5px', backgroundColor: color.backgroundLightest, marginLeft: '-5px' }
+const INPUT_STYLE: CSSProperties = { width: '150px', height: '32px', borderRadius: '5px', backgroundColor: color.backgroundLightest, marginLeft: '-5px' }
 
 const ProjectBoardIssueDetailsDeadline = ({ ticket, updateTicket }) => {
+    const [loading, setLoading] = useState(false)
     const intl = useIntl()
     const DeadlineTitle = intl.formatMessage({ id: 'kanban.ticket.deadline.title' })
     
     const [deadline, setDeadline] = useState(dayjs(ticket.deadline))
 
-    const onPeriodChange = (newDate) => {
+    const onPeriodChange = async (newDate) => {
         setDeadline(newDate)
-        updateTicket(
-            { deadline: newDate }
-        )
+        setLoading(true)
+        await updateTicket({ deadline: newDate })
+        setLoading(false)
     }
     return (
         <Fragment>
@@ -38,7 +40,7 @@ const ProjectBoardIssueDetailsDeadline = ({ ticket, updateTicket }) => {
                     onChange={(newDate) => onPeriodChange(newDate)}
                     disabledDate={(date) => date < dayjs()}
                     clearIcon={false}
-                    suffixIcon={<DownOutlined />}
+                    suffixIcon={!loading ? <DownOutlined /> : <Spinner size={16}/>}
                     format='DD.MM.YYYY'
                 />
             </InputCont>

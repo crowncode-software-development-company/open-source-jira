@@ -33,7 +33,6 @@ const ProjectBoardIssueDetailsComments = ({ refetchTicketComments, ticket, comme
 
     return (
         <Comments>
-            {console.log(comments)}
             <Title>{CommentsTitle}</Title>
             <Create ticketId={ticket.id} user={user} onCompleted={onCompleted} />
 

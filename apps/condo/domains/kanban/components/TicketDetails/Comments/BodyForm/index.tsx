@@ -40,6 +40,7 @@ const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onC
     return (
         <Fragment>
             <Textarea
+                disabled={isWorking}
                 ref={textareaRef}
                 value={value}
                 autoFocus
