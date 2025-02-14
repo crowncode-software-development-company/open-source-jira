@@ -31,7 +31,7 @@ import { color } from '../../styles'
 import { TicketTypeIcon } from '../../ui'
 import { sortByNewest } from '../../utils'
 
-const ProjectTicketSearch = ({ isOpen }) => {
+const ProjectTicketSearch = () => {
     const intl = useIntl()
     const TicketTitle = intl.formatMessage({ id: 'Ticket' })
     const SearchTitle = intl.formatMessage({ id: 'kanban.ticket.searchTicket.placeholder' })
@@ -41,15 +41,22 @@ const ProjectTicketSearch = ({ isOpen }) => {
     const NoResultTipTitle = intl.formatMessage({ id: 'kanban.ticket.noResults.Tip.title' })
     const router = useRouter()
     const { organization } = useOrganization()
-    const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(true)
-    const [searchValue, setSearchValue] = useState('')
 
-    useEffect(() => {
-        console.log(searchValue)
-        
-        setSearchValue('')
-    }, [isOpen])
+    const getSearchTerm = () => {
+        const searchTerm = router.query['search-term']
+        return Array.isArray(searchTerm) ? searchTerm[0] : searchTerm || ''
+    }
+
+    const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(!getSearchTerm)
+    const [searchValue, setSearchValue] = useState(getSearchTerm)
+
     
+    useEffect(() => {
+        const currentSearchValue = getSearchTerm()
+        setSearchValue(currentSearchValue)
+        setIsSearchTermEmpty(!currentSearchValue)
+    }, [router.query['search-modal']])
+
     const {
         loading: isTicketsFetching,
         data: ticketsData,
@@ -75,7 +82,13 @@ const ProjectTicketSearch = ({ isOpen }) => {
 
     const handleSearchChange = async (value) => {
         setSearchValue(value)
-        setIsSearchTermEmpty(value.trim() === '' ? true : false)
+        if (value.trim() === '') {
+            setIsSearchTermEmpty(true)
+            router.push('kanban?search-modal=true', undefined, { shallow: true })
+        } else {
+            setIsSearchTermEmpty(false)
+            router.push(`kanban?search-modal=true&search-term=${value}`, undefined, { shallow: true })
+        }
         await refetch()
     }
 
