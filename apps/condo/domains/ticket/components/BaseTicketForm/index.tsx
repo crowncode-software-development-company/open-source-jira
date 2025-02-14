@@ -143,7 +143,7 @@ export const ContactsInfo = ({ ContactsEditorComponent, form, selectedPropertyId
 const INPUT_WITH_COUNTER_STYLE = { height: '120px', width: '100%' }
 const FORM_FILED_COL_PROPS = { style: { width: '100%', padding: 0 } }
 const COUNTER_STYLES = { float: 'right' }
-const UPLOAD_COMPONENT_WRAPPER_STYLES = { paddingTop: '24px' }
+const UPLOAD_COMPONENT_WRAPPER_STYLES = { paddingTop: '5px' }
 const SPAN_STYLES = { 'color': colors.brightRed }
 const TICKET_INFO_FRONT_LAYOUT_CONTAINER_STYLE = { paddingBottom: 0 }
 
@@ -830,6 +830,11 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
                             </Typography.Paragraph>
                         </Prompt>
                         <Col span={24}>
+                            <Row style={{ marginBottom: '16px' }}>
+                                <Col>
+                                    <Typography.Title level={2}>Создать заявку</Typography.Title>
+                                </Col>
+                            </Row>
                             <Row gutter={BIG_HORIZONTAL_GUTTER} justify='space-between'>
                                 <Col span={propertyInfoColSpan}>
                                     <Row gutter={[0, 15]}>
