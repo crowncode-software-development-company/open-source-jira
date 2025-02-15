@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useRef } from 'react'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
+import { KeyCodes } from '../../../../constants'
 import { Button, Textarea } from '../../../../ui'
 
 
@@ -37,6 +38,15 @@ const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onC
         }
     }, [])
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.keyCode === KeyCodes.ENTER) {
+            if (!event.shiftKey) {
+                event.preventDefault()
+                onSubmit()
+            }
+        }
+    }
+
     return (
         <Fragment>
             <Textarea
@@ -46,6 +56,7 @@ const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onC
                 autoFocus
                 placeholder={AddCommentTitle}
                 onChange={onChange}
+                onKeyDown={handleKeyDown}
             />
             <Actions>
                 <FormButton variant='primary' isWorking={isWorking} onClick={onSubmit}>

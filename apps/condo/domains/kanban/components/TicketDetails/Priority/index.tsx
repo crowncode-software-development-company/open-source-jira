@@ -42,7 +42,7 @@ const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
 
     const handleUpdatePriority = async (updatedPriority) => {
         setLoading(true)
-        await updateTicket({ order: updatedPriority  })
+        await updateTicket({ order: updatedPriority })
         setLoading(false)
     }
 

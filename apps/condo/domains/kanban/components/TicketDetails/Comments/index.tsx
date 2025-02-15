@@ -39,7 +39,8 @@ const ProjectBoardIssueDetailsComments = ({ refetchTicketComments, ticket, comme
             {sortByNewest(comments, 'createdAt').map(comment => (
                 <Comment onCompleted={onCompleted} key={comment.id} comment={comment} userId = {user.id}/>
             ))}
-        </Comments>)
+        </Comments>
+    )
 }
 
 export default ProjectBoardIssueDetailsComments

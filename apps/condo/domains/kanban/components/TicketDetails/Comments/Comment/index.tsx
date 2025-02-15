@@ -28,19 +28,25 @@ const Content = styled.div`
 const Username = styled.div`
   display: inline-block;
   padding-right: 12px;
-  padding-bottom: 10px;
+  font-weight: 600;
   color: ${color.textDark};
 `
 
 const CreatedAt = styled.div`
   display: inline-block;
-  padding-bottom: 10px;
   color: ${color.textDark};
   ${font.size(14.5)}
+   &:before {
+    position: relative;
+    right: 6px;
+    content: '·';
+    display: inline-block;
+  }
 `
 
 const Body = styled.p`
   white-space: pre-wrap;
+  margin: 3px 0 ;
 `
 
 const actionLinkStyles = css`
@@ -128,7 +134,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, userId, onCompleted }) => {
             <Content>
                 <Username>{comment.user.name}</Username>
                 {comment.createdAt === comment.updatedAt ?
-                    <CreatedAt>{formatDateTimeConversational(comment.createdAt)}</CreatedAt> 
+                    <CreatedAt>({formatDateTimeConversational(comment.createdAt)})</CreatedAt> 
                     : 
                     <CreatedAt>({ChangeTitle} {formatDateTimeConversational(comment.updatedAt)})</CreatedAt>
                 }

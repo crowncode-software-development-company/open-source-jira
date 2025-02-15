@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import { color, font, mixin } from '../../../styles'
 import { Button, TextEditedContent, TextEditor } from '../../../ui'
-import { getTextContentsFromHtmlString } from '../../../utils'
 
 const Title = styled.div`
   padding: 20px 0 6px;
@@ -32,7 +31,7 @@ const Actions = styled.div`
   }
 `
 
-const ProjectBoardIssueDetailsDescription = ({ ticket, updateTicket }) => {
+const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket }) => {
     const intl = useIntl()
     const DescriptionTitle = intl.formatMessage({ id: 'Description' })
     const AddDescriptionTitle = intl.formatMessage({ id: 'kanban.ticket.addDescription.title' })
@@ -80,4 +79,4 @@ const ProjectBoardIssueDetailsDescription = ({ ticket, updateTicket }) => {
     )
 }
 
-export default ProjectBoardIssueDetailsDescription
+export default ProjectBoardTicketDetailsDescription

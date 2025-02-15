@@ -16,7 +16,7 @@ const defaultProps = {
 }
 
 const Spinner = ({ className, size, color }) => (
-    <span className={className}>
+    <span className={className} style={{ marginTop: '3px' }}>
         <svg
             width={size}
             height={size}
