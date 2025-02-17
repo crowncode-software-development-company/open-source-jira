@@ -3239,6 +3239,7 @@
   "kanban.comment.change.title": "camb.",
   "kanban.file.delete.confirmText": "Eliminar archivo",
   "kanban.file.delete.title": "¿Está seguro de que desea eliminar este archivo?",
-  "kanban.file.delete.message": "Una vez eliminado, el archivo no se podrá recuperar."
+  "kanban.file.delete.message": "Una vez eliminado, el archivo no se podrá recuperar.",
+  "kanban.file.noResult.title": "Aún no hay archivos adjuntos"
   
 }

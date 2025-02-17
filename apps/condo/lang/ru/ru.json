@@ -3239,5 +3239,6 @@
   "kanban.comment.change.title": "изм.",
   "kanban.file.delete.confirmText": "Удалить файл",
   "kanban.file.delete.title": "Вы уверены, что хотите удалить этот файл?",
-  "kanban.file.delete.message": "После удаления файл невозможно восстановить."
+  "kanban.file.delete.message": "После удаления файл невозможно восстановить.",
+  "kanban.file.noResult.title": "Прикрепленных файлов пока нет"
 }

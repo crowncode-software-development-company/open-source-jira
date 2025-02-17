@@ -160,7 +160,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
                 <Left>
                     <Title ticket={ticket} updateTicket={updateTicketAction} />
                     <Description ticket={ticket} updateTicket={updateTicketAction} />
-                    {files.length > 0 && <Files files={files} refetchTicketFiles={refetchTicketFiles}/>}
+                    <Files ticket={ticket} files={files} refetchTicketFiles={refetchTicketFiles}/>
                     <Comments refetchTicketComments={refetchTicketComments} user={user} ticket={ticket} comments={comments} />  
                 </Left>
                 <Right>

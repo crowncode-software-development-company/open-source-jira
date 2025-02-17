@@ -15,7 +15,8 @@ import { useDownloadFileFromServer } from '../../../../common/hooks/useDownloadF
 import { useNotificationMessages } from '../../../../common/hooks/useNotificationMessages'
 import { runMutation } from '../../../../common/utils/mutations.utils'
 import { getClientSideSenderInfo } from '../../../../common/utils/userid.utils'
-import { font } from '../../../styles'
+import { color, font } from '../../../styles'
+import { UploadFile as UploadFileComponent } from '../../../ui/UploadFile'
 
 const Files = styled.div`
   padding-top: 40px;
@@ -24,6 +25,19 @@ const Files = styled.div`
 const Title = styled.div`
   ${font.size(15)};
   font-weight: 600;
+`
+
+const Text = styled.div`
+  margin-top: 15px;
+  ${font.size(13)};
+  color: ${color.textLight}
+`
+
+const Header = styled.div`
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
+   align-items: center;
 `
 
 const UploadListWrapperStyles = css`
@@ -56,7 +70,7 @@ const updateData = {
     sender: getClientSideSenderInfo(),
 }
 
-const ProjectBoardTicketDetailsFiles = ({ files, refetchTicketFiles }) => {
+const ProjectBoardTicketDetailsFiles = ({ ticket, files, refetchTicketFiles }) => {
     const intl = useIntl()
     const FileLabel = intl.formatMessage({ id: 'component.uploadlist.AttachedFilesLabel' })
     const CancelLabel = intl.formatMessage({ id: 'documents.uploadDocumentsModal.cancelButton' })
@@ -64,6 +78,7 @@ const ProjectBoardTicketDetailsFiles = ({ files, refetchTicketFiles }) => {
     const DeleteModalTitle = intl.formatMessage({ id: 'kanban.file.delete.title' })
     const DeleteMessage = intl.formatMessage({ id: 'kanban.file.delete.message' })
     const ErrorTitle = intl.formatMessage({ id: 'ErrorOccurred' })
+    const NoResultFilesTitle = intl.formatMessage({ id: 'kanban.file.noResult.title' })
     const [deletedFile, setDeletedFile] = useState(null)
     const [isOpen, setOpen] = useState(false)
     const { getSuccessfulChangeNotification } = useNotificationMessages()
@@ -121,12 +136,19 @@ const ProjectBoardTicketDetailsFiles = ({ files, refetchTicketFiles }) => {
             >
                 <div>{DeleteMessage}</div>
             </Modal>
-            <Title>{FileLabel}</Title>
-            <div style={{ width: '200px' }}>
-                <div className='upload-control-wrapper' css={UploadListWrapperStyles}>
-                    <UploadList locale={{}} removeIcon={<Trash color='red' size='small'/>} showRemoveIcon={true} items={uploadFiles} onPreview={handleFileDownload} onRemove={(deletedFile) => handleOnRemoveFile(deletedFile)}/>
+            <Header>
+                <Title>{FileLabel}</Title>
+                <UploadFileComponent refetchTicketFiles={refetchTicketFiles} ticketId={ticket.id}/>
+            </Header>
+            {files.length ? 
+                <div style={{ width: '200px' }}>
+                    <div className='upload-control-wrapper' css={UploadListWrapperStyles}>
+                        <UploadList locale={{}} removeIcon={<Trash color='#CD1317' size='small'/>} showRemoveIcon={true} items={uploadFiles} onPreview={handleFileDownload} onRemove={(deletedFile) => handleOnRemoveFile(deletedFile)}/>
+                    </div>
                 </div>
-            </div>
+                :
+                <Text>{NoResultFilesTitle}</Text>
+            }
         </Files>
     )
 }

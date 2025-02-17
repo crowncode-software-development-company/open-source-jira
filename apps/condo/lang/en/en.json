@@ -3239,5 +3239,6 @@
   "kanban.comment.change.title": "ed.",
   "kanban.file.delete.confirmText": "Delete file",
   "kanban.file.delete.title": "Are you sure you want to delete this file?",
-  "kanban.file.delete.message": "Once deleted, the file cannot be recovered."
+  "kanban.file.delete.message": "Once deleted, the file cannot be recovered.",
+  "kanban.file.noResult.title": "No attached files yet"
 }
