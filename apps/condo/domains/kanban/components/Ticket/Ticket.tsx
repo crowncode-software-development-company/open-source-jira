@@ -47,8 +47,7 @@ const Title = styled.p`
 `
 
 const AssigneeAvatar = styled(Avatar)`
-margin-left: -2px;
-box-shadow: 0 0 0 2px #fff;
+margin-left: -12px;
 `
 const NumberTicket = styled.span`
 font-weight: 600;
@@ -86,6 +85,10 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                                 <AssigneeAvatar
                                     size={24}
                                     name={ticket.assignee.name}
+                                />
+                                <AssigneeAvatar
+                                    size={24}
+                                    name={ticket.executor.name}
                                 />
                             </Assignees>
                         </Bottom>

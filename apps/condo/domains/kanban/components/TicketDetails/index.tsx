@@ -15,6 +15,7 @@ import Dates from './Dates'
 import Deadline from './Deadline'
 import Delete from './Delete'
 import Description from './Description'
+import Files from './Files'
 import Priority from './Priority'
 import Status from './Status'
 import Title from './Title'
@@ -25,6 +26,7 @@ import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrE
 import { useNotificationMessages } from '../../../common/hooks/useNotificationMessages'
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
 import { usePollTicketComments } from '../../../ticket/hooks/usePollTicketComments'
+import { TicketFile } from '../../../ticket/utils/clientSchema'
 import { Button } from '../../ui'
 
 const Content = styled.div`
@@ -125,6 +127,14 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
     
     const employees = useMemo(() => employeesData?.filter(Boolean) || [], [employeesData])
 
+    
+    const { objs: files, refetch: refetchTicketFiles } = TicketFile.useObjects({
+        where: { ticket: { id: ticket ? ticket.id : null } },
+    }, {
+        fetchPolicy: 'network-only',
+        skip: !ticketId,
+    })
+
     const loading = ticketLoading || ticketCommentsLoading || !ticket || employeesLoading
 
     if (loading) {
@@ -150,6 +160,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
                 <Left>
                     <Title ticket={ticket} updateTicket={updateTicketAction} />
                     <Description ticket={ticket} updateTicket={updateTicketAction} />
+                    {files.length > 0 && <Files files={files} refetchTicketFiles={refetchTicketFiles}/>}
                     <Comments refetchTicketComments={refetchTicketComments} user={user} ticket={ticket} comments={comments} />  
                 </Left>
                 <Right>

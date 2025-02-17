@@ -3236,5 +3236,8 @@
   "kanban.comment.delete.confirmText": "Удалить комментарий",
   "kanban.comment.delete.title": "Вы уверены, что хотите удалить этот комментарий?",
   "kanban.comment.delete.message": "После удаления комментарий невозможно восстановить.",
-  "kanban.comment.change.title": "изм."
+  "kanban.comment.change.title": "изм.",
+  "kanban.file.delete.confirmText": "Удалить файл",
+  "kanban.file.delete.title": "Вы уверены, что хотите удалить этот файл?",
+  "kanban.file.delete.message": "После удаления файл невозможно восстановить."
 }
