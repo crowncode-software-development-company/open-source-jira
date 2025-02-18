@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { color, font, mixin } from '../../../styles'
 import { Button, TextEditedContent, TextEditor } from '../../../ui'
+import { isEmptyHtml } from '../../../utils'
 
 const Title = styled.div`
   padding: 20px 0 6px;
@@ -14,7 +15,7 @@ const EmptyLabel = styled.div`
   margin-left: -7px;
   padding: 7px;
   border-radius: 3px;
-  color: ${color.textMedium}
+  color: ${color.textLight}
   transition: background 0.1s;
   ${font.size(15)}
   ${mixin.clickable}
@@ -31,21 +32,21 @@ const Actions = styled.div`
   }
 `
 
-const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket }) => {
+const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket, refetchTicketFiles }) => {
     const intl = useIntl()
     const DescriptionTitle = intl.formatMessage({ id: 'Description' })
     const AddDescriptionTitle = intl.formatMessage({ id: 'kanban.ticket.addDescription.title' })
     const SaveTitle = intl.formatMessage({ id: 'Save' })
     const CancelTitle = intl.formatMessage({ id: 'Cancel' })
     const [description, setDescription] = useState(ticket.details)
-    const [descriptionText, setDescriptionText] = useState(ticket.details)
     const [isEditing, setEditing] = useState(false)
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         setEditing(false)
         updateTicket({
             details: description,
         })
+        // await refetchTicketFiles()
     }
 
     const handleCancel = () => {
@@ -53,14 +54,15 @@ const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket }) => {
         setEditing(false)
     }
 
-    const isDescriptionEmpty = description.trim().length === 0
+    const isDescriptionEmpty = isEmptyHtml(description.trim())
 
     return (
         <Fragment>
+            {console.log(description)}
             <Title>{DescriptionTitle}</Title>
             {isEditing ? (
                 <Fragment>
-                    <TextEditor value = {description}  onChange={(value) => setDescription(value)} onChangeText = {(value) => setDescriptionText(value)}/>
+                    <TextEditor ticketId={ticket.id} value = {description}  onChange={(value) => setDescription(value)}/>
                     <Actions>
                         <Button variant='primary' onClick={handleUpdate}>{SaveTitle}</Button>
                         <Button variant='empty' onClick={handleCancel}>{CancelTitle}</Button>

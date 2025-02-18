@@ -126,7 +126,6 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
     })
     
     const employees = useMemo(() => employeesData?.filter(Boolean) || [], [employeesData])
-
     
     const { objs: files, refetch: refetchTicketFiles } = TicketFile.useObjects({
         where: { ticket: { id: ticket ? ticket.id : null } },
@@ -159,7 +158,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
             <Content>
                 <Left>
                     <Title ticket={ticket} updateTicket={updateTicketAction} />
-                    <Description ticket={ticket} updateTicket={updateTicketAction} />
+                    <Description ticket={ticket} updateTicket={updateTicketAction} refetchTicketFiles={refetchTicketFiles} />
                     <Files ticket={ticket} files={files} refetchTicketFiles={refetchTicketFiles}/>
                     <Comments refetchTicketComments={refetchTicketComments} user={user} ticket={ticket} comments={comments} />  
                 </Left>

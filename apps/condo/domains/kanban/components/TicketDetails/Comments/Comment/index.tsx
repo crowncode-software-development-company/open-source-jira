@@ -75,7 +75,7 @@ const DeleteLink = styled.div`
   }
 `
 
-const ProjectBoardIssueDetailsComment = ({ comment, userId, onCompleted }) => {
+const ProjectBoardIssueDetailsComment = ({ ticketId, comment, userId, onCompleted }) => {
     const intl = useIntl()
     const EditTitle = intl.formatMessage({ id: 'Change' })
     const DeleteTitle = intl.formatMessage({ id: 'Delete' })
@@ -141,6 +141,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, userId, onCompleted }) => {
 
                 {isFormOpen ? (
                     <BodyForm
+                        ticketId={ticketId}
                         value={body}
                         onChange={setBody}
                         isWorking={isUpdating}

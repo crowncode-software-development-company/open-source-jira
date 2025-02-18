@@ -37,7 +37,7 @@ const ProjectBoardIssueDetailsComments = ({ refetchTicketComments, ticket, comme
             <Create ticketId={ticket.id} user={user} onCompleted={onCompleted} />
 
             {sortByNewest(comments, 'createdAt').map(comment => (
-                <Comment onCompleted={onCompleted} key={comment.id} comment={comment} userId = {user.id}/>
+                <Comment ticketId={ticket.id} onCompleted={onCompleted} key={comment.id} comment={comment} userId = {user.id}/>
             ))}
         </Comments>
     )

@@ -1,10 +1,10 @@
-export const IssueType = {
+export const TicketType = {
     TASK: 'task',
     BUG: 'bug',
     STORY: 'story',
 }
 
-export const IssuePriority = {
+export const TicketPriority = {
     HIGHEST: 5,
     HIGH: 4,
     MEDIUM: 3,
@@ -12,18 +12,18 @@ export const IssuePriority = {
     LOWEST: 1,
 }
 
-export const IssueTypeCopy = {
-    [IssueType.TASK]: 'Task',
-    [IssueType.BUG]: 'Bug',
-    [IssueType.STORY]: 'Story',
+export const TicketTypeCopy = {
+    [TicketType.TASK]: 'Task',
+    [TicketType.BUG]: 'Bug',
+    [TicketType.STORY]: 'Story',
 }
 
-export const IssuePriorityCopy = {
-    [IssuePriority.HIGHEST]: 'Highest',
-    [IssuePriority.HIGH]: 'High',
-    [IssuePriority.MEDIUM]: 'Medium',
-    [IssuePriority.LOW]: 'Low',
-    [IssuePriority.LOWEST]: 'Lowest',
+export const TicketPriorityCopy = {
+    [TicketPriority.HIGHEST]: 'Highest',
+    [TicketPriority.HIGH]: 'High',
+    [TicketPriority.MEDIUM]: 'Medium',
+    [TicketPriority.LOW]: 'Low',
+    [TicketPriority.LOWEST]: 'Lowest',
 }
 
 export const KeyCodes = {

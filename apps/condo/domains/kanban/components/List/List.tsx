@@ -10,7 +10,6 @@ import { filterTickets, formatTicketsCount, getSortedListTickets } from './utils
 import { color } from '../../styles'
 import { Ticket } from '../Ticket'
 
-
 const List = styled.div`
   display: flex;
   flex-direction: column;

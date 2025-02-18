@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 
-import { IssuePriority, IssuePriorityCopy } from '../../../constants'
+import { TicketPriority, TicketPriorityCopy } from '../../../constants'
 import { color, font } from '../../../styles'
 import { Select, TicketPriorityIcon, Spinner } from '../../../ui'
 import { SectionTitle } from '../Styles'
@@ -56,9 +56,9 @@ const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
                     dropdownWidth={250}
                     name='priority'
                     value={ticket.order || 1}
-                    options={Object.values(IssuePriority).map(priority => ({
+                    options={Object.values(TicketPriority).map(priority => ({
                         value: priority,
-                        label: IssuePriorityCopy[priority],
+                        label: TicketPriorityCopy[priority],
                     }))}
                     onChange={priority => handleUpdatePriority(priority)}
                     renderValue={({ value: priority }) => renderPriorityItem(priority, true)}
@@ -73,7 +73,7 @@ const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
 const renderPriorityItem = (priority, isValue) => (
     <Priority $isvalue={isValue}>
         <TicketPriorityIcon priority={priority} size='large' />
-        <Label>{IssuePriorityCopy[priority]}</Label>
+        <Label>{TicketPriorityCopy[priority]}</Label>
     </Priority>
 )
 

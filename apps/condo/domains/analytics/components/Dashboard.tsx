@@ -6,7 +6,7 @@ import isNull from 'lodash/isNull'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react'
 
-import { Wallet, LayoutList, Smile, Frown } from '@open-condo/icons'
+import { LayoutList, Smile, Frown } from '@open-condo/icons'
 import { useLazyQuery } from '@open-condo/next/apollo'
 import { useIntl } from '@open-condo/next/intl'
 import { Card, Typography, Space, Modal } from '@open-condo/ui'
@@ -15,12 +15,8 @@ import {
     TicketByPropertyChart,
     TicketByExecutorChart,
     TicketQualityControlChart,
-    ResidentByPropertyChart,
     AllTicketsChart,
-    PaymentByPropertyChart,
-    PaymentReceiptChart,
     TicketByCategoryChart,
-    PaymentTotalChart,
 } from '@condo/domains/analytics/components/charts'
 import { GET_OVERVIEW_DASHBOARD_MUTATION } from '@condo/domains/analytics/gql'
 import { usePropertyFilter, useDateRangeFilter } from '@condo/domains/analytics/hooks/useDashboardFilters'
@@ -76,9 +72,6 @@ const PerformanceCard = ({ organizationId, paymentSum, propertyData, residentsDa
     const NewTicketsLabel = intl.formatMessage({ id: 'ticket.status.OPEN.many' })
     const CompletedLabel = intl.formatMessage({ id: 'ticket.status.COMPLETED.many' })
     const ClosedTicketsLabel = intl.formatMessage({ id: 'ticket.status.CLOSED.many' })
-    const PaymentsAmount = intl.formatMessage({ id: 'pages.reports.paymentsAmount' })
-    const ResidentsInApp = intl.formatMessage({ id: 'pages.reports.residentsWithApp' })
-    const UnitsCount = intl.formatMessage({ id: 'pages.condo.property.id.UnitsCount' })
 
     const { breakpoints } = useLayoutContext()
 
@@ -155,25 +148,6 @@ const PerformanceCard = ({ organizationId, paymentSum, propertyData, residentsDa
                             <StatisticCard
                                 label={ClosedTicketsLabel}
                                 value={ticketCounts.current.closed.count}
-                            />
-                        </Row>
-                    </Col>
-                    <Col span={24}>
-                        <Row align='middle' justify={cardRowJustify} gutter={CARD_ROW_GUTTER}>
-                            <Col style={iconStyle}>
-                                <Wallet />
-                            </Col>
-                            <StatisticCard
-                                label={PaymentsAmount}
-                                value={intl.formatNumber(paymentSum, { style: 'currency', currency: 'Rub' })}
-                            />
-                            <StatisticCard
-                                label={ResidentsInApp}
-                                value={residentsCount}
-                            />
-                            <StatisticCard
-                                label={UnitsCount}
-                                value={propertyData}
                             />
                         </Row>
                     </Col>
@@ -427,12 +401,9 @@ export const Dashboard: React.FC<{ organizationId: string }> = ({ organizationId
     const ticketQualityControlValue = get(overview, 'ticketQualityControlValue.tickets', [])
     const ticketQualityControlValueTranslations = get(overview, 'ticketQualityControlValue.translations', [])
     const propertyData = get(overview, 'property.sum', 0)
-    const paymentsData = get(overview, 'payment.payments', [])
     const paymentSum = get(overview, 'payment.sum', null)
-    const receiptsData = get(overview, 'receipt.receipts', [])
     const residentsData = get(overview, 'resident.residents', [])
     const incidentsCount = get(overview, 'incident.count', 0)
-    const chargedToPaidData = paymentsData.length > 0 && receiptsData.length > 0 ? [paymentsData, receiptsData] : []
 
     return (
         <Row gutter={DASHBOARD_ROW_GUTTER}>
@@ -459,7 +430,7 @@ export const Dashboard: React.FC<{ organizationId: string }> = ({ organizationId
                     dateRange={dateRange}
                 />
             </Col>
-            <Col xl={6} lg={12} xs={24}>
+            {/* <Col xl={6} lg={12} xs={24}>
                 <IncidentDashboard
                     count={incidentsCount}
                     loading={loading}
@@ -472,7 +443,7 @@ export const Dashboard: React.FC<{ organizationId: string }> = ({ organizationId
                     loading={loading}
                     organizationId={organizationId}
                 />
-            </Col>
+            </Col> */}
             {overview === null ? (
                 <Skeleton paragraph={{ rows: 62 }} loading active />
             ) : (
@@ -486,28 +457,6 @@ export const Dashboard: React.FC<{ organizationId: string }> = ({ organizationId
                         <Col lg={12} md={24} xs={24}>
                             <TicketByCategoryChart
                                 data={categoryTickets}
-                                organizationId={organizationId}
-                            />
-                        </Col>
-                        <Col lg={12} md={24} xs={24}>
-                            <PaymentTotalChart
-                                data={paymentsData}
-                            />
-                        </Col>
-                        <Col lg={12} md={24} xs={24}>
-                            <PaymentReceiptChart
-                                data={chargedToPaidData}
-                            />
-                        </Col>
-                        <Col lg={12} md={24} xs={24}>
-                            <PaymentByPropertyChart
-                                data={paymentsData}
-                                organizationId={organizationId}
-                            />
-                        </Col>
-                        <Col lg={12} md={24} xs={24}>
-                            <ResidentByPropertyChart
-                                data={residentsData}
                                 organizationId={organizationId}
                             />
                         </Col>

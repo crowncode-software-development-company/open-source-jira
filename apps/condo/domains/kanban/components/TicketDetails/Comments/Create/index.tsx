@@ -75,6 +75,7 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted })
             <Right>
                 {isFormOpen ? (
                     <BodyForm
+                        ticketId={ticketId}
                         value={body}
                         onChange={setBody}
                         isWorking={isCreating}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IssuePriority } from '../../constants'
+import { TicketPriority } from '../../constants'
 import { ArrowUp, ArrowDown } from '../../icons'
 import { issuePriorityColors } from '../../styles'
 
@@ -10,7 +10,7 @@ interface IProps  {
 }
 
 const TicketPriorityIcon: React.FC<IProps> = ({ priority, size, ...otherProps }) => {
-    const IconComponent = [IssuePriority.LOW, IssuePriority.LOWEST].includes(priority)
+    const IconComponent = [TicketPriority.LOW, TicketPriority.LOWEST].includes(priority)
         ? ArrowDown
         : ArrowUp
 

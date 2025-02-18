@@ -2,22 +2,24 @@ import React, { Fragment, useEffect, useRef } from 'react'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
+import { useMultipleFileUploadHook } from '../../../../../common/components/MultipleFileUpload'
+import { TicketCommentFile } from '../../../../../ticket/utils/clientSchema'
 import { KeyCodes } from '../../../../constants'
 import { Button, Textarea } from '../../../../ui'
 
 
 const Actions = styled.div`
   display: flex;
-  padding-top: 10px;
+  margin-top: 10px;
+  flex-direction: row;
   gap: 5px;
 `
 
 const FormButton = styled(Button)`
   margin-right: 6px;
 `
-
-
 interface IProps {
+    ticketId: string
     value: string
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     isWorking: boolean
@@ -25,7 +27,7 @@ interface IProps {
     onCancel: () => void
 }
 
-const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onChange, isWorking, onSubmit, onCancel }) => {
+const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ ticketId, value, onChange, isWorking, onSubmit, onCancel }) => {
     const intl = useIntl()
     const AddCommentTitle = intl.formatMessage({ id: 'kanban.ticket.addComment.title' })
     const SaveTitle = intl.formatMessage({ id: 'Save' })
@@ -47,6 +49,13 @@ const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onC
         }
     }
 
+    const { UploadComponent, syncModifiedFiles, resetModifiedFiles, filesCount } = useMultipleFileUploadHook({
+        Model: TicketCommentFile,
+        relationField: 'ticketComment',
+        initialFileList: [],
+        initialCreateValues: { ticket: { connect: { id: ticketId } } },
+    })   
+
     return (
         <Fragment>
             <Textarea
@@ -65,6 +74,7 @@ const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onC
                 <FormButton variant='empty' onClick={onCancel}>
                     {CancelTitle}
                 </FormButton>
+                {/* <UploadComponent initialFileList={[]} /> */}
             </Actions>
         </Fragment>
     )

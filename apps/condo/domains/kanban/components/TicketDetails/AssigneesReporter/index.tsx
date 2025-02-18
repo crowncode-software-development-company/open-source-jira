@@ -39,7 +39,6 @@ align-items:center;
 gap: 5px;
 `
 
-
 const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, employees }) => {
     const intl = useIntl()
     const AssigneeMessage = intl.formatMessage({ id: 'pages.ticket.autoAssignment.columns.assignee.title' })
@@ -85,7 +84,7 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
                     renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
                     renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
                 />
-                {assigneeLoading && <Spinner size={20}/> }
+                {assigneeLoading && <Spinner size={20}/>}
             </SelectCont>
             <SectionTitle>{ExecutorMessage}</SectionTitle>
             <SelectCont>
@@ -101,7 +100,7 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
                     renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
                     renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
                 />
-                {executorLoading && <Spinner size={20}/> }
+                {executorLoading && <Spinner size={20}/>}
             </SelectCont>
         </Fragment>
     )

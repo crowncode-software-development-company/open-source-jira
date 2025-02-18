@@ -33,15 +33,15 @@ function normalizeText (text) {
         // replace two or more spaces to one space
         .replace(/\p{Z}+/gu, ' ')
         // normalize punctuation between words, e.g: 'test  ,test' -> 'test, test'
-        .replace(PUNCTUATION_SEARCH_REGEX, (wordWithPunctuation, ...args) => {
-            // Based on mdn description of string.prototype.replace the second argument from the end is match index
-            const wordIndex = args[args.length - 2]
-            // We don't want to change punctuation at immutable tokens, such as email or site url
-            return immutableRanges
-                .some(range => wordIndex >= range[0] && wordIndex <= range[1])
-                ? wordWithPunctuation
-                : `${wordWithPunctuation.replace(PUNCTUATION_PART_REGEX, punctuation => punctuation.trim())} `
-        })
+        // .replace(PUNCTUATION_SEARCH_REGEX, (wordWithPunctuation, ...args) => {
+        //     // Based on mdn description of string.prototype.replace the second argument from the end is match index
+        //     const wordIndex = args[args.length - 2]
+        //     // We don't want to change punctuation at immutable tokens, such as email or site url
+        //     return immutableRanges
+        //         .some(range => wordIndex >= range[0] && wordIndex <= range[1])
+        //         ? wordWithPunctuation
+        //         : `${wordWithPunctuation.replace(PUNCTUATION_PART_REGEX, punctuation => punctuation.trim())} `
+        // })
         // normalize spaces in double quotes, e.g: "  a b c   " => "a b c"
         .replace(/"[^"]*"/gm, m => `"${m.split('"')[1].trim()}"`)
         // normalize open quote, e.g: "« " -> "«" (there can be no more than one space due to the previous replaces)

@@ -38,7 +38,6 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
     const [isOpenUntil, setOpenUntil] = useState(false)
     const [currentDraggableTicketId, setCurrentDraggableTicketId] = useState('')
 
-
     useEffect(() => {
         setLocalTickets(tickets)
     }, [tickets])
@@ -96,7 +95,6 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
     return (
         <>
             <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={handleUntilClose} onOk={handleUntilDateChange} />
-        
             <DragDropContext onDragEnd={handleTicketDrop}>
                 <Lists>
                     {Object.keys(ticketStatuses).map((key) => (

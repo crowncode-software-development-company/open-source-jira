@@ -9,7 +9,6 @@ import { Dropdown, DropdownInput, Options, Option, OptionsNoResults } from './St
 
 import { KeyCodes } from '../../constants'
 
-
 const propTypes = {
     dropdownWidth: PropTypes.number,
     value: PropTypes.any,

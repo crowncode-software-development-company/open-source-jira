@@ -1,6 +1,6 @@
 import { css } from 'styled-components'
 
-import { IssuePriority } from './constants'
+import { TicketPriority } from './constants'
 
 export const color = {
     primary: '#0052cc', // Blue
@@ -28,11 +28,11 @@ export const color = {
 }
 
 export const issuePriorityColors = {
-    [IssuePriority.HIGHEST]: '#CD1317', // red
-    [IssuePriority.HIGH]: '#E9494A', // orange
-    [IssuePriority.MEDIUM]: '#E97F33', // orange
-    [IssuePriority.LOW]: '#2D8738', // green
-    [IssuePriority.LOWEST]: '#57A55A', // green
+    [TicketPriority.HIGHEST]: '#CD1317', // red
+    [TicketPriority.HIGH]: '#E9494A', // orange
+    [TicketPriority.MEDIUM]: '#E97F33', // orange
+    [TicketPriority.LOW]: '#2D8738', // green
+    [TicketPriority.LOWEST]: '#57A55A', // green
 }
 
 export const zIndexValues = {
