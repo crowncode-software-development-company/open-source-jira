@@ -69,7 +69,7 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
     }
 
     return (
-        <Fragment>
+        <>
             <SectionTitle>{AssigneeMessage}</SectionTitle>
             <SelectCont>
                 <Select
@@ -102,7 +102,7 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
                 />
                 {executorLoading && <Spinner size={20}/>}
             </SelectCont>
-        </Fragment>
+        </>
     )
 }
 
@@ -111,7 +111,7 @@ const renderUser = (user, isSelectValue?, removeOptionValue?) => (
         key={user.id}
         $isselectvalue={isSelectValue}
         $withbottommargin={!!removeOptionValue}
-        onClick={() => removeOptionValue && removeOptionValue()}
+        onClick={() => removeOptionValue?.()}
     >
         <Avatar avatarUrl={user.avatarUrl} name={user.name} size={24} />
         <Username>{user.name}</Username>

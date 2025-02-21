@@ -35,16 +35,6 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
     const [deferredUntil, setDeferredUntil] = useState(dayjs())
     const [isOpenUntil, setOpenUntil] = useState(false)
     const [loading, setLoading] = useState(false)
-    
-    const options = Object.entries(ticketStatuses).map(([name, id]) => ({
-        value: name,
-        label: name,
-    })) 
-    
-    const getStatusProps = (status) => {
-        const { primary, secondary } = ticketStatuses[status].colors
-        return { $secondaryсolor: primary, $primaryсolor: secondary }
-    }
 
     const handleUpdateStatus = async (updatedStatus) => {
         if (updatedStatus === DefferedStatusTitle) {
@@ -57,6 +47,16 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
             await updateTicket({ status })
         }
         setLoading(false)
+    }
+
+    const options = Object.keys(ticketStatuses).map(name => ({
+        value: name,
+        label: name,
+    })) 
+    
+    const getStatusProps = (status) => {
+        const { primary, secondary } = ticketStatuses[status].colors
+        return { $secondaryсolor: primary, $primaryсolor: secondary }
     }
 
     const handleUntilClose = () => {
@@ -75,7 +75,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
     }
 
     return (
-        <Fragment>
+        <>
             <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={handleUntilClose} onOk={handleUntilDateChange} />
             <SectionTitle>{StatusTitle}</SectionTitle>
             <Select
@@ -104,7 +104,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
                     )
                 }}
             />
-        </Fragment>
+        </>
     )
 }
 

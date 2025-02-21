@@ -83,15 +83,14 @@ const ProjectBoardIssueDetailsComment = ({ ticketId, comment, userId, onComplete
     const DeleteModalTitle = intl.formatMessage({ id: 'kanban.comment.delete.title' })
     const DeleteMessage = intl.formatMessage({ id: 'kanban.comment.delete.message' })
     const ChangeTitle = intl.formatMessage({ id: 'kanban.comment.change.title' })
-    const [isFormOpen, setFormOpen] = useState(false)
-    const [isUpdating, setUpdating] = useState(false)
+    const [isCommentFormOpen, setIsCommentFormOpen] = useState(false)
+    const [isCommentUpdating, setIsCommentUpdating] = useState(false)
     const [body, setBody] = useState(comment.content)
 
     const [updateComment] = useUpdateTicketCommentMutation({
         onCompleted: onCompleted,
     })
     
-
     const updateAction = async ({ updateData }) => {
         await updateComment({
             variables: {
@@ -112,20 +111,26 @@ const ProjectBoardIssueDetailsComment = ({ ticketId, comment, userId, onComplete
     }
   
     const handleUpdate = async () => {
-        setUpdating(true)
-        await updateAction({
-            updateData: {
-                content: body,
-                dv: 1,
-                sender: getClientSideSenderInfo(),
-            },
-        }).then(() => {setFormOpen(false); setUpdating(false)})
+        setIsCommentUpdating(true)
+        try {
+            await updateAction({
+                updateData: {
+                    content: body,
+                    dv: 1,
+                    sender: getClientSideSenderInfo(),
+                },
+            })
+        }
+        finally {
+            setIsCommentFormOpen(false)
+            setIsCommentUpdating(false)
+        }
     }
 
     const handleCancel = () => {
-        setFormOpen(false)
+        setIsCommentFormOpen(false)
         setBody(comment.content)
-        setUpdating(false)
+        setIsCommentUpdating(false)
     }
   
     return (
@@ -139,21 +144,20 @@ const ProjectBoardIssueDetailsComment = ({ ticketId, comment, userId, onComplete
                     <CreatedAt>({ChangeTitle} {formatDateTimeConversational(comment.updatedAt)})</CreatedAt>
                 }
 
-                {isFormOpen ? (
+                {isCommentFormOpen ? (
                     <BodyForm
-                        ticketId={ticketId}
                         value={body}
                         onChange={setBody}
-                        isWorking={isUpdating}
+                        isWorking={isCommentUpdating}
                         onSubmit={handleUpdate}
                         onCancel={handleCancel}
                     />
                 ) : (
-                    <Fragment>
+                    <>
                         <Body>{comment.content}</Body>
                         {userId === comment.user.id && (
                             <>
-                                <EditLink onClick={() => setFormOpen(true)}>{EditTitle}</EditLink>
+                                <EditLink onClick={() => setIsCommentFormOpen(true)}>{EditTitle}</EditLink>
                                 <ConfirmModal
                                     title={DeleteModalTitle}
                                     message={DeleteMessage}
@@ -163,7 +167,7 @@ const ProjectBoardIssueDetailsComment = ({ ticketId, comment, userId, onComplete
                                 />
                             </>
                         )}
-                    </Fragment>
+                    </>
                 )}
             </Content>
         </Comment>

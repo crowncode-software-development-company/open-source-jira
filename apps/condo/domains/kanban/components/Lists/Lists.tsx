@@ -45,14 +45,10 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
     const update = Ticket.useUpdate({})
     
     const updateTicketStatus = (newType, id, deferUntil?) => {
-        const statusObject = {
-            connect: { id: ticketStatuses[newType].id },
-        }
-    
-        const updateData: UpdateData = { status: statusObject }
-    
-        if (deferUntil) {
-            updateData.deferredUntil = deferUntil
+        
+        const updateData: UpdateData = {
+            status: { connect: { id: ticketStatuses[newType].id } },
+            ...(deferUntil && { deferredUntil: deferUntil }), 
         }
         
         runMutation({
@@ -75,8 +71,7 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
         if (destination.droppableId === DefferedStatusTitle) {
             setCurrentDraggableTicketId(draggableId)
             setOpenUntil(true)
-        }
-        else {
+        } else {
             updateTicketStatus(destination.droppableId, draggableId)
         }  
     }

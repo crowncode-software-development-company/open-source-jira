@@ -47,7 +47,7 @@ const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
     }
 
     return ( 
-        <Fragment>
+        <>
             <SectionTitle>{PriorityTitle}</SectionTitle>
             <SelectCont>
                 <Select
@@ -66,7 +66,7 @@ const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
                 />
                 {loading && <Spinner size={20}/> }
             </SelectCont>
-        </Fragment>
+        </>
     )
 }
 

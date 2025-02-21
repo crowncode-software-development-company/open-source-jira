@@ -7,18 +7,11 @@ export const isPositionChanged = (destination, source) => {
 
 export const calculateIssueListPosition = (allIssues, destination, source, droppedIssueId) => {
     const { prevIssue, nextIssue } = getAfterDropPrevNextIssue(allIssues, destination, source, droppedIssueId)
-    let position
   
-    if (!prevIssue && !nextIssue) {
-        position = 1
-    } else if (!prevIssue) {
-        position = nextIssue.listPosition - 1
-    } else if (!nextIssue) {
-        position = prevIssue.listPosition + 1
-    } else {
-        position = prevIssue.listPosition + (nextIssue.listPosition - prevIssue.listPosition) / 2
-    }
-    return position
+    if (!prevIssue && !nextIssue) return 1
+    if (!prevIssue) return nextIssue.listPosition - 1
+    if (!nextIssue) return prevIssue.listPosition + 1
+    return prevIssue.listPosition + (nextIssue.listPosition - prevIssue.listPosition) / 2
 }
 
 export const getAfterDropPrevNextIssue = (allIssues, destination, source, droppedIssueId) => {
@@ -43,8 +36,8 @@ export const getSortedListIssues = (issues, status) =>
 const moveItemWithinArray = (arr, item, newIndex) => {
     const arrClone = [...arr]
     const oldIndex = arrClone.indexOf(item)
-    arrClone.splice(newIndex, 0, arrClone.splice(oldIndex, 1)[0])
-    return arrClone
+    arrClone.splice(oldIndex, 1)
+    return insertItemIntoArray(arrClone, item, newIndex)
 }
   
 const insertItemIntoArray = (arr, item, index) => {

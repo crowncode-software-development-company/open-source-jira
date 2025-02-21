@@ -19,6 +19,7 @@ const ProjectBoardHeader = () => {
     const CreateTicketTitle = intl.formatMessage({ id: 'CreateTicket' })
     const SearchTicketTitle = intl.formatMessage({ id: 'kanban.SearchTicket' })
     const router = useRouter()
+    
     const handleCreateModal = () => {
         router.push('?create-modal=true', undefined, { shallow: true })
     }

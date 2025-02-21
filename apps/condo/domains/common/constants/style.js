@@ -12,8 +12,8 @@ const generateCustomColorPalette = (primaryColor, secondaryColor) => {
 
 const sberBlue = '#5EB1FC'
 const sberSecondaryBlue = '#3899F1'
-const sberGreen = '#c77426'
-const sberDarkGreen = '#ffad4f'
+const sberGreen = '#C77426'
+const sberDarkGreen = '#FFAD4F'
 const sberSecondaryGreen = '#22BB50'
 const sberRed = '#FF4D4F'
 const white = '#fff'

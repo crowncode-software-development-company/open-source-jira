@@ -1,17 +1,12 @@
-export const filterTickets = (projectTickets, filters, userId) => {
+export const filterTickets = ({ projectTickets, filters, userId }) => {
     const { userIds, myOnly } = filters
-    let tickets = projectTickets
 
-    if (userIds.length > 0) {
-        tickets = tickets.filter(ticket => 
-            userIds.includes(ticket.assignee.id) || 
-            userIds.includes(ticket.executor.id)
-        )
-    }
-    if (myOnly && userId) {
-        tickets = tickets.filter(ticket => (ticket.assignee.id  === userId || ticket.executor.id  === userId))
-    }
-    return tickets
+    return projectTickets.filter(ticket => {
+        const isUserIncluded = userIds.length === 0 || userIds.includes(ticket.assignee.id) || userIds.includes(ticket.executor.id)
+        const isMyTicket = !myOnly || (userId && (ticket.assignee.id === userId || ticket.executor.id === userId))
+
+        return isUserIncluded && isMyTicket
+    })
 }
 
 export const getSortedListTickets = (ticket, status) => ticket.filter(ticket => ticket.status.name === status).sort((a, b) => {
@@ -20,9 +15,9 @@ export const getSortedListTickets = (ticket, status) => ticket.filter(ticket => 
     return dateB - dateA
 })
 
-export const formatTicketsCount = (allListIssues, filteredListIssues, TicketsOfTitle) => {
-    if (allListIssues.length !== filteredListIssues.length) {
-        return `${filteredListIssues.length} ${TicketsOfTitle} ${allListIssues.length}`
+export const formatTicketsCount = (allListTickets, filteredListTickets, TicketsOfTitle) => {
+    if (allListTickets.length !== filteredListTickets.length) {
+        return `${filteredListTickets.length} ${TicketsOfTitle} ${allListTickets.length}`
     }
-    return allListIssues.length
+    return allListTickets.length
 }

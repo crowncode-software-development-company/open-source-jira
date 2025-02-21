@@ -12,6 +12,7 @@ const StyledInput = styled.div`
 `
 
 const InputElement = styled.input<{ $hasicon?: boolean, $invalid?: boolean }>`
+  outline: none;
   height: 100%;
   width: 100%;
   padding: 0 7px;
@@ -23,12 +24,12 @@ const InputElement = styled.input<{ $hasicon?: boolean, $invalid?: boolean }>`
   ${font.size(15)}
   ${props => props.$hasicon && 'padding-left: 32px;'}
   &:hover {
-    background: ${color.backgroundLight};
+    background: ${color.backgroundLight} !important;
   }
   &:focus {
     background: #fff;
-    border: 1px solid ${color.borderInputFocus};
-    box-shadow: 0 0 0 1px ${color.borderInputFocus};
+    border: 1px solid ${color.borderInputFocus} !important;
+    box-shadow: 0 0 0 1px ${color.borderInputFocus} !important;
   }
   ${props =>
         props.$invalid &&

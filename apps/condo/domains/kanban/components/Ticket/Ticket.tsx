@@ -52,6 +52,11 @@ margin-left: -12px;
 const NumberTicket = styled.span`
 font-weight: 600;
 `
+const Icons = styled.span`
+ display: flex;
+ align-items: center;
+`
+
 const Assignees = styled.div`
   display: flex;
   flex-direction: row-reverse;
@@ -77,10 +82,10 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                     <Ticket isbeingdragged={snapshot.isDragging && !snapshot.isDropAnimating ? 'true' : undefined}>
                         <Title><NumberTicket>{TicketsTitle} №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</Title>
                         <Bottom>
-                            <div>
+                            <Icons>
                                 <TicketTypeIcon type='task' size='medium'/>
-                                <TicketPriorityIcon priority={ticket.order || 1} size='large'/>
-                            </div>
+                                <TicketPriorityIcon priority={ticket.order || 1} size='medium'/>
+                            </Icons>
                             <Assignees>
                                 <AssigneeAvatar
                                     size={24}

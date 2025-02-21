@@ -40,7 +40,7 @@ const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
     }
 
     return (
-        <Fragment>
+        <>
             <TitleTextarea
                 onChange={() => null}
                 minRows={1}
@@ -55,7 +55,7 @@ const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
                 }}
             />
             {error && <ErrorText>{error}</ErrorText>}
-        </Fragment>
+        </>
     )
 }
 

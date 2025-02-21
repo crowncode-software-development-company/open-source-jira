@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
@@ -30,15 +29,11 @@ const TipLetter = styled.span`
   ${font.size(12)}
 `
 
-const propTypes = {
-    setFormOpen: PropTypes.func.isRequired,
-}
-
 interface IProps {
-    setFormOpen: (update) => void
+    setIsCommentCreating: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setFormOpen }) => {
+const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setIsCommentCreating }) => {
     const intl = useIntl()
     const TipTitle = intl.formatMessage({ id: 'kanban.ticket.proTip.title' })
     const PressTitle = intl.formatMessage({ id: 'kanban.ticket.proTip.press.title' })
@@ -48,7 +43,7 @@ const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setFor
         const handleKeyDown = event => {
             if (!isFocusedElementEditable() && event.keyCode === KeyCodes.M) {
                 event.preventDefault()
-                setFormOpen(true)
+                setIsCommentCreating(true)
             }
         }
 
@@ -57,7 +52,7 @@ const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setFor
         return () => {
             document.removeEventListener('keydown', handleKeyDown)
         }
-    }, [setFormOpen])
+    }, [setIsCommentCreating])
 
     return (
         <Tip>
@@ -65,7 +60,5 @@ const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setFor
         </Tip>
     )
 }
-
-ProjectBoardIssueDetailsCommentsCreateProTip.propTypes = propTypes
 
 export default ProjectBoardIssueDetailsCommentsCreateProTip

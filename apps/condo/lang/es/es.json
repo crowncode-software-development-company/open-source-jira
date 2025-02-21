@@ -3240,6 +3240,13 @@
   "kanban.file.delete.confirmText": "Eliminar archivo",
   "kanban.file.delete.title": "¿Está seguro de que desea eliminar este archivo?",
   "kanban.file.delete.message": "Una vez eliminado, el archivo no se podrá recuperar.",
-  "kanban.file.noResult.title": "Aún no hay archivos adjuntos"
-  
+  "kanban.file.noResult.title": "Aún no hay archivos adjuntos",
+  "kanban.create.type.help": "Resume brevemente la esencia del problema en una o dos oraciones.",
+  "kanban.create.description.help": "Proporcione una descripción detallada del problema.",
+  "kanban.create.priority.help": "La prioridad de la solicitud en relación con otras.",
+  "kanban.create.executor.help": "Especifique el ejecutor de la solicitud.",
+  "kanban.create.assignee.help": "Especifique la persona responsable de ejecutar la solicitud.",
+  "kanban.create.deadline.help": "Indique la fecha límite para completar la solicitud.",
+  "kanban.create.deferUntil.title": "¿Hasta qué fecha se debe aplazar la solicitud?"
+
 }

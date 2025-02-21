@@ -91,17 +91,6 @@ const ProjectBoardTicketDetailsFiles = ({ ticket, files, refetchTicketFiles }) =
         url: file.publicUrl,
     })), [files])
 
-    const handleFileDownload = useCallback(async (file: UploadFile) => {
-        await downloadFile({ name: file.name, url: file.url })
-    }, [downloadFile])
-
-
-    const handleOnRemoveFile = (deletedFile) => {
-        setOpen(true)
-        console.log(files, deletedFile)
-        setDeletedFile(files.find((file) => file.file.id === deletedFile.uid))
-    }
-
     const update = TicketFile.useUpdate({})
     const handleDeleteFile = () => {
         runMutation({
@@ -112,6 +101,17 @@ const ProjectBoardTicketDetailsFiles = ({ ticket, files, refetchTicketFiles }) =
             onError: () => notification.error({ message: ErrorTitle }),
         })
         setOpen(false)
+    }
+
+    const handleFileDownload = useCallback(async (file: UploadFile) => {
+        await downloadFile({ name: file.name, url: file.url })
+    }, [downloadFile])
+
+
+    const handleOnRemoveFile = (deletedFile) => {
+        setOpen(true)
+        console.log(files, deletedFile)
+        setDeletedFile(files.find((file) => file.file.id === deletedFile.uid))
     }
 
     return (

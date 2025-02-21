@@ -41,16 +41,14 @@ const ProjectTicketSearch = () => {
     const NoResultTipTitle = intl.formatMessage({ id: 'kanban.ticket.noResults.Tip.title' })
     const router = useRouter()
     const { organization } = useOrganization()
+    const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(!getSearchTerm)
+    const [searchValue, setSearchValue] = useState(getSearchTerm)
 
-    const getSearchTerm = () => {
+    function getSearchTerm () {
         const searchTerm = router.query['search-term']
         return Array.isArray(searchTerm) ? searchTerm[0] : searchTerm || ''
     }
 
-    const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(!getSearchTerm)
-    const [searchValue, setSearchValue] = useState(getSearchTerm)
-
-    
     useEffect(() => {
         const currentSearchValue = getSearchTerm()
         setSearchValue(currentSearchValue)
@@ -133,17 +131,17 @@ const ProjectTicketSearch = () => {
             </SearchInputCont>
 
             {isSearchTermEmpty && recentTicket.length > 0 && (
-                <Fragment>
+                <>
                     <SectionTitle>{RecentTicketTitle}</SectionTitle>
                     {recentTicket.map((tickets, index) => renderTicket(tickets, index))}
-                </Fragment>
+                </>
             )}
 
             {!isSearchTermEmpty && tickets.length > 0 && (
-                <Fragment>
+                <>
                     <SectionTitle>{MatchingTicketTitle}</SectionTitle>
                     {tickets.map((tickets, index) => renderTicket(tickets, index))}
-                </Fragment>
+                </>
             )}
 
             {!isSearchTermEmpty && !isTicketsFetching && tickets.length === 0 && (

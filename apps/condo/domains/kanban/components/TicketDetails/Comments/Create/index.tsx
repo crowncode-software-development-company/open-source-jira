@@ -42,13 +42,13 @@ const FakeTextarea = styled.div`
 const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted }) => {
     const intl = useIntl()
     const AddCommentTitle = intl.formatMessage({ id: 'kanban.ticket.addComment.title' })
-    const [isFormOpen, setFormOpen] = useState(false)
-    const [isCreating, setCreating] = useState(false)
-    const [body, setBody] = useState<any>('')
+    const [isCommentFormOpen, setIsCommentFormOpen] = useState(false)
+    const [isCommentCreating, setIsCommentCreating] = useState(false)
+    const [body, setBody] = useState('')
     const [createCommentAction] = useCreateTicketCommentMutation({ onCompleted: onCompleted })
 
     const handleCommentCreate = async () => {
-        setCreating(true)
+        setIsCommentCreating(true)
         await createCommentAction({
             variables: {
                 data: {
@@ -61,11 +61,11 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted })
             },
         })
         clearForm()
-        setCreating(false)
+        setIsCommentCreating(false)
     }
 
     const clearForm = () => {
-        setFormOpen(false)
+        setIsCommentFormOpen(false)
         setBody('')
     }
     
@@ -73,20 +73,19 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted })
         <Create>
             <UserAvatar name={user.name} />
             <Right>
-                {isFormOpen ? (
+                {isCommentFormOpen ? (
                     <BodyForm
-                        ticketId={ticketId}
                         value={body}
                         onChange={setBody}
-                        isWorking={isCreating}
+                        isWorking={isCommentCreating}
                         onSubmit={handleCommentCreate}
                         onCancel={clearForm}
                     />
                 ) : (
-                    <Fragment>
-                        <FakeTextarea onClick={() => setFormOpen(true)}>{AddCommentTitle}</FakeTextarea>
-                        <ProTip setFormOpen={setFormOpen} />
-                    </Fragment>
+                    <>
+                        <FakeTextarea onClick={() => setIsCommentFormOpen(true)}>{AddCommentTitle}</FakeTextarea>
+                        <ProTip setIsCommentCreating={setIsCommentCreating} />
+                    </>
                 )}
             </Right>
         </Create>

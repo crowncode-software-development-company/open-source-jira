@@ -146,7 +146,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
     }
     
     return (
-        <Fragment>
+        <>
             <TopActions>
                 <Type ticket={ticket} />
                 <TopActionsRight>
@@ -170,7 +170,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
                     <Dates ticket={ticket} /> 
                 </Right>
             </Content>
-        </Fragment>
+        </>
     )
 }
 

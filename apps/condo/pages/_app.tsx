@@ -203,30 +203,30 @@ const MenuItems: React.FC = () => {
                 },
             ].filter(checkItemAccess),
         },
-        {
-            key: PROPERTIES_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-property',
-                    path: 'property',
-                    icon: AllIcons['Building'],
-                    label: 'global.section.properties',
-                    access: hasAccessToProperties,
-                },
-            ].filter(checkItemAccess),
-        },
-        {
-            key: RESIDENTS_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-contact',
-                    path: 'contact',
-                    icon: AllIcons['Contacts'],
-                    label: 'global.section.contacts',
-                    access: isManagingCompany && hasAccessToContacts,
-                },
-            ].filter(checkItemAccess),
-        },
+        // {
+        //     key: PROPERTIES_CATEGORY,
+        //     items: [
+        //         {
+        //             id: 'menuitem-property',
+        //             path: 'property',
+        //             icon: AllIcons['Building'],
+        //             label: 'global.section.properties',
+        //             access: hasAccessToProperties,
+        //         },
+        //     ].filter(checkItemAccess),
+        // },
+        // {
+        //     key: RESIDENTS_CATEGORY,
+        //     items: [
+        //         {
+        //             id: 'menuitem-contact',
+        //             path: 'contact',
+        //             icon: AllIcons['Contacts'],
+        //             label: 'global.section.contacts',
+        //             access: isManagingCompany && hasAccessToContacts,
+        //         },
+        //     ].filter(checkItemAccess),
+        // },
         {
             key: EMPLOYEES_CATEGORY,
             items: [
@@ -247,8 +247,9 @@ const MenuItems: React.FC = () => {
                     path: 'kanban',
                     icon: AllIcons['CreditCard'],
                     label: 'kanban.title',
+                    access: hasAccessToTickets,
                 },
-            ],
+            ].filter(checkItemAccess),
         },
         
     ]), [hasAccessToAnalytics, isManagingCompany, hasAccessToTickets, hasAccessToIncidents, hasAccessToNewsItems, hasAccessToProperties, hasAccessToContacts, hasAccessToEmployees, isMarketplaceEnabled, hasAccessToMarketplace, isSPPOrg, hasAccessToBilling, anyReceiptsLoaded, sppBillingId, hasAccessToMeters, hasAccessToServices, connectedAppsIds, hasAccessToSettings])

@@ -14,16 +14,17 @@ const ProjectBoardTicketDetailsDelete = ({ ticket, refetchTicketsBoard }) => {
     const DeleteTitle = intl.formatMessage({ id: 'kanban.ticket.delete.title' })
     const DeleteMessage = intl.formatMessage({ id: 'kanban.ticket.delete.message' })
 
-    const handleTicketDelete = () => {
-        deleteAction({ id: ticket.id })
-    }
     const [updateTicket] = useUpdateTicketMutation({
         onCompleted: async () => {
             await refetchTicketsBoard()
         },
     })
+
+    const handleTicketDelete = () => {
+        deleteAction(ticket.id)
+    }
         
-    const deleteAction = async ({ id }) => {
+    const deleteAction = async ( id ) => {
         await updateTicket({
             variables: {
                 id,
@@ -43,7 +44,7 @@ const ProjectBoardTicketDetailsDelete = ({ ticket, refetchTicketsBoard }) => {
             confirmText={DeleteСonfirmText}
             onConfirm={handleTicketDelete}
             renderLink={({ open }) => (
-                <Button icon={<Trash size='small'/>} iconSize={19} variant='empty' onClick={open} />
+                <Button disabled icon={<Trash size='small'/>} iconSize={19} variant='empty' onClick={open} />
             )}
         />
     )

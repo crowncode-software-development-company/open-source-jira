@@ -21,9 +21,9 @@ const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters })
     const intl = useIntl()
     const MyTicketTitle = intl.formatMessage({ id: 'kanban.myTicket' })
     const ClearTitle = intl.formatMessage({ id: 'kanban.clearAll' })
-    const { myOnly, userIds } = filters
     const { organization } = useOrganization()
     const { user } = useAuth()
+    const { myOnly, userIds } = filters
     const { objs: employeesData, loading: employeesLoading } = OrganizationEmployee.useAllObjects({
         where: {
             organization: { id: organization.id },

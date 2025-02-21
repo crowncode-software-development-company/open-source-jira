@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
 
-import { ChevronDown, Close, PlusCircle } from '@open-condo/icons'
+import { ChevronDown, PlusCircle } from '@open-condo/icons'
 
 import Dropdown from './Dropdown'
 import {
@@ -15,6 +15,7 @@ import {
 
 import { KeyCodes } from '../../constants'
 import useOnOutsideClick from '../../hooks/useOnOutsideClick'
+import { color } from  '../../styles'
 
 const propTypes = {
     className: PropTypes.string,
@@ -137,14 +138,14 @@ const Select = ({
     return (
         <StyledSelect
             className={className}
-            variant={variant}
+            $variant={variant}
             ref={$selectRef}
             tabIndex='0'
             onKeyDown={handleFocusedSelectKeydown}
-            invalid={invalid}
+            $invalid={invalid}
         >
             <ValueContainer
-                variant={variant}
+                $variant={variant}
                 onClick={activateDropdown}
             >
                 {isValueEmpty && <Placeholder>{placeholder}</Placeholder>}
@@ -154,7 +155,7 @@ const Select = ({
                     : getOptionLabel(value)}
 
                 {!isValueEmpty && isMulti && (
-                    <ValueMulti variant={variant}>
+                    <ValueMulti $variant={variant}>
                         {value.map(optionValue =>
                             propsRenderValue ? (
                                 propsRenderValue({
@@ -175,7 +176,7 @@ const Select = ({
                 )}
 
                 {(!isMulti || isValueEmpty) && variant !== 'empty' && (
-                    <ChevronDown size='small'/>
+                    <ChevronDown size='medium' color={color.textMedium}/>
                 )}
             </ValueContainer>
 

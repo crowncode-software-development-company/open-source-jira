@@ -18,12 +18,11 @@ export const InputCont = styled.div`
 const INPUT_STYLE: CSSProperties = { width: '150px', height: '32px', borderRadius: '5px', backgroundColor: color.backgroundLightest, marginLeft: '-5px' }
 
 const ProjectBoardIssueDetailsDeadline = ({ ticket, updateTicket }) => {
-    const [loading, setLoading] = useState(false)
     const intl = useIntl()
     const DeadlineTitle = intl.formatMessage({ id: 'kanban.ticket.deadline.title' })
-    
     const [deadline, setDeadline] = useState(dayjs(ticket.deadline))
-
+    const [loading, setLoading] = useState(false)
+    
     const onPeriodChange = async (newDate) => {
         setDeadline(newDate)
         setLoading(true)
@@ -31,7 +30,7 @@ const ProjectBoardIssueDetailsDeadline = ({ ticket, updateTicket }) => {
         setLoading(false)
     }
     return (
-        <Fragment>
+        <>
             <SectionTitle>{DeadlineTitle}</SectionTitle>
             <InputCont>
                 <DatePicker
@@ -44,7 +43,7 @@ const ProjectBoardIssueDetailsDeadline = ({ ticket, updateTicket }) => {
                     format='DD.MM.YYYY'
                 />
             </InputCont>
-        </Fragment>
+        </>
     )
 }
 

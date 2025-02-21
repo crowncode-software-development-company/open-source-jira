@@ -19,15 +19,14 @@ const FormButton = styled(Button)`
   margin-right: 6px;
 `
 interface IProps {
-    ticketId: string
     value: string
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    onChange: React.Dispatch<React.SetStateAction<string>>
     isWorking: boolean
     onSubmit: () => void
     onCancel: () => void
 }
 
-const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ ticketId, value, onChange, isWorking, onSubmit, onCancel }) => {
+const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ value, onChange, isWorking, onSubmit, onCancel }) => {
     const intl = useIntl()
     const AddCommentTitle = intl.formatMessage({ id: 'kanban.ticket.addComment.title' })
     const SaveTitle = intl.formatMessage({ id: 'Save' })
@@ -47,17 +46,10 @@ const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ ticketId, 
                 onSubmit()
             }
         }
-    }
-
-    const { UploadComponent, syncModifiedFiles, resetModifiedFiles, filesCount } = useMultipleFileUploadHook({
-        Model: TicketCommentFile,
-        relationField: 'ticketComment',
-        initialFileList: [],
-        initialCreateValues: { ticket: { connect: { id: ticketId } } },
-    })   
+    }  
 
     return (
-        <Fragment>
+        <>
             <Textarea
                 disabled={isWorking}
                 ref={textareaRef}
@@ -74,9 +66,8 @@ const ProjectBoardIssueDetailsCommentsBodyForm: React.FC<IProps> = ({ ticketId, 
                 <FormButton variant='empty' onClick={onCancel}>
                     {CancelTitle}
                 </FormButton>
-                {/* <UploadComponent initialFileList={[]} /> */}
             </Actions>
-        </Fragment>
+        </>
     )
 }
 

@@ -19,10 +19,13 @@ const ProjectBoardIssueDetailsDates = ({ ticket }) => {
     const intl = useIntl()
     const CreatedAtTitle = intl.formatMessage({ id: 'kanban.ticket.createdAt.title' })
     const UpdatedAtTitle = intl.formatMessage({ id: 'kanban.ticket.updatedAt.title' })
-    return (<Dates>
-        <div>{CreatedAtTitle} {formatDateTimeConversational(ticket.createdAt)}</div>
-        <div>{UpdatedAtTitle} {formatDateTimeConversational(ticket.updatedAt)}</div>
-    </Dates>)
+
+    return (
+        <Dates>
+            <div>{CreatedAtTitle} {formatDateTimeConversational(ticket.createdAt)}</div>
+            <div>{UpdatedAtTitle} {formatDateTimeConversational(ticket.updatedAt)}</div>
+        </Dates>
+    )
 }
 
 export default ProjectBoardIssueDetailsDates

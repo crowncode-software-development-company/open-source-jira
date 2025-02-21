@@ -43,7 +43,7 @@ const ProjectBoardList = ({ status, tickets, filters }) => {
     const intl = useIntl()
     const TicketsOfTitle = intl.formatMessage({ id: 'kanban.ticket.tickets.of' })
     const { user } = useAuth()
-    const filteredTickets = filterTickets(tickets, filters, user.id)
+    const filteredTickets = filterTickets({ projectTickets: tickets, filters, userId: user.id })
     const filteredListTickets = getSortedListTickets(filteredTickets, status)
     const allListTickets = getSortedListTickets(tickets, status)
 

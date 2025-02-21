@@ -365,7 +365,6 @@ const FormWithAction: React.FC<IFormWithAction> = (props) => {
             },
             onFinally: () => {
                 setIsLoading(false)
-                form.resetFields()
             },
             intl,
             form,

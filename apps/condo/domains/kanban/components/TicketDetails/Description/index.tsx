@@ -38,7 +38,7 @@ const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket, refetchTic
     const AddDescriptionTitle = intl.formatMessage({ id: 'kanban.ticket.addDescription.title' })
     const SaveTitle = intl.formatMessage({ id: 'Save' })
     const CancelTitle = intl.formatMessage({ id: 'Cancel' })
-    const [description, setDescription] = useState(ticket.details)
+    const [description, setDescription] = useState<string>(ticket.details)
     const [isEditing, setEditing] = useState(false)
 
     const handleUpdate = async () => {
@@ -46,7 +46,7 @@ const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket, refetchTic
         updateTicket({
             details: description,
         })
-        // await refetchTicketFiles()
+        await refetchTicketFiles()
     }
 
     const handleCancel = () => {
@@ -57,27 +57,26 @@ const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket, refetchTic
     const isDescriptionEmpty = isEmptyHtml(description.trim())
 
     return (
-        <Fragment>
-            {console.log(description)}
+        <>
             <Title>{DescriptionTitle}</Title>
             {isEditing ? (
-                <Fragment>
-                    <TextEditor ticketId={ticket.id} value = {description}  onChange={(value) => setDescription(value)}/>
+                <>
+                    <TextEditor action='update' ticketId ={ticket.id} value = {description}  onChange={(value) => setDescription(value)}/>
                     <Actions>
                         <Button variant='primary' onClick={handleUpdate}>{SaveTitle}</Button>
                         <Button variant='empty' onClick={handleCancel}>{CancelTitle}</Button>
                     </Actions>
-                </Fragment>
+                </>
             ) : (
-                <Fragment>
+                <>
                     {isDescriptionEmpty ? (
                         <EmptyLabel onClick={() => setEditing(true)}>{AddDescriptionTitle}</EmptyLabel>
                     ) : (
                         <TextEditedContent content={description} onClick={() => setEditing(true)} />
                     )}
-                </Fragment>
+                </>
             )}
-        </Fragment>
+        </>
     )
 }
 

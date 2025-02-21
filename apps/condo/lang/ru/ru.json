@@ -3240,5 +3240,13 @@
   "kanban.file.delete.confirmText": "Удалить файл",
   "kanban.file.delete.title": "Вы уверены, что хотите удалить этот файл?",
   "kanban.file.delete.message": "После удаления файл невозможно восстановить.",
-  "kanban.file.noResult.title": "Прикрепленных файлов пока нет"
+  "kanban.file.noResult.title": "Прикрепленных файлов пока нет",
+  "kanban.create.type.help": "Выберите тип заявки из предложенных.",
+  "kanban.create.title.help": "Кратко изложите суть проблемы в одном или двух предложениях.",
+  "kanban.create.description.help": "Подробно опишите проблему.",
+  "kanban.create.priority.help": "Приоритет заявки по отношению к другим.",
+  "kanban.create.executor.help": "Укажите исполнителя заявки.",
+  "kanban.create.assignee.help": "Укажите ответственного за исполнение заявки.",
+  "kanban.create.deadline.help": "Укажите дату, до которой необходимо выполнить заявку.",
+  "kanban.create.deferUntil.title": "До какой даты отложить заявку?"
 }
