@@ -21,6 +21,7 @@ query getTickets(
     statusUpdatedAt
     completedAt
     deadline
+    meta
     lastResidentCommentAt
     lastCommentWithResidentTypeAt
     propertyAddressMeta {
@@ -197,7 +198,7 @@ query getTicketById($id: ID!) {
     clientPhone
     details
     isPayable
-
+    meta
     organization {
       id
       type

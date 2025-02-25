@@ -3247,6 +3247,7 @@
   "kanban.create.executor.help": "Especifique el ejecutor de la solicitud.",
   "kanban.create.assignee.help": "Especifique la persona responsable de ejecutar la solicitud.",
   "kanban.create.deadline.help": "Indique la fecha límite para completar la solicitud.",
-  "kanban.create.deferUntil.title": "¿Hasta qué fecha se debe aplazar la solicitud?"
+  "kanban.create.deferUntil.title": "¿Hasta qué fecha se debe aplazar la solicitud?",
+  "kanban.ticket.successDelete.title": "Solicitud Eliminada"
 
 }

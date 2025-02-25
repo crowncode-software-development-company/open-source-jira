@@ -3248,5 +3248,6 @@
   "kanban.create.executor.help": "Укажите исполнителя заявки.",
   "kanban.create.assignee.help": "Укажите ответственного за исполнение заявки.",
   "kanban.create.deadline.help": "Укажите дату, до которой необходимо выполнить заявку.",
-  "kanban.create.deferUntil.title": "До какой даты отложить заявку?"
+  "kanban.create.deferUntil.title": "До какой даты отложить заявку?",
+  "kanban.ticket.successDelete.title": "Заявка удалена"
 }

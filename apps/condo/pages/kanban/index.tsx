@@ -14,6 +14,7 @@ import { ProjectBoard } from '@condo/domains/kanban/components/Board'
 import ProjectTicketCreate from '@condo/domains/kanban/components/TicketCreate/TicketCreate'
 import ProjectBoardTicketDetails from '@condo/domains/kanban/components/TicketDetails'
 import ProjectTicketSearch from '@condo/domains/kanban/components/TicketSearch/TicketSearch'
+import { CreateTicketForm } from '@condo/domains/ticket/components/TicketForm/CreateTicketForm'
 
 import { useGetTicketsQuery, useGetTicketStatusesQuery } from '../../gql'
 
@@ -44,8 +45,8 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
     
     return (
         <>
-            <Modal zIndex={100} width={720} open={isCreateTicketOpen} onCancel={handleCloseModals} closable={false} footer={null} style={{ top: 10, padding: 5 }} transitionName=''>
-                <ProjectTicketCreate closeModal={handleCloseModals} />
+            <Modal zIndex={100} width={1040} open={isCreateTicketOpen} onCancel={handleCloseModals} closable={false} footer={null} style={{ top: 10, padding: 5 }} transitionName=''>
+                <CreateTicketForm closeModal={handleCloseModals} />
             </Modal>
 
             <Modal zIndex={100} width={720} open={isSearchTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} transitionName=''>
@@ -53,7 +54,7 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
             </Modal>
 
             <Modal zIndex={100} width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
-                <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} modalClose = {handleCloseModals} refetchTicketsBoard={refetchAllTickets}/>
+                <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} handleCloseModals = {handleCloseModals} refetchTicketsBoard={refetchAllTickets}/>
             </Modal>
             
             <ProjectBoard tickets={tickets} ticketStatuses={ticketStatuses} refetchAllTickets={refetchAllTickets}/>

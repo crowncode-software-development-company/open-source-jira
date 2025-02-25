@@ -54,7 +54,7 @@ const TopActionsRight = styled.div`
   margin-left: 30px;
 `
 
-const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose, refetchTicketsBoard }) => {
+const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, handleCloseModals, refetchTicketsBoard }) => {
     const { user } = useAuth()
     const { query } = useRouter()
     const intl = useIntl()
@@ -149,10 +149,12 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, modalClose,
         <>
             <TopActions>
                 <Type ticket={ticket} />
+                {console.log(ticket)
+                }
                 <TopActionsRight>
                     <CopyLinkButton />
-                    <Delete ticket={ticket} refetchTicketsBoard={refetchTicketsBoard}/>
-                    <Button icon={<Close/>} iconSize={24} variant='empty' onClick={modalClose} />
+                    <Delete ticket={ticket} refetchTicketsBoard={refetchTicketsBoard} handleCloseModals={handleCloseModals}/>
+                    <Button icon={<Close/>} iconSize={24} variant='empty' onClick={handleCloseModals} />
                 </TopActionsRight>
             </TopActions>
             <Content>

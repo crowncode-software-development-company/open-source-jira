@@ -2365,6 +2365,7 @@ export const GetTicketsDocument = gql`
     statusUpdatedAt
     completedAt
     deadline
+    meta
     lastResidentCommentAt
     lastCommentWithResidentTypeAt
     propertyAddressMeta {
@@ -2700,6 +2701,7 @@ export const GetTicketByIdDocument = gql`
     clientPhone
     details
     isPayable
+    meta
     organization {
       id
       type

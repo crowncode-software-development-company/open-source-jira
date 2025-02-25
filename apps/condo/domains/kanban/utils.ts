@@ -10,9 +10,10 @@ export const copyToClipboard = value => {
 }
 
 export const getTextContentsFromHtmlString = html => {
+    const modifiedHtml = html.replace(/<(w+)/g, '<$1 ')
     const el = document.createElement('div')
-    el.innerHTML = html
-    return el.textContent
+    el.innerHTML = modifiedHtml
+    return el.textContent.trim()
 }
 
 export const sortByNewest = (items, sortField) =>

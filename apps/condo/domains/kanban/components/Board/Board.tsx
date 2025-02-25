@@ -27,11 +27,12 @@ const ProjectBoard = ({ tickets, ticketStatuses, refetchAllTickets }) => {
         <>
             <HeaderContainer>
                 <Header />
+                {tickets.length > 0 && 
                 <Filters 
                     tickets={tickets}
                     defaultFilters={defaultFilters}
                     filters={filters}
-                    mergeFilters={mergeFilters}/>
+                    mergeFilters={mergeFilters}/>}
             </HeaderContainer>
             <Lists
                 tickets={tickets}

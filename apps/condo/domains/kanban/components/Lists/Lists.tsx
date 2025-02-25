@@ -6,7 +6,7 @@ import { DragDropContext } from 'react-beautiful-dnd'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
-import { isPositionChanged } from './utils'
+import { calculateTicketColumnPosition, isPositionChanged } from './utils'
 
 import { useNotificationMessages } from '../../../common/hooks/useNotificationMessages'
 import { runMutation } from '../../../common/utils/mutations.utils'
@@ -19,77 +19,84 @@ const Lists = styled.div`
   gap: 5px;
 `
 
-type UpdateData = {
-    status: {
-        connect: {
-            id: UUID
-        }
-    }
-    deferredUntil?: string
-}
-
 const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses }) => {
     const intl = useIntl()
     const DefferedStatusTitle = intl.formatMessage({ id: 'ticket.status.DEFERRED.name' })
-    const ErrorTitle = intl.formatMessage({ id: 'ErrorOccurred' })
     const { getSuccessfulChangeNotification } = useNotificationMessages()
     const [localTickets, setLocalTickets] = useState(tickets)
     const [deferredUntil, setDeferredUntil] = useState(dayjs())
     const [isOpenUntil, setOpenUntil] = useState(false)
     const [currentDraggableTicketId, setCurrentDraggableTicketId] = useState('')
+    const [newColumnPosition, setNewColumnPosition] = useState(null)
+
+    const update = Ticket.useUpdate({})
 
     useEffect(() => {
         setLocalTickets(tickets)
     }, [tickets])
-    
-    const update = Ticket.useUpdate({})
-    
-    const updateTicketStatus = (newType, id, deferUntil?) => {
-        
-        const updateData: UpdateData = {
+
+    const updateTicketStatus = (newType, id, newListPosition, deferUntil?) => {
+        const currentTicket = tickets.find(ticket => ticket.id === id)
+
+        const updateData = {
             status: { connect: { id: ticketStatuses[newType].id } },
-            ...(deferUntil && { deferredUntil: deferUntil }), 
+            meta: { ...currentTicket.meta, columnPosition: newListPosition, dv: 1 },
+            ...(deferUntil && { deferredUntil: deferUntil }),
         }
-        
+
         runMutation({
-            action:() => update(updateData, tickets.find((ticket) => ticket.id === id)),
+            action: () => update(updateData, currentTicket),
             intl,
             OnCompletedMsg: getSuccessfulChangeNotification,
-            onCompleted: () => {refetchAllTickets(), setCurrentDraggableTicketId(''), setDeferredUntil(dayjs())},
+            onCompleted: () => {
+                refetchAllTickets()
+                resetState()
+            },
             onError: () => setLocalTickets(tickets),
-            OnErrorMsg: ErrorTitle,
+            OnErrorMsg: intl.formatMessage({ id: 'ErrorOccurred' }),
         })
     }
-    
+
+    const resetState = () => {
+        setCurrentDraggableTicketId('')
+        setDeferredUntil(dayjs())
+        setOpenUntil(false)
+    }
+
     const handleTicketDrop = ({ draggableId, destination, source }) => {
         if (!destination || !isPositionChanged(source, destination)) return
+
+        const newListPosition = calculateTicketColumnPosition(localTickets, destination, source, draggableId)
+        setNewColumnPosition(newListPosition)
+
         setLocalTickets(prevTickets =>
             prevTickets.map(ticket =>
-                ticket.id === draggableId ? { ...ticket, status: { ...ticket.status, name: destination.droppableId } } : ticket
+                ticket.id === draggableId 
+                    ? { ...ticket, status: { ...ticket.status, name: destination.droppableId }, meta: { columnPosition: newListPosition } }
+                    : ticket
             )
         )
+
         if (destination.droppableId === DefferedStatusTitle) {
-            setCurrentDraggableTicketId(draggableId)
-            setOpenUntil(true)
+            const ticket = tickets.find(ticket => ticket.id === draggableId)
+            if (ticket.status.name === DefferedStatusTitle) {
+                updateTicketStatus(DefferedStatusTitle, ticket.id, newListPosition, ticket.deferredUntil)
+            } else {
+                setCurrentDraggableTicketId(draggableId)
+                setOpenUntil(true)
+            }
         } else {
-            updateTicketStatus(destination.droppableId, draggableId)
-        }  
-    }
-
-    const handleUntilClose = () => {
-        setCurrentDraggableTicketId('')
-        setLocalTickets(tickets)
-        setOpenUntil(false)
-    }
-
-    const handleUntilDateChange = () => {
-        updateTicketStatus(DefferedStatusTitle, currentDraggableTicketId, deferredUntil )
-        setOpenUntil(false)
+            updateTicketStatus(destination.droppableId, draggableId, newListPosition)
+        }
     }
 
     return (
         <>
-            <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={handleUntilClose} onOk={handleUntilDateChange} />
+            <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={resetState}
+                onOk={() => {
+                    updateTicketStatus(DefferedStatusTitle, currentDraggableTicketId, newColumnPosition, deferredUntil)
+                    resetState()
+                }} />
             <DragDropContext onDragEnd={handleTicketDrop}>
                 <Lists>
                     {Object.keys(ticketStatuses).map((key) => (

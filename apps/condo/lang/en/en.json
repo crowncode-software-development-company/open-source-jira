@@ -3248,6 +3248,7 @@
   "kanban.create.executor.help": "Specify the executor of the request.",
   "kanban.create.assignee.help": "Specify the person responsible for executing the request.",
   "kanban.create.deadline.help": "Provide the date by which the request needs to be completed.",
-  "kanban.create.deferUntil.title": "Until what date should the request be deferred?"
+  "kanban.create.deferUntil.title": "Until what date should the request be deferred?",
+  "kanban.ticket.successDelete.title": "Ticket Deleted"
 
 }
