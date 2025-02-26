@@ -810,6 +810,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
         <>
             <FormWithAction
                 action={action}
+                resetOnComplete={true}
                 closeModal={closeModal}
                 initialValues={initialTicketValues}
                 validateTrigger={FORM_VALIDATE_TRIGGER}

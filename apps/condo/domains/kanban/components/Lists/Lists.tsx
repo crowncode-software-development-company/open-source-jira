@@ -1,5 +1,3 @@
-import { UUID } from 'crypto'
-
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
