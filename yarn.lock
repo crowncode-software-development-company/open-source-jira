@@ -529,108 +529,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@app/announcements@workspace:apps/announcements":
-  version: 0.0.0-use.local
-  resolution: "@app/announcements@workspace:apps/announcements"
-  dependencies:
-    "@babel/core": ^7.23.0
-    "@babel/preset-env": ^7.22.20
-    "@babel/preset-typescript": ^7.23.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/icons": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@types/node": ^16
-    "@types/react": 18.0.27
-    "@types/react-dom": 18.0.10
-    antd: ^4.24.12
-    next: 13.3.0
-    next-i18n-router: ^4.1.0
-    pdfmake: ^0.2.10
-    react: 18.2.0
-    react-dom: 18.2.0
-    react-intl: ^6.6.5
-    typescript: ^5.5.4
-  languageName: unknown
-  linkType: soft
-
-"@app/asterisk-bot@workspace:apps/asterisk-bot":
-  version: 0.0.0-use.local
-  resolution: "@app/asterisk-bot@workspace:apps/asterisk-bot"
-  dependencies:
-    "@types/node": ^16.3.2
-    dotenv: ^10.0.0
-    node-telegram-bot-api: ^0.53.0
-    simple-node-logger: ^21.8.12
-    ts-node: ^10.9.2
-    ts-node-dev: ^1.0.0-pre.63
-    typescript: ^5.5.4
-    yana: ^1.2.3
-  languageName: unknown
-  linkType: soft
-
-"@app/callcenter@workspace:apps/callcenter":
-  version: 0.0.0-use.local
-  resolution: "@app/callcenter@workspace:apps/callcenter"
-  dependencies:
-    "@ant-design/colors": ^6.0.0
-    "@ant-design/icons": ^4.7.0
-    "@apollo/client": ^3.11.8
-    "@app/condo": "workspace:^"
-    "@callcenter/domains": "link:./domains"
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@graphql-codegen/add": ^5.0.3
-    "@graphql-codegen/cli": ^5.0.2
-    "@graphql-codegen/import-types-preset": ^3.0.0
-    "@graphql-codegen/typescript": ^4.0.9
-    "@graphql-codegen/typescript-operations": ^4.2.3
-    "@graphql-codegen/typescript-react-apollo": ^4.3.2
-    "@open-condo/apollo": "workspace:^"
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/icons": "workspace:^"
-    "@open-condo/locales": "workspace:^"
-    "@open-condo/miniapp-utils": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@types/lodash": 4.14.182
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    antd: ^4.24.12
-    antd-dayjs-webpack-plugin: ^1.0.6
-    antd-mask-input: ^0.1.15
-    classnames: ^2.2.6
-    css-loader: 1.0.0
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    encoding: ^0.1.0
-    extracted-loader: ^1.0.7
-    graphql: ^15.6.1
-    graphql-tag: ^2.12.6
-    ignore-loader: 0.1.2
-    less: ^3.12.2
-    less-loader: ^4.0.0
-    lodash: ^4.17.21
-    next: ^9.5.2
-    next-transpile-modules: ^7.0.0
-    raw-loader: ^4.0.2
-    rc-field-form: ~1.27.0
-    rc-table: ~7.25.3
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    typescript: ^5.5.4
-    webpack: ^4.46.0
-    xss: ^1.0.13
-  languageName: unknown
-  linkType: soft
-
 "@app/condo@workspace:^, @app/condo@workspace:apps/condo":
   version: 0.0.0-use.local
   resolution: "@app/condo@workspace:apps/condo"
@@ -837,9 +735,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@app/dev-api@workspace:^, @app/dev-api@workspace:apps/dev-api":
-  version: 0.0.0-use.local
-  resolution: "@app/dev-api@workspace:apps/dev-api"
 "@app/dev-portal-api@workspace:^, @app/dev-portal-api@workspace:apps/dev-portal-api":
   version: 0.0.0-use.local
   resolution: "@app/dev-portal-api@workspace:apps/dev-portal-api"
@@ -950,354 +845,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@app/documents@workspace:apps/documents":
-  version: 0.0.0-use.local
-  resolution: "@app/documents@workspace:apps/documents"
-  dependencies:
-    "@babel/core": ^7.23.0
-    "@babel/preset-env": ^7.22.20
-    "@babel/preset-typescript": ^7.23.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/icons": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@types/node": ^16
-    "@types/react": 18.0.27
-    "@types/react-dom": 18.0.10
-    antd: ^4.24.12
-    next: 13.3.0
-    next-i18n-router: ^4.1.0
-    react: 18.2.0
-    react-dom: 18.2.0
-    react-intl: ^6.6.5
-    typescript: ^5.5.4
-  languageName: unknown
-  linkType: soft
-
-"@app/employee-bot@workspace:apps/employee-bot":
-  version: 0.0.0-use.local
-  resolution: "@app/employee-bot@workspace:apps/employee-bot"
-  dependencies:
-    "@employee-bot/domains": "link:./domains"
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-graphql-playground": ^5.2.2
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-markdown": ^5.3.2
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    axios: ^1.5.1
-    babel-jest: ^29.7.0
-    dayjs: ^1.10.6
-    express: ^4.17.1
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: ^0.6.1
-    lodash: ^4.17.21
-    node-telegram-bot-api: ^0.64.0
-    uuid: ^8.3.0
-  languageName: unknown
-  linkType: soft
-
-"@app/eps@workspace:apps/eps":
-  version: 0.0.0-use.local
-  resolution: "@app/eps@workspace:apps/eps"
-  dependencies:
-    "@ant-design/icons": ^4.7.0
-    "@apollo/client": ^3.11.8
-    "@arch-ui/color-utils": ^0.0.5
-    "@arch-ui/confirm": ^0.0.26
-    "@arch-ui/controls": ^0.1.12
-    "@arch-ui/layout": ^0.2.17
-    "@arch-ui/select": ^0.1.12
-    "@arch-ui/theme": ^0.0.14
-    "@arch-ui/typography": ^0.0.21
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@eps/domains": "link:./domains"
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-next": ^5.2.3
-    "@keystonejs/app-static": ^5.2.0
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-location-google": ^3.4.0
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@testing-library/react": ^11.2.5
-    "@types/echarts": ^4.9.9
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@types/react-infinite-scroller": ^1.2.2
-    "@welldone-software/why-did-you-render": ^5.0.0-alpha.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    ajv: 8.11.0
-    antd: ^4.24.12
-    apollo-boost: ^0.4.9
-    apollo-cache-inmemory: ^1.6.6
-    apollo-errors: ^1.9.0
-    apollo-link-error: ^1.1.13
-    apollo-link-http: ^1.5.17
-    apollo-server-errors: ^3.1.0
-    apollo-upload-client: ^14.1.3
-    babel-jest: ^29.7.0
-    big.js: ^6.1.1
-    classnames: 2.2.6
-    cross-env: ^7.0.3
-    cross-fetch: ^3.1.4
-    css-loader: 1.0.0
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    extracted-loader: ^1.0.7
-    facepaint: ^1.2.1
-    get-contrast: ^2.0.0
-    graphql: ^15.6.1
-    graphql-request: ^3.5.0
-    graphql-tag: ^2.12.6
-    identity-obj-proxy: ^3.0.0
-    ignore-loader: 0.1.2
-    immer: 9.0.13
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: ^0.6.1
-    js-cookie: ^2.2.1
-    less: ^3.12.2
-    less-loader: ^4.0.0
-    lodash: ^4.17.21
-    mkdirp: ^1.0.4
-    next: ^9.5.2
-    next-cookies: ^2.0.3
-    next-transpile-modules: ^4.1.0
-    node-fetch: ^2.6.7
-    numeral: 2.0.6
-    pino: ^6.13.3
-    qs: ^6.9.4
-    raw-loader: ^4.0.2
-    rc-queue-anim: ^1.8.5
-    rc-table: ~7.25.3
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-fittext: ^1.0.0
-    react-markdown: ^4.3.1
-    react-otp-input: ^2.4.0
-    react-responsive: ^8.1.0
-    react-test-renderer: ^16.13.1
-    socks-proxy-agent: ^6.2.0
-    socks5-https-client: ^1.2.1
-    typescript: ^5.5.4
-    use-immer: ^0.4.1
-    uuid: ^8.3.0
-    validator: ^13.1.1
-    webpack: ^4.46.0
-    xml-c14n: ^0.0.6
-    xml-crypto: ^2.1.3
-    xml-js: ^1.6.11
-  languageName: unknown
-  linkType: soft
-
-"@app/external-api@workspace:apps/external-api":
-  version: 0.0.0-use.local
-  resolution: "@app/external-api@workspace:apps/external-api"
-  dependencies:
-    "@condo/domains": "link:../condo/domains"
-    "@faker-js/faker": ^8.3.1
-    "@open-condo/keystone": "workspace:^"
-    apollo-boost: ^0.4.9
-    apollo-client: ^2.6.10
-    apollo-link-error: ^1.1.13
-    apollo-upload-client: 17.0.0
-    body-parser: ^1.20.2
-    cross-fetch: ^4.0.0
-    dayjs: ^1.10.6
-    dotenv: ^16.3.2
-    express: ^4.18.2
-    express-pino-logger: ^6.0.0
-    graphql: ^16.8.1
-    graphql-tag: ^2.12.6
-    lodash: ^4.17.21
-    node-fetch: 2.6.7
-    pluralize: ^8.0.0
-    react-apollo: ^3.1.5
-    uuid: ^9.0.1
-  languageName: unknown
-  linkType: soft
-
-"@app/insurance@workspace:apps/insurance":
-  version: 0.0.0-use.local
-  resolution: "@app/insurance@workspace:apps/insurance"
-  dependencies:
-    "@ant-design/icons": ^4.7.0
-    "@apollo/client": ^3.11.8
-    "@app/condo": "workspace:^"
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@insurance/domains": "link:./domains"
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-next": ^5.2.3
-    "@keystonejs/app-static": ^5.2.0
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-location-google": ^3.4.0
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@testing-library/react": ^11.2.5
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@welldone-software/why-did-you-render": ^5.0.0-alpha.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    ajv: 8.11.0
-    antd: ^4.24.12
-    antd-dayjs-webpack-plugin: ^1.0.6
-    apollo-server-errors: ^3.1.0
-    babel-jest: ^29.7.0
-    classnames: 2.2.6
-    css-loader: 1.0.0
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    extracted-loader: ^1.0.7
-    facepaint: ^1.2.1
-    falsey: ^1.0.0
-    get-contrast: ^2.0.0
-    graphql: ^15.6.1
-    graphql-request: ^4.2.0
-    graphql-tag: ^2.12.6
-    identity-obj-proxy: ^3.0.0
-    ignore-loader: 0.1.2
-    immer: 9.0.13
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: ^0.6.1
-    js-cookie: ^2.2.1
-    less: ^3.12.2
-    less-loader: ^4.0.0
-    lodash: ^4.17.21
-    moment: 2.29.4
-    next: ^9.5.2
-    next-transpile-modules: ^4.1.0
-    node-fetch: ^2.6.7
-    numeral: 2.0.6
-    openid-client: 4.7.4
-    phone: 3.1.17
-    pino: ^6.13.3
-    pluralize: ^8.0.0
-    qs: ^6.9.4
-    raw-loader: ^4.0.2
-    rc-field-form: ~1.27.0
-    rc-queue-anim: ^1.8.5
-    rc-table: ~7.25.3
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-fittext: ^1.0.0
-    react-markdown: ^4.3.1
-    react-phone-input-2: ^2.14.0
-    react-responsive: ^8.1.0
-    react-test-renderer: ^16.13.1
-    typescript: ^5.5.4
-    use-immer: ^0.4.1
-    uuid: ^8.3.0
-    validator: ^13.1.1
-    webpack: ^4.46.0
-  languageName: unknown
-  linkType: soft
-
-"@app/meter-importer@workspace:apps/meter-importer":
-  version: 0.0.0-use.local
-  resolution: "@app/meter-importer@workspace:apps/meter-importer"
-  dependencies:
-    "@faker-js/faker": ^8.4.1
-    "@graphql-codegen/add": ^5.0.3
-    "@graphql-codegen/cli": ^5.0.2
-    "@graphql-codegen/import-types-preset": ^3.0.0
-    "@graphql-codegen/typescript": ^4.0.9
-    "@graphql-codegen/typescript-operations": ^4.2.3
-    "@graphql-codegen/typescript-react-apollo": ^4.3.2
-    "@keystonejs/keystone": ^19.3.1
-    "@meter-importer/domains": "link:./domains"
-    "@open-condo/keystone": "workspace:^"
-    "@types/react": ^17.0.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    antd: ^4.24.12
-    babel-jest: ^29.7.0
-    cross-env: ^7.0.3
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    jest: ^29.7.0
-    less: ^3.12.2
-    lodash: ^4.17.21
-    mkdirp: ^3.0.1
-    next: ^9.5.5
-    next-transpile-modules: ^4.1.0
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-markdown: ^4.3.1
-  languageName: unknown
-  linkType: soft
-
 "@app/miniapp@workspace:apps/miniapp":
   version: 0.0.0-use.local
   resolution: "@app/miniapp@workspace:apps/miniapp"
@@ -1387,729 +934,6 @@ __metadata:
     uuid: ^8.3.0
     validator: ^13.1.1
     webpack: ^4.46.0
-  languageName: unknown
-  linkType: soft
-
-"@app/news-greenhouse@workspace:apps/news-greenhouse":
-  version: 0.0.0-use.local
-  resolution: "@app/news-greenhouse@workspace:apps/news-greenhouse"
-  dependencies:
-    "@apollo/client": ^3.11.8
-    "@app/condo": "workspace:^"
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-graphql-playground": ^5.2.2
-    "@keystonejs/app-next": ^5.2.3
-    "@keystonejs/app-static": ^5.2.0
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-location-google": ^3.4.0
-    "@keystonejs/fields-markdown": ^5.3.2
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@news-greenhouse/domains": "link:./domains"
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@testing-library/react": ^11.2.5
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@welldone-software/why-did-you-render": ^5.0.0-alpha.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    ajv: 8.11.0
-    antd: ^4.24.12
-    antd-dayjs-webpack-plugin: ^1.0.6
-    babel-jest: ^29.4.0
-    classnames: 2.2.6
-    cross-env: ^7.0.3
-    css-loader: 1.0.1
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    extracted-loader: ^1.0.7
-    facepaint: ^1.2.1
-    get-contrast: ^2.0.0
-    graphql-upload: ^15.0.1
-    identity-obj-proxy: ^3.0.0
-    ignore-loader: 0.1.2
-    immer: 9.0.13
-    jest: ^29.4.0
-    jest-environment-jsdom: ^29.4.0
-    jest-jasmine2: ^29.4.0
-    jest-watch-typeahead: 0.6.5
-    less: ^3.12.2
-    less-loader: ^4.0.0
-    lodash: ^4.17.21
-    next: ^9.5.5
-    next-transpile-modules: ^4.1.0
-    numeral: 2.0.6
-    pluralize: ^8.0.0
-    qs: ^6.9.4
-    raw-loader: ^4.0.2
-    rc-queue-anim: ^1.8.5
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-fittext: ^1.0.0
-    react-markdown: ^4.3.1
-    react-responsive: ^8.1.0
-    react-test-renderer: ^16.13.1
-    tslib: ^2.5.3
-    typescript: ^5.5.4
-    use-immer: ^0.4.1
-    uuid: ^8.3.0
-    validator: ^13.1.1
-    webpack: ^4.46.0
-  languageName: unknown
-  linkType: soft
-
-"@app/pass@workspace:apps/pass":
-  version: 0.0.0-use.local
-  resolution: "@app/pass@workspace:apps/pass"
-  dependencies:
-    "@apollo/client": ^3.11.8
-    "@app/condo": "workspace:^"
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-graphql-playground": ^5.2.2
-    "@keystonejs/app-next": ^5.2.3
-    "@keystonejs/app-static": ^5.2.0
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-location-google": ^3.4.0
-    "@keystonejs/fields-markdown": ^5.3.2
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@pass/domains": "link:./domains"
-    "@testing-library/react": ^11.2.5
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@welldone-software/why-did-you-render": ^5.0.0-alpha.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    ajv: 8.11.0
-    antd: ^4.24.12
-    antd-dayjs-webpack-plugin: ^1.0.6
-    babel-jest: ^29.7.0
-    classnames: 2.2.6
-    cross-env: ^7.0.3
-    css-loader: 1.0.1
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    extracted-loader: ^1.0.7
-    facepaint: ^1.2.1
-    get-contrast: ^2.0.0
-    graphql-upload: ^15.0.1
-    identity-obj-proxy: ^3.0.0
-    ignore-loader: 0.1.2
-    immer: 9.0.13
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: 0.6.5
-    less: ^3.12.2
-    less-loader: ^4.0.0
-    lodash: ^4.17.21
-    next: ^9.5.5
-    next-transpile-modules: ^4.1.0
-    numeral: 2.0.6
-    pluralize: ^8.0.0
-    qs: ^6.9.4
-    raw-loader: ^4.0.2
-    rc-queue-anim: ^1.8.5
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-fittext: ^1.0.0
-    react-markdown: ^4.3.1
-    react-responsive: ^8.1.0
-    react-test-renderer: ^16.13.1
-    tslib: ^2.5.3
-    typescript: ^5.5.4
-    use-immer: ^0.4.1
-    uuid: ^8.3.0
-    validator: ^13.1.1
-    webpack: ^4.46.0
-  languageName: unknown
-  linkType: soft
-
-"@app/property-importer@workspace:apps/property-importer":
-  version: 0.0.0-use.local
-  resolution: "@app/property-importer@workspace:apps/property-importer"
-  dependencies:
-    "@ant-design/icons": ^4.7.0
-    "@apollo/client": ^3.11.8
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-next": ^5.2.3
-    "@keystonejs/app-static": ^5.2.0
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-location-google": ^3.4.0
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@property-importer/domains": "link:./domains"
-    "@testing-library/react": ^11.2.5
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@welldone-software/why-did-you-render": ^5.0.0-alpha.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    ajv: 8.11.0
-    antd: ^4.24.12
-    antd-dayjs-webpack-plugin: ^1.0.6
-    apollo-boost: ^0.4.9
-    apollo-link-error: ^1.1.13
-    babel-jest: ^29.7.0
-    classnames: 2.2.6
-    cross-env: ^7.0.3
-    cross-fetch: ^3.1.5
-    css-loader: 1.0.0
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    extracted-loader: ^1.0.7
-    facepaint: ^1.2.1
-    get-contrast: ^2.0.0
-    graphql: ^15.6.1
-    graphql-tag: ^2.12.6
-    identity-obj-proxy: ^3.0.0
-    ignore-loader: 0.1.2
-    immer: 9.0.13
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: ^0.6.1
-    js-cookie: ^2.2.1
-    less: ^3.12.2
-    less-loader: ^4.0.0
-    lodash: ^4.17.21
-    next: ^9.5.5
-    next-cookies: ^2.0.3
-    next-transpile-modules: ^4.1.0
-    numeral: 2.0.6
-    openid-client: 4.7.4
-    pluralize: ^8.0.0
-    qs: ^6.9.4
-    raw-loader: ^4.0.2
-    rc-queue-anim: ^1.8.5
-    rc-table: ~7.25.3
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-fittext: ^1.0.0
-    react-markdown: ^4.3.1
-    react-responsive: ^8.1.0
-    react-test-renderer: ^16.13.1
-    typescript: ^5.5.4
-    use-immer: ^0.4.1
-    uuid: ^8.3.0
-    validator: ^13.1.1
-    webpack: ^4.46.0
-  languageName: unknown
-  linkType: soft
-
-"@app/rb@workspace:apps/rb":
-  version: 0.0.0-use.local
-  resolution: "@app/rb@workspace:apps/rb"
-  dependencies:
-    "@apollo/client": ^3.11.8
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@graphql-tools/graphql-file-loader": ^7.5.17
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-next": ^5.2.3
-    "@keystonejs/app-static": ^5.2.0
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-location-google": ^3.4.0
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@open-condo/locales": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@pdf-lib/fontkit": ^1.1.1
-    "@rb/domains": "link:./domains"
-    "@testing-library/react": ^11.2.5
-    "@types/echarts": ^4.9.9
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@types/react-infinite-scroller": ^1.2.2
-    "@welldone-software/why-did-you-render": ^5.0.0-alpha.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    ajv: 8.11.0
-    antd: ^4.24.12
-    apollo-boost: ^0.4.9
-    apollo-cache-inmemory: ^1.6.6
-    apollo-link-error: ^1.1.13
-    apollo-link-http: ^1.5.17
-    apollo-server-errors: ^3.1.0
-    axios: ^0.26.0
-    babel-jest: ^29.7.0
-    big.js: ^6.1.1
-    body-parser: ^1.19.1
-    body-parser-xml: ^2.0.3
-    carbone: 3.2.3
-    classnames: 2.2.6
-    cross-env: ^7.0.3
-    cross-fetch: ^3.1.4
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    express-list-middleware: ^1.0.1
-    facepaint: ^1.2.1
-    falsey: ^1.0.0
-    form-data: ^4.0.0
-    get-contrast: ^2.0.0
-    graphql: ^15.6.1
-    graphql-request: ^3.5.0
-    graphql-tag: ^2.12.6
-    graphql-upload: ^15.0.1
-    iconv-lite: ^0.6.3
-    identity-obj-proxy: ^3.0.0
-    imapflow: ^1.0.177
-    immer: 9.0.13
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: ^0.6.1
-    less: ^3.12.2
-    lodash: ^4.17.21
-    mkdirp: ^1.0.4
-    next: ^9.5.2
-    next-cookies: ^2.0.3
-    next-transpile-modules: ^4.1.0
-    node-fetch: ^2.6.7
-    numeral: 2.0.6
-    nunjucks: ^3.2.4
-    pdf-lib: ^1.17.1
-    qs: ^6.9.4
-    raw-loader: ^4.0.2
-    rc-queue-anim: ^1.8.5
-    rc-table: ~7.25.3
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-fittext: ^1.0.0
-    react-markdown: 6.0.0
-    react-responsive: ^8.1.0
-    react-test-renderer: ^16.13.1
-    socks-proxy-agent: ^6.1.0
-    socks5-https-client: ^1.2.1
-    typescript: ^5.5.4
-    use-immer: ^0.4.1
-    uuid: ^8.3.0
-    validator: ^13.1.1
-    webpack: ^4.46.0
-    xml: ^1.0.1
-    xml-js: ^1.6.11
-  languageName: unknown
-  linkType: soft
-
-"@app/registry-importer@workspace:apps/registry-importer":
-  version: 0.0.0-use.local
-  resolution: "@app/registry-importer@workspace:apps/registry-importer"
-  dependencies:
-    "@apollo/client": ^3.11.8
-    "@app/condo": "workspace:^"
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@graphql-tools/graphql-file-loader": ^7.3.11
-    "@graphql-tools/links": ^8.2.18
-    "@graphql-tools/load": ^7.5.10
-    "@graphql-tools/stitch": ^8.6.9
-    "@graphql-tools/wrap": ^8.4.16
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-next": ^5.2.3
-    "@keystonejs/app-static": ^5.2.0
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-location-google": ^3.4.0
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/featureflags": "workspace:^"
-    "@open-condo/icons": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@registry-importer/domains": "link:./domains"
-    "@testing-library/react": ^11.2.5
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@welldone-software/why-did-you-render": ^5.0.0-alpha.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    ajv: 8.11.0
-    antd: ^4.24.12
-    antd-dayjs-webpack-plugin: ^1.0.6
-    apollo-boost: ^0.4.9
-    apollo-link-error: ^1.1.13
-    apollo-upload-client: ^14.1.3
-    apollo-upload-server: ^7.1.0
-    babel-jest: ^29.7.0
-    big.js: ^6.1.1
-    body-parser: ^1.19.1
-    carbone: 3.2.3
-    classnames: 2.2.6
-    cross-env: ^7.0.3
-    cross-fetch: ^3.1.5
-    css-loader: 1.0.0
-    csv-parse: ^5.2.0
-    csv-parser: ^3.0.0
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    extracted-loader: ^1.0.7
-    facepaint: ^1.2.1
-    form-data: ^4.0.0
-    get-contrast: ^2.0.0
-    graphql: ^15.6.1
-    graphql-tag: ^2.12.6
-    graphql-upload: ^15.0.1
-    he: ^1.2.0
-    iconv: ^3.0.1
-    identity-obj-proxy: ^3.0.0
-    ignore-loader: 0.1.2
-    immer: 9.0.13
-    ip-range-check: ^0.2.0
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: ^0.6.1
-    jschardet: ^3.0.0
-    jszip: ^3.10.1
-    less: ^3.12.2
-    less-loader: ^4.0.0
-    lodash: ^4.17.21
-    multer: ^1.4.5-lts.1
-    next: ^9.5.2
-    next-cookies: ^2.0.3
-    next-transpile-modules: ^7.0.0
-    node-fetch: ^2.6.7
-    numeral: 2.0.6
-    openid-client: 4.7.4
-    pino-pretty: ^8.0.0
-    pluralize: ^8.0.0
-    qs: ^6.9.4
-    raw-loader: ^4.0.2
-    rc-field-form: ~1.27.0
-    rc-queue-anim: ^1.8.5
-    rc-table: ~7.25.3
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-fittext: ^1.0.0
-    react-markdown: 6.0.0
-    react-responsive: ^8.1.0
-    react-test-renderer: ^16.13.1
-    read-excel-file: ^5.5.3
-    typescript: ^5.5.4
-    unzipper: 0.10.11
-    use-immer: ^0.4.1
-    uuid: ^8.3.0
-    validator: ^13.1.1
-    webpack: ^4.46.0
-    xlsx: "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
-  languageName: unknown
-  linkType: soft
-
-"@app/resident-app@workspace:apps/resident-app":
-  version: 0.0.0-use.local
-  resolution: "@app/resident-app@workspace:apps/resident-app"
-  dependencies:
-    "@ant-design/cssinjs": ^1.18.5
-    "@apollo/client": ^3.11.8
-    "@babel/core": 7.20.12
-    "@babel/preset-env": 7.20.2
-    "@babel/preset-typescript": 7.18.6
-    "@graphql-codegen/add": ^5.0.3
-    "@graphql-codegen/cli": ^5.0.2
-    "@graphql-codegen/client-preset": 4.1.0
-    "@graphql-codegen/typescript": ^4.0.1
-    "@graphql-codegen/typescript-operations": ^4.0.1
-    "@graphql-codegen/typescript-react-apollo": ^4.0.0
-    "@open-condo/apollo": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/icons": "workspace:^"
-    "@open-condo/locales": "workspace:^"
-    "@open-condo/miniapp-utils": "workspace:^"
-    "@open-condo/tsconfig": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@parcel/watcher": ^2.3.0
-    "@serwist/next": ^9.0.1
-    "@types/big.js": ^6.2.2
-    "@types/react": 18.0.27
-    "@types/react-dom": 18.0.10
-    antd: 5.16.4
-    big.js: ^6.2.1
-    classnames: ^2.3.2
-    cookies-next: ^4.2.1
-    cross-fetch: 4.0.0
-    dayjs: ^1.11.13
-    deepmerge: ^4.3.1
-    graphql: ^16.8.1
-    http-proxy: ^1.18.1
-    lodash: ^4.17.21
-    next: 13.3.0
-    phone: ^3.1.40
-    react: 18.2.0
-    react-dom: 18.2.0
-    react-intl: ^6.6.5
-    serwist: ^9.0.0
-    ts-node: ^10.9.2
-    typescript: ^5.5.4
-    usehooks-ts: ^3.1.0
-    zod: ^3.22.4
-  languageName: unknown
-  linkType: soft
-
-"@app/telephony-ws-api@workspace:apps/telephony-ws-api":
-  version: 0.0.0-use.local
-  resolution: "@app/telephony-ws-api@workspace:apps/telephony-ws-api"
-  dependencies:
-    concurrently: ^7.6.0
-    dotenv: ^16.0.3
-    express: ^4.18.2
-    form-data: ^4.0.0
-    graphql-request: ^6.1.0
-    jsonwebtoken: ^9.0.0
-    node-fetch: ^2.6.7
-    phone: 3.1.36
-    pino: ^6.13.3
-    socket.io: ^4.7.5
-    ssh2-sftp-client: ^9.1.0
-    uuid: ^9.0.0
-    yana: ^1.2.3
-  languageName: unknown
-  linkType: soft
-
-"@app/telephony@workspace:apps/telephony":
-  version: 0.0.0-use.local
-  resolution: "@app/telephony@workspace:apps/telephony"
-  dependencies:
-    "@app/condo": "workspace:^"
-    "@condo/domains": "link:../condo/domains"
-    "@emotion/babel-plugin": ^11.10.0
-    "@emotion/core": ^10.1.1
-    "@emotion/react": ^11.9.3
-    "@emotion/styled": ^11.10.0
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-graphql-playground": ^5.2.2
-    "@keystonejs/app-next": ^5.2.3
-    "@keystonejs/app-static": ^5.2.0
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-location-google": ^3.4.0
-    "@keystonejs/fields-markdown": ^5.3.2
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/bridge": "workspace:^"
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/config": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@open-condo/next": "workspace:^"
-    "@open-condo/ui": "workspace:^"
-    "@telephony/domains": "link:./domains"
-    "@testing-library/react": ^11.2.5
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    "@types/react": 16.9.17
-    "@welldone-software/why-did-you-render": ^5.0.0-alpha.1
-    "@zeit/next-css": ^1.0.1
-    "@zeit/next-less": ^1.0.1
-    antd: ^4.24.12
-    antd-dayjs-webpack-plugin: ^1.0.6
-    babel-jest: ^29.7.0
-    classnames: 2.2.6
-    css-loader: 1.0.0
-    dayjs: ^1.10.6
-    emotion: ^10.0.27
-    emotion-server: ^10.0.27
-    express: ^4.17.1
-    extracted-loader: ^1.0.7
-    facepaint: ^1.2.1
-    get-contrast: ^2.0.0
-    identity-obj-proxy: ^3.0.0
-    ignore-loader: 0.1.2
-    immer: 9.0.13
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: ^0.6.1
-    jsonwebtoken: ^9.0.0
-    less: ^3.12.2
-    less-loader: ^4.0.0
-    lodash: ^4.17.21
-    next: ^9.5.5
-    next-transpile-modules: ^4.1.0
-    numeral: 2.0.6
-    pluralize: ^8.0.0
-    qs: ^6.9.4
-    raw-loader: ^4.0.2
-    rc-queue-anim: ^1.8.5
-    react: ^16.13.1
-    react-dom: ^16.13.1
-    react-fittext: ^1.0.0
-    react-markdown: ^4.3.1
-    react-responsive: ^8.1.0
-    react-test-renderer: ^16.13.1
-    socket.io-client: ^4.7.5
-    typescript: ^5.5.4
-    use-immer: ^0.4.1
-    uuid: ^8.3.0
-    validator: ^13.1.1
-    webpack: ^4.46.0
-  languageName: unknown
-  linkType: soft
-
-"@app/ticket-importer@workspace:apps/ticket-importer":
-  version: 0.0.0-use.local
-  resolution: "@app/ticket-importer@workspace:apps/ticket-importer"
-  dependencies:
-    "@keystonejs/adapter-knex": ^13.2.0
-    "@keystonejs/adapter-mongoose": ^11.2.0
-    "@keystonejs/adapter-prisma": ^3.2.0
-    "@keystonejs/app-admin-ui": ^7.5.0
-    "@keystonejs/app-graphql": ^6.3.0
-    "@keystonejs/app-graphql-playground": ^5.2.2
-    "@keystonejs/auth-password": ^6.1.0
-    "@keystonejs/fields": ^22.1.3
-    "@keystonejs/fields-color": ^1.1.0
-    "@keystonejs/fields-content": ^9.1.0
-    "@keystonejs/fields-markdown": ^5.3.2
-    "@keystonejs/fields-wysiwyg-tinymce": ^5.4.0
-    "@keystonejs/file-adapters": ^7.1.0
-    "@keystonejs/keystone": ^19.3.1
-    "@keystonejs/list-plugins": ^8.1.0
-    "@keystonejs/server-side-graphql-client": ^2.1.0
-    "@keystonejs/utils": ^6.1.0
-    "@open-condo/codegen": "workspace:^"
-    "@open-condo/keystone": "workspace:^"
-    "@ticket-importer/domains": "link:./domains"
-    "@types/jest": ^29.4.0
-    "@types/node": ^16
-    axios: ^1.6.7
-    babel-jest: ^29.7.0
-    cheerio: ^1.0.0-rc.12
-    cross-env: ^7.0.3
-    dayjs: ^1.10.6
-    express: ^4.17.1
-    jest: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    jest-jasmine2: ^29.7.0
-    jest-watch-typeahead: ^0.6.1
-    lodash: ^4.17.21
-    node-fetch: ^2.6.7
-    node-telegram-bot-api: ^0.64.0
-    uuid: ^8.3.0
   languageName: unknown
   linkType: soft
 
@@ -6807,11 +5631,11 @@ __metadata:
   linkType: hard
 
 "@babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.9.2":
-  version: 7.26.7
-  resolution: "@babel/runtime@npm:7.26.7"
+  version: 7.26.9
+  resolution: "@babel/runtime@npm:7.26.9"
   dependencies:
     regenerator-runtime: ^0.14.0
-  checksum: a1664a08f3f4854b895b540cca2f5f5c6c1993b5fb788c9615d70fc201e16bb254df8e0550c83eaf2749a14d87775e11a7c9ded6161203e9da7a4a323d546925
+  checksum: 838492d8a925092f9ccfbd82ec183a54f430af3a4ce88fb1337a4570629202d5123bad3097a5b8df53822504d12ccb29f45c0f6842e86094f0164f17a51eec92
   languageName: node
   linkType: hard
 
@@ -7251,69 +6075,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@condo/domains@link:../condo/domains::locator=%40app%2Fcallcenter%40workspace%3Aapps%2Fcallcenter":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Fcallcenter%40workspace%3Aapps%2Fcallcenter"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Feps%40workspace%3Aapps%2Feps":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Feps%40workspace%3Aapps%2Feps"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Fexternal-api%40workspace%3Aapps%2Fexternal-api":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Fexternal-api%40workspace%3Aapps%2Fexternal-api"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Finsurance%40workspace%3Aapps%2Finsurance":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Finsurance%40workspace%3Aapps%2Finsurance"
-  languageName: node
-  linkType: soft
-
 "@condo/domains@link:../condo/domains::locator=%40app%2Fminiapp%40workspace%3Aapps%2Fminiapp":
   version: 0.0.0-use.local
   resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Fminiapp%40workspace%3Aapps%2Fminiapp"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Fnews-greenhouse%40workspace%3Aapps%2Fnews-greenhouse":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Fnews-greenhouse%40workspace%3Aapps%2Fnews-greenhouse"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Fpass%40workspace%3Aapps%2Fpass":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Fpass%40workspace%3Aapps%2Fpass"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Fproperty-importer%40workspace%3Aapps%2Fproperty-importer":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Fproperty-importer%40workspace%3Aapps%2Fproperty-importer"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Frb%40workspace%3Aapps%2Frb":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Frb%40workspace%3Aapps%2Frb"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Fregistry-importer%40workspace%3Aapps%2Fregistry-importer":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Fregistry-importer%40workspace%3Aapps%2Fregistry-importer"
-  languageName: node
-  linkType: soft
-
-"@condo/domains@link:../condo/domains::locator=%40app%2Ftelephony%40workspace%3Aapps%2Ftelephony":
-  version: 0.0.0-use.local
-  resolution: "@condo/domains@link:../condo/domains::locator=%40app%2Ftelephony%40workspace%3Aapps%2Ftelephony"
   languageName: node
   linkType: soft
 
@@ -7902,12 +6666,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@employee-bot/domains@link:./domains::locator=%40app%2Femployee-bot%40workspace%3Aapps%2Femployee-bot":
-  version: 0.0.0-use.local
-  resolution: "@employee-bot/domains@link:./domains::locator=%40app%2Femployee-bot%40workspace%3Aapps%2Femployee-bot"
-  languageName: node
-  linkType: soft
-
 "@endemolshinegroup/cosmiconfig-typescript-loader@npm:3.0.2":
   version: 3.0.2
   resolution: "@endemolshinegroup/cosmiconfig-typescript-loader@npm:3.0.2"
@@ -7921,12 +6679,6 @@ __metadata:
   checksum: 7fe0198622b1063c40572034df7e8ba867865a1b4815afe230795929abcf785758b34d7806a8e2100ba8ab4e92c5a1c3e11a980c466c4406df6e7ec6e50df8b6
   languageName: node
   linkType: hard
-
-"@eps/domains@link:./domains::locator=%40app%2Feps%40workspace%3Aapps%2Feps":
-  version: 0.0.0-use.local
-  resolution: "@eps/domains@link:./domains::locator=%40app%2Feps%40workspace%3Aapps%2Feps"
-  languageName: node
-  linkType: soft
 
 "@esbuild/aix-ppc64@npm:0.24.2":
   version: 0.24.2
@@ -11296,12 +10048,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@insurance/domains@link:./domains::locator=%40app%2Finsurance%40workspace%3Aapps%2Finsurance":
-  version: 0.0.0-use.local
-  resolution: "@insurance/domains@link:./domains::locator=%40app%2Finsurance%40workspace%3Aapps%2Finsurance"
-  languageName: node
-  linkType: soft
-
 "@ioredis/commands@npm:^1.1.1":
   version: 1.2.0
   resolution: "@ioredis/commands@npm:1.2.0"
@@ -12648,12 +11394,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@meter-importer/domains@link:./domains::locator=%40app%2Fmeter-importer%40workspace%3Aapps%2Fmeter-importer":
-  version: 0.0.0-use.local
-  resolution: "@meter-importer/domains@link:./domains::locator=%40app%2Fmeter-importer%40workspace%3Aapps%2Fmeter-importer"
-  languageName: node
-  linkType: soft
-
 "@microsoft/fetch-event-source@npm:2.0.1":
   version: 2.0.1
   resolution: "@microsoft/fetch-event-source@npm:2.0.1"
@@ -12819,12 +11559,6 @@ __metadata:
   checksum: c2c657672f1f3a149701257efb1182c52b2c52f6dd3ebf10b338fad6394b260501d735cababad740f9d174511e089dfa84557d73a5b6bd48a2889c56a921776a
   languageName: node
   linkType: hard
-
-"@news-greenhouse/domains@link:./domains::locator=%40app%2Fnews-greenhouse%40workspace%3Aapps%2Fnews-greenhouse":
-  version: 0.0.0-use.local
-  resolution: "@news-greenhouse/domains@link:./domains::locator=%40app%2Fnews-greenhouse%40workspace%3Aapps%2Fnews-greenhouse"
-  languageName: node
-  linkType: soft
 
 "@next/env@npm:13.3.0":
   version: 13.3.0
@@ -15232,12 +13966,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rb/domains@link:./domains::locator=%40app%2Frb%40workspace%3Aapps%2Frb":
-  version: 0.0.0-use.local
-  resolution: "@rb/domains@link:./domains::locator=%40app%2Frb%40workspace%3Aapps%2Frb"
-  languageName: node
-  linkType: soft
-
 "@rc-component/color-picker@npm:~1.5.3":
   version: 1.5.3
   resolution: "@rc-component/color-picker@npm:1.5.3"
@@ -15395,12 +14123,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@registry-importer/domains@link:./domains::locator=%40app%2Fregistry-importer%40workspace%3Aapps%2Fregistry-importer":
-  version: 0.0.0-use.local
-  resolution: "@registry-importer/domains@link:./domains::locator=%40app%2Fregistry-importer%40workspace%3Aapps%2Fregistry-importer"
-  languageName: node
-  linkType: soft
-
 "@repeaterjs/repeater@npm:^3.0.4":
   version: 3.0.4
   resolution: "@repeaterjs/repeater@npm:3.0.4"
@@ -15549,13 +14271,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm64@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-android-arm64@npm:4.14.3"
-  conditions: os=android & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-android-arm64@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-android-arm64@npm:4.28.0"
@@ -15570,13 +14285,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-arm64@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-darwin-arm64@npm:4.14.3"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-darwin-arm64@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-darwin-arm64@npm:4.28.0"
@@ -15588,13 +14296,6 @@ __metadata:
   version: 4.34.6
   resolution: "@rollup/rollup-darwin-arm64@npm:4.34.6"
   conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@rollup/rollup-darwin-x64@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-darwin-x64@npm:4.14.3"
-  conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
@@ -15640,13 +14341,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-gnueabihf@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.14.3"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-linux-arm-gnueabihf@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.28.0"
@@ -15658,13 +14352,6 @@ __metadata:
   version: 4.34.6
   resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.34.6"
   conditions: os=linux & cpu=arm & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@rollup/rollup-linux-arm-musleabihf@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.14.3"
-  conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
@@ -15682,13 +14369,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-gnu@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.14.3"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-linux-arm64-gnu@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.28.0"
@@ -15700,13 +14380,6 @@ __metadata:
   version: 4.34.6
   resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.34.6"
   conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@rollup/rollup-linux-arm64-musl@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.14.3"
-  conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
@@ -15731,13 +14404,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-powerpc64le-gnu@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-powerpc64le-gnu@npm:4.14.3"
-  conditions: os=linux & cpu=ppc64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-linux-powerpc64le-gnu@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-linux-powerpc64le-gnu@npm:4.28.0"
@@ -15749,13 +14415,6 @@ __metadata:
   version: 4.34.6
   resolution: "@rollup/rollup-linux-powerpc64le-gnu@npm:4.34.6"
   conditions: os=linux & cpu=ppc64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@rollup/rollup-linux-riscv64-gnu@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.14.3"
-  conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -15773,13 +14432,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-s390x-gnu@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.14.3"
-  conditions: os=linux & cpu=s390x & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-linux-s390x-gnu@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.28.0"
@@ -15791,13 +14443,6 @@ __metadata:
   version: 4.34.6
   resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.34.6"
   conditions: os=linux & cpu=s390x & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@rollup/rollup-linux-x64-gnu@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.14.3"
-  conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -15815,13 +14460,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-musl@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-linux-x64-musl@npm:4.14.3"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-linux-x64-musl@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-linux-x64-musl@npm:4.28.0"
@@ -15833,13 +14471,6 @@ __metadata:
   version: 4.34.6
   resolution: "@rollup/rollup-linux-x64-musl@npm:4.34.6"
   conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@rollup/rollup-win32-arm64-msvc@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.14.3"
-  conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -15857,13 +14488,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-ia32-msvc@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.14.3"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-win32-ia32-msvc@npm:4.28.0":
   version: 4.28.0
   resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.28.0"
@@ -15875,13 +14499,6 @@ __metadata:
   version: 4.34.6
   resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.34.6"
   conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"@rollup/rollup-win32-x64-msvc@npm:4.14.3":
-  version: 4.14.3
-  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.14.3"
-  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -16058,19 +14675,6 @@ __metadata:
     "@sentry/types": 7.102.1
     "@sentry/utils": 7.102.1
   checksum: 7271d1bbdab3f5d74594d73130be423a76ffd905ee8e89a2e7c06cda9c6cd3dd698335e0c163a5c3437cd0309aadf4b3ed1279fc93af8f7bad6d3966047f4b70
-  languageName: node
-  linkType: hard
-
-"@sentry/profiling-node@npm:^7.102.1":
-  version: 7.120.3
-  resolution: "@sentry/profiling-node@npm:7.120.3"
-  dependencies:
-    detect-libc: ^2.0.2
-    node-abi: ^3.61.0
-    node-gyp: latest
-  bin:
-    sentry-prune-profiler-binaries: scripts/prune-profiler-binaries.js
-  checksum: b766b97be633957d8755df531918d8193fcf6edfa4efefd4fd2e6d3629f6b7fbf6731ce969b765ff0f9c3ccdd677716ce27f13328580876309df15f6ad45390c
   languageName: node
   linkType: hard
 
@@ -17539,12 +16143,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@telephony/domains@link:./domains::locator=%40app%2Ftelephony%40workspace%3Aapps%2Ftelephony":
-  version: 0.0.0-use.local
-  resolution: "@telephony/domains@link:./domains::locator=%40app%2Ftelephony%40workspace%3Aapps%2Ftelephony"
-  languageName: node
-  linkType: soft
-
 "@testing-library/dom@npm:^7.28.1":
   version: 7.31.2
   resolution: "@testing-library/dom@npm:7.31.2"
@@ -17600,12 +16198,6 @@ __metadata:
   checksum: 16319de685fbb7008f1ba667928f458b2d08196918002daca56996de80ef35e6d9de26e9e1ece7d00a004692b95a597cf9142fff0dc53f2f51606a776584f549
   languageName: node
   linkType: hard
-
-"@ticket-importer/domains@link:./domains::locator=%40app%2Fticket-importer%40workspace%3Aapps%2Fticket-importer":
-  version: 0.0.0-use.local
-  resolution: "@ticket-importer/domains@link:./domains::locator=%40app%2Fticket-importer%40workspace%3Aapps%2Fticket-importer"
-  languageName: node
-  linkType: soft
 
 "@timsuchanek/copy@npm:^1.4.5":
   version: 1.4.5
@@ -21333,6 +19925,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"asn1@npm:^0.2.6":
+  version: 0.2.6
+  resolution: "asn1@npm:0.2.6"
+  dependencies:
+    safer-buffer: ~2.1.0
+  checksum: 39f2ae343b03c15ad4f238ba561e626602a3de8d94ae536c46a4a93e69578826305366dc09fbb9b56aec39b4982a463682f259c38e59f6fa380cd72cd61e493d
+  languageName: node
+  linkType: hard
+
 "asn1js@npm:^3.0.1, asn1js@npm:^3.0.5":
   version: 3.0.5
   resolution: "asn1js@npm:3.0.5"
@@ -21644,28 +20245,6 @@ __metadata:
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
   checksum: c4dc4e119064c9aed09a3de309bedb797a139a6fb372223aafe3e0c10a7d4a14e4d3e9c9d309467fadb9d2b490b891ee3df96ef5b55716bb971910466ff9f0c5
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "axios@npm:1.5.1"
-  dependencies:
-    follow-redirects: ^1.15.0
-    form-data: ^4.0.0
-    proxy-from-env: ^1.1.0
-  checksum: 4444f06601f4ede154183767863d2b8e472b4a6bfc5253597ed6d21899887e1fd0ee2b3de792ac4f8459fe2e359d2aa07c216e45fd8b9e4e0688a6ebf48a5a8d
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.6.7":
-  version: 1.6.7
-  resolution: "axios@npm:1.6.7"
-  dependencies:
-    follow-redirects: ^1.15.4
-    form-data: ^4.0.0
-    proxy-from-env: ^1.1.0
-  checksum: 87d4d429927d09942771f3b3a6c13580c183e31d7be0ee12f09be6d5655304996bb033d85e54be81606f4e89684df43be7bf52d14becb73a12727bf33298a082
   languageName: node
   linkType: hard
 
@@ -22379,6 +20958,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bcrypt-pbkdf@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "bcrypt-pbkdf@npm:1.0.2"
+  dependencies:
+    tweetnacl: ^0.14.3
+  checksum: 4edfc9fe7d07019609ccf797a2af28351736e9d012c8402a07120c4453a3b789a15f2ee1530dc49eee8f7eb9379331a8dd4b3766042b9e502f74a68e7f662291
+  languageName: node
+  linkType: hard
+
 "bcryptjs@npm:^2.4.3":
   version: 2.4.3
   resolution: "bcryptjs@npm:2.4.3"
@@ -23075,6 +21663,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"buildcheck@npm:~0.0.6":
+  version: 0.0.6
+  resolution: "buildcheck@npm:0.0.6"
+  checksum: ad61759dc98d62e931df2c9f54ccac7b522e600c6e13bdcfdc2c9a872a818648c87765ee209c850f022174da4dd7c6a450c00357c5391705d26b9c5807c2a076
+  languageName: node
+  linkType: hard
+
 "builtin-modules@npm:^3.1.0, builtin-modules@npm:^3.3.0":
   version: 3.3.0
   resolution: "builtin-modules@npm:3.3.0"
@@ -23137,7 +21732,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"busboy@npm:1.6.0, busboy@npm:^1.6.0":
 "bundle-require@npm:^5.0.0":
   version: 5.1.0
   resolution: "bundle-require@npm:5.1.0"
@@ -23149,7 +21743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"busboy@npm:1.6.0, busboy@npm:^1.0.0, busboy@npm:^1.6.0":
+"busboy@npm:1.6.0, busboy@npm:^1.6.0":
   version: 1.6.0
   resolution: "busboy@npm:1.6.0"
   dependencies:
@@ -23362,7 +21956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"call-bind-apply-helpers@npm:^1.0.0, call-bind-apply-helpers@npm:^1.0.1":
+"call-bind-apply-helpers@npm:^1.0.0, call-bind-apply-helpers@npm:^1.0.1, call-bind-apply-helpers@npm:^1.0.2":
   version: 1.0.2
   resolution: "call-bind-apply-helpers@npm:1.0.2"
   dependencies:
@@ -25324,17 +23918,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cpu-features@npm:~0.0.8":
-  version: 0.0.8
-  resolution: "cpu-features@npm:0.0.8"
-  dependencies:
-    buildcheck: ~0.0.6
-    nan: ^2.17.0
-    node-gyp: latest
-  checksum: 7b52da1e538beb31185c63a874c8b88c40048ee7ebb5dfd37bb15d9c9044fffa2da048c2bc46d9f2e0916ec86d38c6812c7c6baafdddd504d56594eeff614444
-  languageName: node
-  linkType: hard
-
 "crc-32@npm:^1.2.0":
   version: 1.2.2
   resolution: "crc-32@npm:1.2.2"
@@ -26883,13 +25466,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"detect-libc@npm:^2.0.2":
-  version: 2.0.3
-  resolution: "detect-libc@npm:2.0.3"
-  checksum: 2ba6a939ae55f189aea996ac67afceb650413c7a34726ee92c40fb0deb2400d57ef94631a8a3f052055eea7efb0f99a9b5e6ce923415daa3e68221f963cfc27d
-  languageName: node
-  linkType: hard
-
 "detect-newline@npm:^3.0.0":
   version: 3.1.0
   resolution: "detect-newline@npm:3.1.0"
@@ -27347,13 +25923,6 @@ __metadata:
   version: 16.0.3
   resolution: "dotenv@npm:16.0.3"
   checksum: afcf03f373d7a6d62c7e9afea6328e62851d627a4e73f2e12d0a8deae1cd375892004f3021883f8aec85932cd2834b091f568ced92b4774625b321db83b827f8
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:^16.3.2":
-  version: 16.4.5
-  resolution: "dotenv@npm:16.4.5"
-  checksum: 301a12c3d44fd49888b74eb9ccf9f07a1f5df43f489e7fcb89647a2edcd84c42d6bc349dc8df099cd18f07c35c7b04685c1a4f3e6a6a9e6b30f8d48c15b7f49c
   languageName: node
   linkType: hard
 
@@ -28069,6 +26638,15 @@ __metadata:
   dependencies:
     es-errors: ^1.3.0
   checksum: 26f0ff78ab93b63394e8403c353842b2272836968de4eafe97656adfb8a7c84b9099bf0fe96ed58f4a4cddc860f6e34c77f91649a58a5daa4a9c40b902744e3c
+  languageName: node
+  linkType: hard
+
+"es-object-atoms@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "es-object-atoms@npm:1.1.1"
+  dependencies:
+    es-errors: ^1.3.0
+  checksum: 214d3767287b12f36d3d7267ef342bbbe1e89f899cfd67040309fc65032372a8e60201410a99a1645f2f90c1912c8c49c8668066f6bdd954bcd614dda2e3da97
   languageName: node
   linkType: hard
 
@@ -29475,8 +28053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-json-stable-stringify@npm:^2.0.0, fast-json-stable-stringify@npm:^2.1.0":
-"fast-json-stable-stringify@npm:2.1.0, fast-json-stable-stringify@npm:2.x, fast-json-stable-stringify@npm:^2.0.0, fast-json-stable-stringify@npm:^2.1.0":
+"fast-json-stable-stringify@npm:2.x, fast-json-stable-stringify@npm:^2.0.0, fast-json-stable-stringify@npm:^2.1.0":
   version: 2.1.0
   resolution: "fast-json-stable-stringify@npm:2.1.0"
   checksum: b191531e36c607977e5b1c47811158733c34ccb3bfde92c44798929e9b4154884378536d26ad90dfecd32e1ffc09c545d23535ad91b3161a27ddbb8ebe0cbecb
@@ -30631,20 +29208,20 @@ __metadata:
   linkType: hard
 
 "get-intrinsic@npm:^1.2.6":
-  version: 1.2.7
-  resolution: "get-intrinsic@npm:1.2.7"
+  version: 1.3.0
+  resolution: "get-intrinsic@npm:1.3.0"
   dependencies:
-    call-bind-apply-helpers: ^1.0.1
+    call-bind-apply-helpers: ^1.0.2
     es-define-property: ^1.0.1
     es-errors: ^1.3.0
-    es-object-atoms: ^1.0.0
+    es-object-atoms: ^1.1.1
     function-bind: ^1.1.2
-    get-proto: ^1.0.0
+    get-proto: ^1.0.1
     gopd: ^1.2.0
     has-symbols: ^1.1.0
     hasown: ^2.0.2
     math-intrinsics: ^1.1.0
-  checksum: a1597b3b432074f805b6a0ba1182130dd6517c0ea0c4eecc4b8834c803913e1ea62dfc412865be795b3dacb1555a21775b70cf9af7a18b1454ff3414e5442d4a
+  checksum: 301008e4482bb9a9cb49e132b88fee093bff373b4e6def8ba219b1e96b60158a6084f273ef5cafe832e42cd93462f4accb46a618d35fe59a2b507f2388c5b79d
   languageName: node
   linkType: hard
 
@@ -30676,7 +29253,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-proto@npm:^1.0.0, get-proto@npm:^1.0.1":
+"get-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "get-proto@npm:1.0.1"
   dependencies:
@@ -33320,36 +31897,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ip-address@npm:^9.0.5":
-  version: 9.0.5
-  resolution: "ip-address@npm:9.0.5"
-  dependencies:
-    jsbn: 1.1.0
-    sprintf-js: ^1.1.3
-  checksum: aa15f12cfd0ef5e38349744e3654bae649a34c3b10c77a674a167e99925d1549486c5b14730eebce9fea26f6db9d5e42097b00aa4f9f612e68c79121c71652dc
-  languageName: node
-  linkType: hard
-
-"ip-address@npm:~6.1.0":
-  version: 6.1.0
-  resolution: "ip-address@npm:6.1.0"
-  dependencies:
-    jsbn: 1.1.0
-    lodash: ^4.17.15
-    sprintf-js: 1.1.2
-  checksum: 638289c80475e3208c1ff2ad29acb3329f0d3a745fb6156826bd2aca993be11439061b5e28f75aa3614ac7d7caf5faa0af15fb3855d054cd95b5916ba01dbf70
-  languageName: node
-  linkType: hard
-
-"ip-range-check@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "ip-range-check@npm:0.2.0"
-  dependencies:
-    ipaddr.js: ^1.0.1
-  checksum: 35cd384e6b0b753eb47a6e3327575a797876983cb39415da5106fd0d04adb6fe86c9eaf5d01b56005428565119714c335f3cd6c5364318b287e8402b6311e062
-  languageName: node
-  linkType: hard
-
 "ip@npm:^2.0.0":
   version: 2.0.0
   resolution: "ip@npm:2.0.0"
@@ -35319,6 +33866,13 @@ __metadata:
   version: 4.15.9
   resolution: "jose@npm:4.15.9"
   checksum: 41abe1c99baa3cf8a78ebbf93da8f8e50e417b7a26754c4afa21865d87527b8ac2baf66de2c5f6accc3f7d7158658dae7364043677236ea1d07895b040097f15
+  languageName: node
+  linkType: hard
+
+"joycon@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "joycon@npm:3.1.1"
+  checksum: 8003c9c3fc79c5c7602b1c7e9f7a2df2e9916f046b0dbad862aa589be78c15734d11beb9fe846f5e06138df22cb2ad29961b6a986ba81c4920ce2b15a7f11067
   languageName: node
   linkType: hard
 
@@ -39971,15 +38525,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-abi@npm:^3.61.0":
-  version: 3.74.0
-  resolution: "node-abi@npm:3.74.0"
-  dependencies:
-    semver: ^7.3.5
-  checksum: b33617fe1867a261379c5b4340a7f2018547ffa652b469d9459a0038d97c227d6d57f56b921007e6614552c323fdf67feff2eeb3baa85d6f45957983d61eccc7
-  languageName: node
-  linkType: hard
-
 "node-abort-controller@npm:^3.0.1":
   version: 3.0.1
   resolution: "node-abort-controller@npm:3.0.1"
@@ -43693,7 +42238,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"property-information@npm:^5.3.0":
 "proper-lockfile@npm:^4.1.2":
   version: 4.1.2
   resolution: "proper-lockfile@npm:4.1.2"
@@ -43714,7 +42258,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"property-information@npm:^5.0.0, property-information@npm:^5.3.0":
+"property-information@npm:^5.3.0":
   version: 5.6.0
   resolution: "property-information@npm:5.6.0"
   dependencies:
@@ -46590,6 +45134,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"readable-stream@npm:^4.0.0":
+  version: 4.1.0
+  resolution: "readable-stream@npm:4.1.0"
+  dependencies:
+    abort-controller: ^3.0.0
+  checksum: ff2bb513af6fb43618c8360211b5b9052e25a59e6626d3669c7ba060d021dfffa43c43832e11b18acd6aac15b057c6deae1c41004c1731688c95c455ad02f982
+  languageName: node
+  linkType: hard
+
 "readable-stream@npm:~1.0.17, readable-stream@npm:~1.0.27-1":
   version: 1.0.34
   resolution: "readable-stream@npm:1.0.34"
@@ -47983,69 +46536,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:4.14.3":
-  version: 4.14.3
-  resolution: "rollup@npm:4.14.3"
-  dependencies:
-    "@rollup/rollup-android-arm-eabi": 4.14.3
-    "@rollup/rollup-android-arm64": 4.14.3
-    "@rollup/rollup-darwin-arm64": 4.14.3
-    "@rollup/rollup-darwin-x64": 4.14.3
-    "@rollup/rollup-linux-arm-gnueabihf": 4.14.3
-    "@rollup/rollup-linux-arm-musleabihf": 4.14.3
-    "@rollup/rollup-linux-arm64-gnu": 4.14.3
-    "@rollup/rollup-linux-arm64-musl": 4.14.3
-    "@rollup/rollup-linux-powerpc64le-gnu": 4.14.3
-    "@rollup/rollup-linux-riscv64-gnu": 4.14.3
-    "@rollup/rollup-linux-s390x-gnu": 4.14.3
-    "@rollup/rollup-linux-x64-gnu": 4.14.3
-    "@rollup/rollup-linux-x64-musl": 4.14.3
-    "@rollup/rollup-win32-arm64-msvc": 4.14.3
-    "@rollup/rollup-win32-ia32-msvc": 4.14.3
-    "@rollup/rollup-win32-x64-msvc": 4.14.3
-    "@types/estree": 1.0.5
-    fsevents: ~2.3.2
-  dependenciesMeta:
-    "@rollup/rollup-android-arm-eabi":
-      optional: true
-    "@rollup/rollup-android-arm64":
-      optional: true
-    "@rollup/rollup-darwin-arm64":
-      optional: true
-    "@rollup/rollup-darwin-x64":
-      optional: true
-    "@rollup/rollup-linux-arm-gnueabihf":
-      optional: true
-    "@rollup/rollup-linux-arm-musleabihf":
-      optional: true
-    "@rollup/rollup-linux-arm64-gnu":
-      optional: true
-    "@rollup/rollup-linux-arm64-musl":
-      optional: true
-    "@rollup/rollup-linux-powerpc64le-gnu":
-      optional: true
-    "@rollup/rollup-linux-riscv64-gnu":
-      optional: true
-    "@rollup/rollup-linux-s390x-gnu":
-      optional: true
-    "@rollup/rollup-linux-x64-gnu":
-      optional: true
-    "@rollup/rollup-linux-x64-musl":
-      optional: true
-    "@rollup/rollup-win32-arm64-msvc":
-      optional: true
-    "@rollup/rollup-win32-ia32-msvc":
-      optional: true
-    "@rollup/rollup-win32-x64-msvc":
-      optional: true
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: f5077037e8514e330db1451a92bf6d9d15b8634698b2e60f56d8d7f30df11cdacfcd1b350a1598ed6516383b5ed2bf3e5a0685e72f81bb2fdb4e630491d09b67
-  languageName: node
-  linkType: hard
-
 "rollup@npm:^4.24.0":
   version: 4.34.6
   resolution: "rollup@npm:4.34.6"
@@ -48334,7 +46824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safer-buffer@npm:>= 2.1.2 < 3, safer-buffer@npm:>= 2.1.2 < 3.0.0, safer-buffer@npm:^2.1.0":
+"safer-buffer@npm:>= 2.1.2 < 3, safer-buffer@npm:>= 2.1.2 < 3.0.0, safer-buffer@npm:^2.1.0, safer-buffer@npm:~2.1.0":
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
   checksum: cab8f25ae6f1434abee8d80023d7e72b598cf1327164ddab31003c51215526801e40b66c5e65d658a0af1e9d6478cadcb4c745f4bd6751f97d8644786c0978b0
@@ -49639,17 +48129,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ssh2-sftp-client@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "ssh2-sftp-client@npm:9.1.0"
-  dependencies:
-    concat-stream: ^2.0.0
-    promise-retry: ^2.0.1
-    ssh2: ^1.12.0
-  checksum: 63f254df07c075eb7c0783b4aa96a90dfb23a37a05a22643a17e349ddf09175019960f45e62aa2b72d632707300881d8bbb60c39ba618d21e73ff4850f37dcef
-  languageName: node
-  linkType: hard
-
 "ssh2@npm:^1.11.0, ssh2@npm:^1.4.0":
   version: 1.16.0
   resolution: "ssh2@npm:1.16.0"
@@ -49664,44 +48143,6 @@ __metadata:
     nan:
       optional: true
   checksum: c024c4a432aae2457852037f31c0d9bec323fb062ace3a31e4a6dd6c55842246c80e7d20ff93ffed22dde1e523250d8438bc2f7d4a1450cf4fa4887818176f0e
-  languageName: node
-  linkType: hard
-
-"ssh2@npm:^1.12.0":
-  version: 1.14.0
-  resolution: "ssh2@npm:1.14.0"
-  dependencies:
-    asn1: ^0.2.6
-    bcrypt-pbkdf: ^1.0.2
-    cpu-features: ~0.0.8
-    nan: ^2.17.0
-  dependenciesMeta:
-    cpu-features:
-      optional: true
-    nan:
-      optional: true
-  checksum: c583527950312716f1b620d5120e3c3e241f8cc221f19fc88fd3d561c6020c1009532438f2177a2e706223d91842deff137d93e00832b7b9016593da9a00fb89
-  languageName: node
-  linkType: hard
-
-"sshpk@npm:^1.14.1, sshpk@npm:^1.7.0":
-  version: 1.17.0
-  resolution: "sshpk@npm:1.17.0"
-  dependencies:
-    asn1: ~0.2.3
-    assert-plus: ^1.0.0
-    bcrypt-pbkdf: ^1.0.0
-    dashdash: ^1.12.0
-    ecc-jsbn: ~0.1.1
-    getpass: ^0.1.1
-    jsbn: ~0.1.0
-    safer-buffer: ^2.0.2
-    tweetnacl: ~0.14.0
-  bin:
-    sshpk-conv: bin/sshpk-conv
-    sshpk-sign: bin/sshpk-sign
-    sshpk-verify: bin/sshpk-verify
-  checksum: ba109f65c8e6c35133b8e6ed5576abeff8aa8d614824b7275ec3ca308f081fef483607c28d97780c1e235818b0f93ed8c8b56d0a5968d5a23fd6af57718c7597
   languageName: node
   linkType: hard
 
@@ -51469,15 +49910,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"thread-stream@npm:^3.0.0":
-  version: 3.1.0
-  resolution: "thread-stream@npm:3.1.0"
-  dependencies:
-    real-require: ^0.2.0
-  checksum: 3c5b494ce776f832dfd696792cc865f78c1e850db93e07979349bbc1a5845857cd447aea95808892906cc0178a2fd3233907329f3376e7fc9951e2833f5b7896
-  languageName: node
-  linkType: hard
-
 "thriftrw@npm:^3.5.0":
   version: 3.12.0
   resolution: "thriftrw@npm:3.12.0"
@@ -51912,6 +50344,15 @@ __metadata:
   version: 0.6.6
   resolution: "traverse@npm:0.6.6"
   checksum: e2afa72f11efa9ba31ed763d2d9d2aa244612f22015d16c0ea3ba5f6ca8bf071de87f8108b721885cce06ea4a36ef4605d9228c67e431d9015ea4685cb364420
+  languageName: node
+  linkType: hard
+
+"tree-kill@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "tree-kill@npm:1.2.2"
+  bin:
+    tree-kill: cli.js
+  checksum: 49117f5f410d19c84b0464d29afb9642c863bc5ba40fcb9a245d474c6d5cc64d1b177a6e6713129eb346b40aebb9d4631d967517f9fbe8251c35b21b13cd96c7
   languageName: node
   linkType: hard
 
@@ -52372,6 +50813,13 @@ __metadata:
   version: 1.2.0
   resolution: "tween-functions@npm:1.2.0"
   checksum: 880708d680eff5c347ddcb9f922ad121703a91c78ce308ed309073e73a794b633eb0b80589a839365803f150515ad34c9646809ae8a0e90f09e62686eefb1ab6
+  languageName: node
+  linkType: hard
+
+"tweetnacl@npm:^0.14.3":
+  version: 0.14.5
+  resolution: "tweetnacl@npm:0.14.5"
+  checksum: 6061daba1724f59473d99a7bb82e13f211cdf6e31315510ae9656fefd4779851cb927adad90f3b488c8ed77c106adc0421ea8055f6f976ff21b27c5c4e918487
   languageName: node
   linkType: hard
 
@@ -55229,7 +53677,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.4":
 "zip-stream@npm:^6.0.1":
   version: 6.0.1
   resolution: "zip-stream@npm:6.0.1"
@@ -55241,7 +53688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.22.4, zod@npm:^3.22.4":
+"zod@npm:^3.22.4":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 80bfd7f8039b24fddeb0718a2ec7c02aa9856e4838d6aa4864335a047b6b37a3273b191ef335bf0b2002e5c514ef261ffcda5a589fb084a48c336ffc4cdbab7f

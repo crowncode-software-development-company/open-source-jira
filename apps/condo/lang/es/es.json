@@ -2642,13 +2642,6 @@
   "pages.condo.ticket.title.TicketInfo": "Información de la incidencia",
   "pages.condo.ticket.title.TicketNotFromResident": "Incidencia de no vecino",
   "pages.condo.ticket.title.UserInfo": "Información del vecino",
-<<<<<<< HEAD
-  "pages.condo.ticket.warning.modal.HelpMessage": "La solicitud no se guardará.",
-  "pages.condo.ticket.warning.modal.Title": "¿No guardar la solicitud?",
-=======
-  "pages.condo.ticket.warning.modal.HelpMessage": "La incidencia no se guardará. Una factura, si hay en la incidencia, tampoco se guardará.",
-  "pages.condo.ticket.warning.modal.Title": "¿No guardar la incidencia?",
->>>>>>> 036f85ab652018b6014d2fe2de68092e5e286ada
   "pages.condo.tls.back": "Volver a la página de inicio de sesión",
   "pages.condo.tls.button": "Ir a instrucciones",
   "pages.condo.tls.description": "Si no tiene certificados en su dispositivo, instálelos o descargue Yandex Browser. Si los certificados están instalados, puede autorizar a través de SberBusiness sin más verificación.",
