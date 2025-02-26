@@ -84,6 +84,12 @@ const ERRORS = {
         type: WRONG_FORMAT,
         message: 'Provided bank account is not in the system',
     },
+    NO_PREV_RECEIPT: {
+        mutation: 'validateQRCode',
+        code: BAD_USER_INPUT,
+        type: NOT_FOUND,
+        message: 'No previous receipt was found',
+    },
 }
 
 /**
@@ -217,10 +223,7 @@ const ValidateQRCodeService = new GQLCustomSchema('ValidateQRCodeService', {
                 /** @type {TCompareQRResolvers} */
                 const resolvers = {
                     onNoReceipt: async () => {
-                        if (await isReceiptPaid(context, persAcc, period, [organizationId], personalAcc)) {
-                            throw new GQLError(ERRORS.RECEIPT_ALREADY_PAID, context)
-                        }
-                        amount = qrCodeAmount
+                        throw new GQLError(ERRORS.NO_PREV_RECEIPT, context)
                     },
                     onReceiptPeriodEqualsQrCodePeriod: setDataFromReceipt,
                     onReceiptPeriodNewerThanQrCodePeriod: setDataFromReceipt,
@@ -233,7 +236,7 @@ const ValidateQRCodeService = new GQLCustomSchema('ValidateQRCodeService', {
                     },
                 }
 
-                await compareQRCodeWithLastReceipt(qrCodeFields, resolvers)
+                await compareQRCodeWithLastReceipt(context, qrCodeFields, resolvers)
 
                 // Calculate fees
                 const acquiringIntegration = await getById('AcquiringIntegration', acquiringContext.integration)

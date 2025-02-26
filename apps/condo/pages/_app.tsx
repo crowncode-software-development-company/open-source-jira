@@ -102,6 +102,7 @@ import { useTicketExportTaskUIInterface } from '@condo/domains/ticket/hooks/useT
 import { CookieAgreement } from '@condo/domains/user/components/CookieAgreement'
 
 import Error404Page from './404'
+import Error429Page from './429'
 import Error500Page from './500'
 
 import '@condo/domains/common/components/wdyr'
@@ -144,6 +145,7 @@ const MenuItems: React.FC = () => {
     const isSPPOrg = useFlag(SERVICE_PROVIDER_PROFILE)
     const isMarketplaceEnabled = useFlag(MARKETPLACE)
 
+    const { isAuthenticated, isLoading } = useAuth()
     const { link, organization } = useOrganization()
     const { isExpired } = useServiceSubscriptionContext()
     const hasSubscriptionFeature = hasFeature('subscription')
@@ -154,7 +156,7 @@ const MenuItems: React.FC = () => {
     const orgId = get(organization, 'id', null)
     const orgFeatures = get(organization, 'features', [])
     const sppBillingId = get(sppConfig, 'BillingIntegrationId', null)
-    const { obj: billingCtx } = BillingContext.useObject({ where: { integration: { id: sppBillingId }, organization: { id: orgId } } })
+    const { obj: billingCtx } = BillingContext.useObject({ where: { integration: { id: sppBillingId }, organization: { id: orgId } } }, { skip: !isAuthenticated || isLoading })
     const anyReceiptsLoaded = Boolean(get(billingCtx, 'lastReport', null))
     const hasAccessToBilling = get(role, 'canReadPayments', false) || get(role, 'canReadBillingReceipts', false)
     const isManagingCompany = get(organization, 'type', MANAGING_COMPANY_TYPE) === MANAGING_COMPANY_TYPE
@@ -295,7 +297,7 @@ const MenuItems: React.FC = () => {
 }
 
 const TasksProvider = ({ children }) => {
-    const { user } = useAuth()
+    const { user, isLoading } = useAuth()
     // Use UI interfaces for all tasks, that are supposed to be tracked
     const { TicketDocumentGenerationTask: TicketDocumentGenerationTaskUIInterface } = useTicketDocumentGenerationTaskUIInterface()
     const { TicketExportTask: TicketExportTaskUIInterface } = useTicketExportTaskUIInterface()
@@ -312,7 +314,7 @@ const TasksProvider = ({ children }) => {
     // Load all tasks with 'processing' status
     const { data, loading: isProcessingTasksLoading } = useGetProcessingTasksQuery({
         variables: { userId: user?.id || null, createdAtGte: dayjs().startOf('day').toISOString() },
-        skip: !user?.id,
+        skip: !user?.id || isLoading,
     })
 
     const { records: miniAppTasks, loading: isMiniAppTasksLoading } = MiniAppTaskUIInterface.storage.useTasks(
@@ -450,6 +452,7 @@ type NextAppContext = (AppContext & NextPageContext) & {
 if (!isDisabledSsr || !isSSR()) {
     MyApp.getInitialProps = async (appContext: NextAppContext): Promise<{ pageProps: Record<string, any> }> => {
         try {
+
             const pageContext = appContext?.ctx
             const apolloClient = appContext.apolloClient
 
@@ -518,7 +521,26 @@ if (!isDisabledSsr || !isSSR()) {
 
             return { pageProps }
         } catch (error) {
-            console.error('Error while running `MyApp.getInitialProps', error)
+            const errors = error?.cause?.result?.errors || []
+            const tooManyRequests = errors?.some((error) => error?.extensions?.code === 'TOO_MANY_REQUESTS') && error?.cause?.statusCode === 400
+
+            console.error('Error while running `MyApp.getInitialProps', { error, tooManyRequests })
+
+            if (tooManyRequests) {
+                const timestamp = errors.reduce((max, err) => {
+                    const resetTime =  err?.extensions?.messageInterpolation?.resetTime
+                    if (resetTime > max) return resetTime
+                    return max
+                }, 0)
+
+                return {
+                    pageProps: {
+                        statusCode: 429,
+                        resetTime: timestamp,
+                    },
+                }
+            }
+
             return { pageProps: { statusCode: 500 } }
         }
     }
@@ -557,6 +579,9 @@ const withError = () => (PageComponent: NextPage): NextPage => {
         const statusCode = props?.pageProps?.statusCode
         if (statusCode && statusCode === 404) return (
             <PageComponent {...props} Component={Error404Page} statusCode={statusCode} />
+        )
+        if (statusCode && statusCode === 429) return (
+            <PageComponent {...props} Component={Error429Page} statusCode={statusCode} resetTime={props?.pageProps?.resetTime}/>
         )
         if (statusCode && statusCode >= 400) return (
             <PageComponent {...props} Component={Error500Page} statusCode={statusCode} />

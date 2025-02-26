@@ -1,6 +1,6 @@
 # CONDO
 
-Condo is an Open Source property management SaaS 
+[Condo](https://github.com/open-condo-software/condo) is an Open Source property management SaaS 
 that allows users to manage tickets, resident contacts, properties, 
 payment tracking, create invoices, and oversee a service marketplace, 
 all while offering an extension system for mini-apps, 
@@ -8,11 +8,25 @@ making it an ideal platform for property management companies and those servicin
 
 ![condo](./docs/images/condo-preview.png)
 
+## Table of contents
+- [Getting started](#getting-started)
+    1. [Databases setup](#1-databases-setup)
+    2. [Environment setup](#2-environment-setup)
+    3. [Installing dependencies](#3-installing-dependencies)
+    4. [Building `@open-condo` dependencies](#4-building-open-condo-dependencies) 
+    5. [Preparing the local app environment](#5-preparing-the-local-app-environment)
+    6. [Starting app in dev / prod mode](#6-start-app-locally-in-dev--prod-mode)
+    7. [Starting the worker](#7-start-the-worker)
+- [Developing](/docs/develop.md)
+- [Contributing](/docs/contributing.md)
+- [Migration guides](/docs/migration.md)
+- [Deploying](/docs/deploy.md)
+
 ## Getting started
 
 ### 1. Databases setup
 
-We use [postgres 16.4](https://www.postgresql.org) to store most of the information, 
+We use [Postgres 16.4](https://www.postgresql.org) to store most of the information, 
 and [Redis 6.2](https://redis.io) to store session information, asynchronous tasks, and various caches. 
 In addition to them, we use s3 to store files, but it is optional to get started.
 
@@ -145,14 +159,23 @@ And then start it using:
 yarn workspace @app/condo worker
 ```
 
+## Major version migration guide
+
+Check [migration.md](docs/migration.md)
+
 ## Developing
 
 Check [developing.md](docs/develop.md)
 
-## Deploying
-
-Check [deploy.md](docs/deploy.md)
-
 ## Contributing
 
 Check [contributing.md](docs/contributing.md)
+
+## Major versions migration guide
+
+Check [migration.md](docs/migration.md)
+
+
+## Deploying
+
+Check [deploy.md](docs/deploy.md)

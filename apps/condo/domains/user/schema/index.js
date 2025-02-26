@@ -3,6 +3,7 @@
  * In most cases you should not change it by hands. And please don't remove `AUTOGENERATE MARKER`s
  */
 
+const { AuthenticateOrRegisterUserWithTokenService } = require('./AuthenticateOrRegisterUserWithTokenService')
 const { AuthenticateUserWithPhoneAndPasswordService } = require('./AuthenticateUserWithPhoneAndPasswordService')
 const { ChangePhoneNumberResidentUserService } = require('./ChangePhoneNumberResidentUserService')
 const { CheckUserExistenceService } = require('./CheckUserExistenceService')
@@ -10,6 +11,7 @@ const { ConfirmPhoneAction } = require('./ConfirmPhoneAction')
 const { ConfirmPhoneActionService } = require('./ConfirmPhoneActionService')
 const { ExternalTokenAccessRight } = require('./ExternalTokenAccessRight')
 const { ForgotPasswordService } = require('./ForgotPasswordService')
+const { GenerateSudoTokenService } = require('./GenerateSudoTokenService')
 const { GetAccessTokenByUserIdService } = require('./GetAccessTokenByUserIdService')
 const { OidcClient } = require('./OidcClient')
 const { RegisterNewServiceUserService } = require('./RegisterNewServiceUserService')
@@ -22,6 +24,7 @@ const { SigninResidentUserService } = require('./SigninResidentUserService')
 const { User } = require('./User')
 const { UserExternalIdentity } = require('./UserExternalIdentity')
 const { UserRightsSet } = require('./UserRightsSet')
+const { UserSudoToken } = require('./UserSudoToken')
 /* AUTOGENERATE MARKER <REQUIRE> */
 
 module.exports = {
@@ -44,5 +47,8 @@ module.exports = {
     UserRightsSet,
     CheckUserExistenceService,
     ResetUserLimitAction,
+    UserSudoToken,
+    GenerateSudoTokenService,
+    AuthenticateOrRegisterUserWithTokenService,
 /* AUTOGENERATE MARKER <EXPORTS> */
 }

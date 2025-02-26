@@ -119,10 +119,11 @@ jobs:
     runs-on: ubuntu-22.04
     outputs:
       address-service: ${{ steps.detect-changes.outputs.address-service }}
-      condorb: ${{ steps.detect-changes.outputs.condorb }}
-      dev-api: ${{ steps.detect-changes.outputs.dev-api }}
+      dev-portal-api: ${{ steps.detect-changes.outputs.dev-portal-api }}
+      migrator: ${{ steps.detect-changes.outputs.migrator }}
       open-condo: ${{ steps.detect-changes.outputs.open-condo }}
-      registry: ${{ steps.detect-changes.outputs.registry }}
+      rb: ${{ steps.detect-changes.outputs.rb }}
+      registry-importer: ${{ steps.detect-changes.outputs.registry-importer }}
       webhooks: ${{ steps.detect-changes.outputs.webhooks }}
     steps:
       - name: Checkout code with submodules
@@ -140,21 +141,23 @@ jobs:
             address-service:
               - 'apps/address-service/**'
               - 'packages/**'
-            condorb:
-              - 'apps/condorb'
-              - 'packages/**'
-            dev-api:
-              - 'apps/dev-api/**'
+            dev-portal-api:
+              - 'apps/dev-portal-api/**'
               - 'apps/condo/domains/miniapp/**'
               - 'apps/condo/domains/user/**'
               - 'packages/**'
+            migrator:
+              - 'packages/migrator/**'
             open-condo:
               - 'packages/**'
               - '**/*.md'
               - '*'
               - '!.helm/**'
-            registry:
-              - 'apps/registry/**'
+            rb:
+              - 'apps/rb'
+              - 'packages/**'
+            registry-importer:
+              - 'apps/registry-importer/**'
               - 'packages/**'
             webhooks:
               - 'packages/webhooks/**'
@@ -345,56 +348,14 @@ jobs:
       image_name: ${{ needs.build-image.outputs.DOCKER_IMAGE }}
     secrets: inherit
 
-  run-condorb-tests:
-    name: CondoRB Tests
+  run-dev-portal-api-tests:
+    name: Dev Portal API Tests
     runs-on: ubuntu-22.04
     needs:
       - authorize
       - build-image
       - detect-changes
-    if: ${{ needs.detect-changes.outputs.condorb == 'true' }}
-    steps:
-      - name: Login to cloud registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ secrets.DOCKER_REGISTRY }}
-          username: ${{ secrets.SBERCLOUD_CR_USERNAME }}
-          password: ${{ secrets.SBERCLOUD_CR_PASSWORD }}
-      - name: Setup PG db
-        run: |
-          docker run -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB -p="127.0.0.1:5432:5432" -d ${{ env.PG_IMAGE_FULL }}
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: main
-      - name: Setup Redis db
-        run: |
-          docker run -p="127.0.0.1:6379:6379" -d ${{ env.REDIS_IMAGE_FULL }}
-      - name: Run condo container with daemon
-        run: |
-          docker run --network="host" --name condo-container -dit ${{ env.DOCKER_IMAGE_FULL }} sh
-      - name: Prepare apps
-        run: |
-          docker exec condo-container node bin/prepare.js -f condo condorb
-      - name: Check migrations state
-        run: |
-          docker exec condo-container yarn workspace @app/condorb makemigrations --check
-      - name: Run apps and tests
-        run: |
-          docker exec condo-container sh -c "(\
-          yarn workspace @app/condo start & \
-          yarn workspace @app/condorb start & \
-          node bin/wait-apps-apis.js -f condo condorb) && \
-          yarn workspace @app/condorb test"
-
-  run-dev-api-tests:
-    name: DEV-API Tests
-    runs-on: ubuntu-22.04
-    needs:
-      - authorize
-      - build-image
-      - detect-changes
-    if: ${{ needs.detect-changes.outputs.dev-api == 'true' }}
+    if: ${{ needs.detect-changes.outputs.dev-portal-api == 'true' }}
     steps:
       - name: Login to cloud registry
         uses: docker/login-action@v3
@@ -419,16 +380,16 @@ jobs:
           docker run -v ./test_logs:/app/test_logs --network="host" --name condo-container -dit ${{ env.DOCKER_IMAGE_FULL }} sh
       - name: Prepare apps
         run: |
-          docker exec condo-container node bin/prepare.js -f condo dev-api
+          docker exec condo-container node bin/prepare.js -f condo dev-portal-api
       - name: Check migrations state
         run: |
-          docker exec condo-container yarn workspace @app/dev-api makemigrations --check
+          docker exec condo-container yarn workspace @app/dev-portal-api makemigrations --check
       - name: Run apps and tests
         run: |
-          docker exec condo-container sh -c "yarn workspace @app/condo start" 2>&1 > ./test_logs/devapi.condo.dev.log &
-          docker exec condo-container sh -c "yarn workspace @app/dev-api start" 2>&1 > ./test_logs/devapi.dev-api.dev.log &
-          docker exec condo-container sh -c "node bin/wait-apps-apis.js -f condo dev-api"
-          docker exec condo-container sh -c "yarn workspace @app/dev-api test" 2>&1 > ./test_logs/devapi.tests.log
+          docker exec condo-container sh -c "yarn workspace @app/condo start" 2>&1 > ./test_logs/dev_portal_api.condo.dev.log &
+          docker exec condo-container sh -c "yarn workspace @app/dev-portal-api start" 2>&1 > ./test_logs/dev_portal_api.dev-portal-api.dev.log &
+          docker exec condo-container sh -c "node bin/wait-apps-apis.js -f condo dev-portal-api"
+          docker exec condo-container sh -c "yarn workspace @app/dev-portal-api test" 2>&1 > ./test_logs/dev_portal_api.tests.log
       - name: Collect docker logs on failure
         if: failure()
         uses: jwalton/gh-docker-logs@v1
@@ -438,20 +399,20 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: dev-api
+          name: dev-portal-api
           path: |
             ./test_logs/*
             *.log
             ./docker-logs
           retention-days: 2
 
-  run-webhooks-tests:
-    name: Webhooks Tests
+  run-migrator-tests:
+    name: Migrator Tests
     runs-on: ubuntu-22.04
     needs:
       - authorize
       - detect-changes
-    if: ${{ needs.detect-changes.outputs.webhooks == 'true' }}
+    if: ${{ needs.detect-changes.outputs.migrator == 'true' }}
     steps:
       - name: Checkout code with submodules
         uses: actions/checkout@v4
@@ -464,17 +425,17 @@ jobs:
         run: |
           npm i -g turbo
           yarn install --immutable
-      - name: Test webhooks utils
-        run: yarn workspace @open-condo/webhooks jest
+      - name: Run @open-condo/migrator tests
+        run: yarn workspace @open-condo/migrator test
 
-  run-registry-tests:
-    name: Registry Tests
+  run-rb-tests:
+    name: RB Tests
     runs-on: ubuntu-22.04
     needs:
       - authorize
       - build-image
       - detect-changes
-    if: ${{ needs.detect-changes.outputs.registry == 'true' }}
+    if: ${{ needs.detect-changes.outputs.rb == 'true' }}
     steps:
       - name: Login to cloud registry
         uses: docker/login-action@v3
@@ -497,14 +458,78 @@ jobs:
           docker run --network="host" --name condo-container -dit ${{ env.DOCKER_IMAGE_FULL }} sh
       - name: Prepare apps
         run: |
-          docker exec condo-container node bin/prepare.js -f condo registry
+          docker exec condo-container node bin/prepare.js -f condo rb
       - name: Check migrations state
         run: |
-          docker exec condo-container yarn workspace @app/registry makemigrations --check
+          docker exec condo-container yarn workspace @app/rb makemigrations --check
       - name: Run apps and tests
         run: |
           docker exec condo-container sh -c "(\
           yarn workspace @app/condo start & \
-          yarn workspace @app/registry start & \
-          node bin/wait-apps-apis.js -f condo registry) && \
-          yarn workspace @app/registry test"
+          yarn workspace @app/rb start & \
+          node bin/wait-apps-apis.js -f condo rb) && \
+          yarn workspace @app/rb test"
+
+  run-registry-tests:
+    name: Registry-importer Tests
+    runs-on: ubuntu-22.04
+    needs:
+      - authorize
+      - build-image
+      - detect-changes
+    if: ${{ needs.detect-changes.outputs.registry-importer == 'true' }}
+    steps:
+      - name: Login to cloud registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.SBERCLOUD_CR_USERNAME }}
+          password: ${{ secrets.SBERCLOUD_CR_PASSWORD }}
+      - name: Setup PG db
+        run: |
+          docker run -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB -p="127.0.0.1:5432:5432" -d ${{ env.PG_IMAGE_FULL }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: main
+      - name: Setup Redis db
+        run: |
+          docker run -p="127.0.0.1:6379:6379" -d ${{ env.REDIS_IMAGE_FULL }}
+      - name: Run condo container with daemon
+        run: |
+          docker run --network="host" --name condo-container -dit ${{ env.DOCKER_IMAGE_FULL }} sh
+      - name: Prepare apps
+        run: |
+          docker exec condo-container node bin/prepare.js -f condo registry-importer
+      - name: Check migrations state
+        run: |
+          docker exec condo-container yarn workspace @app/registry-importer makemigrations --check
+      - name: Run apps and tests
+        run: |
+          docker exec condo-container sh -c "(\
+          yarn workspace @app/condo start & \
+          yarn workspace @app/registry-importer start & \
+          node bin/wait-apps-apis.js -f condo registry-importer) && \
+          yarn workspace @app/registry-importer test"
+
+  run-webhooks-tests:
+    name: Webhooks Tests
+    runs-on: ubuntu-22.04
+    needs:
+      - authorize
+      - detect-changes
+    if: ${{ needs.detect-changes.outputs.webhooks == 'true' }}
+    steps:
+      - name: Checkout code with submodules
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          ssh-key: ${{ secrets.SSH_DOCK_SERVER_PRIVATE_KEY }}
+          ref: ${{ env.REF }}
+      - name: Install packages
+        run: |
+          npm i -g turbo
+          yarn install --immutable
+      - name: Test webhooks utils
+        run: yarn workspace @open-condo/webhooks jest

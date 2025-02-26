@@ -7,7 +7,6 @@ const Big = require('big.js')
 const dayjs = require('dayjs')
 const iconv = require('iconv-lite')
 
-const { getById } = require('@open-condo/keystone/schema')
 const { catchErrorFrom, setFakeClientMode, makeLoggedInAdminClient } = require('@open-condo/keystone/test.utils')
 
 const { CONTEXT_FINISHED_STATUS } = require('@condo/domains/acquiring/constants/context')
@@ -17,6 +16,7 @@ const {
     createValidRuRoutingNumber,
     createValidRuNumber,
 } = require('@condo/domains/banking/utils/testSchema/bankAccount')
+const { HOUSING_CATEGORY_ID } = require('@condo/domains/billing/constants/constants')
 const { getCountrySpecificQRCodeParser } = require('@condo/domains/billing/utils/countrySpecificQRCodeParsers')
 const { RUSSIA_COUNTRY } = require('@condo/domains/common/constants/countries')
 const { createTestOrganization } = require('@condo/domains/organization/utils/testSchema')
@@ -40,16 +40,21 @@ const {
     createTestRecipient,
 } = require('./testSchema')
 
+const { keystone } = index
+
 const TEST_STRING = 'ST00011|Name=ООО «УК ЭкоГрад»|PersonalAcc=40902830202010056769|BankName=ПАО СБЕРБАНК|BIC=048073601|CorrespAcc=30102110300320000206|PayeeINN=0524967340|persAcc=5018435412|payerAddress=ул.Ивана Спатара, д.14, кв.32|lastName=Иванов|firstName=Иван|middleName=Иванович|Sum=12351'
 
 describe('receiptQRCodeUtils', () => {
 
     const parseRUReceiptQRCode = getCountrySpecificQRCodeParser(RUSSIA_COUNTRY)
+
+    let context
     let adminClient
 
     setFakeClientMode(index, { excludeApps: ['NextApp', 'AdminUIApp', 'OIDCMiddleware'] })
 
     beforeAll(async () => {
+        context = await keystone.createContext({ skipAccessControl: true })
         adminClient = await makeLoggedInAdminClient()
     })
 
@@ -165,6 +170,7 @@ describe('receiptQRCodeUtils', () => {
             ;[billingProperty] = await createTestBillingProperty(adminClient, billingIntegrationContext)
             ;[billingAccount] = await createTestBillingAccount(adminClient, billingIntegrationContext, billingProperty, { number: qrCodeObj.PersAcc })
             ;[billingRecipient] = await createTestBillingRecipient(adminClient, billingIntegrationContext, {
+                tin: qrCodeObj.PayeeINN,
                 bankAccount: qrCodeObj.PersonalAcc,
                 bic: qrCodeObj.BIC,
             })
@@ -178,7 +184,7 @@ describe('receiptQRCodeUtils', () => {
                     onReceiptPeriodNewerThanQrCodePeriod: jest.fn(),
                     onReceiptPeriodOlderThanQrCodePeriod: jest.fn(),
                 }
-                await compareQRCodeWithLastReceipt(qrCodeObj, resolvers)
+                await compareQRCodeWithLastReceipt(context, qrCodeObj, resolvers)
 
                 expect(resolvers.onNoReceipt).toBeCalledTimes(1)
                 expect(resolvers.onReceiptPeriodEqualsQrCodePeriod).toBeCalledTimes(0)
@@ -196,12 +202,19 @@ describe('receiptQRCodeUtils', () => {
                     period: '2024-06-01',
                     receiver: { connect: { id: billingRecipient.id } },
                     recipient: createTestRecipient({
+                        tin: billingRecipient.tin,
                         bic: billingRecipient.bic,
+                        bankAccount: billingRecipient.bankAccount,
                     }),
                     toPay: Big(qrCodeObj.Sum).div(100),
                 })
 
-                billingReceiptForComparison = await getById('BillingReceipt', billingReceipt.id)
+                billingReceiptForComparison = {
+                    id: billingReceipt.id,
+                    period: billingReceipt.period,
+                    toPay: billingReceipt.toPay,
+                    category: { id: HOUSING_CATEGORY_ID },
+                }
             })
 
             test('last billing receipt period equals qr-code period', async () => {
@@ -211,7 +224,7 @@ describe('receiptQRCodeUtils', () => {
                     onReceiptPeriodNewerThanQrCodePeriod: jest.fn(),
                     onReceiptPeriodOlderThanQrCodePeriod: jest.fn(),
                 }
-                await compareQRCodeWithLastReceipt(qrCodeObj, resolvers)
+                await compareQRCodeWithLastReceipt(context, qrCodeObj, resolvers)
 
                 expect(resolvers.onNoReceipt).toBeCalledTimes(0)
                 expect(resolvers.onReceiptPeriodEqualsQrCodePeriod).toBeCalledTimes(1)
@@ -228,7 +241,7 @@ describe('receiptQRCodeUtils', () => {
                     onReceiptPeriodNewerThanQrCodePeriod: jest.fn(),
                     onReceiptPeriodOlderThanQrCodePeriod: jest.fn(),
                 }
-                await compareQRCodeWithLastReceipt({ ...qrCodeObj, PaymPeriod: '05.2024' }, resolvers)
+                await compareQRCodeWithLastReceipt(context, { ...qrCodeObj, PaymPeriod: '05.2024' }, resolvers)
 
                 expect(resolvers.onNoReceipt).toBeCalledTimes(0)
                 expect(resolvers.onReceiptPeriodEqualsQrCodePeriod).toBeCalledTimes(0)
@@ -245,7 +258,7 @@ describe('receiptQRCodeUtils', () => {
                     onReceiptPeriodNewerThanQrCodePeriod: jest.fn(),
                     onReceiptPeriodOlderThanQrCodePeriod: jest.fn(),
                 }
-                await compareQRCodeWithLastReceipt({ ...qrCodeObj, PaymPeriod: '07.2024' }, resolvers)
+                await compareQRCodeWithLastReceipt(context, { ...qrCodeObj, PaymPeriod: '07.2024' }, resolvers)
 
                 expect(resolvers.onNoReceipt).toBeCalledTimes(0)
                 expect(resolvers.onReceiptPeriodEqualsQrCodePeriod).toBeCalledTimes(0)

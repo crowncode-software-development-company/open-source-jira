@@ -85,6 +85,7 @@ const User = new GQLListSchema('User', {
             options: USER_TYPES,
             defaultValue: STAFF,
             isRequired: true,
+            access: access.canManageUserType,
         },
 
         isAdmin: {
@@ -115,6 +116,7 @@ const User = new GQLListSchema('User', {
                 },
                 validateInput: async ({ context, operation, resolvedData, existingItem, addFieldValidationError }) => {
                     if (resolvedData['email'] && normalizeEmail(resolvedData['email']) !== resolvedData['email']) {
+                        // TODO(DOMA-9749): migrate from addFieldValidationError to GQLError
                         addFieldValidationError(`${EMAIL_WRONG_FORMAT_ERROR}mail] invalid format`)
                     }
                     if (resolvedData.email === null) {
@@ -137,6 +139,7 @@ const User = new GQLListSchema('User', {
                             })
                         }
                         if (existedUsers && existedUsers.length > 0) {
+                            // TODO(DOMA-9749): migrate from addFieldValidationError to GQLError
                             addFieldValidationError(`${EMAIL_ALREADY_REGISTERED_ERROR}] user already exists`)
                         }
                     }
@@ -164,6 +167,7 @@ const User = new GQLListSchema('User', {
                 },
                 validateInput: async ({ context, operation, resolvedData, existingItem, addFieldValidationError }) => {
                     if (resolvedData['phone'] && normalizePhone(resolvedData['phone']) !== resolvedData['phone']) {
+                        // TODO(DOMA-9749): migrate from addFieldValidationError to GQLError
                         addFieldValidationError(`${PHONE_WRONG_FORMAT_ERROR}] invalid format`)
                         return
                     }
@@ -172,6 +176,7 @@ const User = new GQLListSchema('User', {
                     // NOTE: Undefined here means that user.phone is not being updated
                     if (isUndefined(resolvedData.phone) && operation === 'update') return
                     if (!resolvedData.phone) {
+                        // TODO(DOMA-9749): migrate from addFieldValidationError to GQLError
                         addFieldValidationError(`${PHONE_IS_REQUIRED_ERROR}] phone is required`)
                     } else if (get(resolvedData, 'phone', '').length) {
                         let existedUsers = []
@@ -190,6 +195,7 @@ const User = new GQLListSchema('User', {
                             })
                         }
                         if (existedUsers && existedUsers.length > 0) {
+                            // TODO(DOMA-9749): migrate from addFieldValidationError to GQLError
                             addFieldValidationError(`${PHONE_ALREADY_REGISTERED_ERROR}] user already exists`)
                         }
                     }
