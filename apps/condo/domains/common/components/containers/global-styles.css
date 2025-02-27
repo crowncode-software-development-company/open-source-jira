@@ -129,6 +129,7 @@
 .mobile-header .context-bar {
   display: flex;
   flex-direction: row;
+  gap: 60px;
   align-items: center;
   justify-content: space-between;
   height: 40px;
@@ -154,6 +155,11 @@
   vertical-align: bottom;
 }
 
+.mobile-header .organization-user-block {
+  display: flex;
+  gap: 20px;
+}
+
 .user-dropdown {
   cursor: pointer;
 }
@@ -174,6 +180,10 @@
 .appeals-dropdown-menu .condo-typography,
 .menu .menu-item .condo-typography {
   color: inherit;
+}
+
+.mobile-header .organization-user-block .organization-selector .condo-typography {
+  max-width: 100px;
 }
 
 .appeals-button {
