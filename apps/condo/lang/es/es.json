@@ -3238,6 +3238,7 @@
   "kanban.ticket.noResults.title": "No pudimos encontrar nada que coincidiera con su consulta",
   "kanban.ticket.noResults.Tip.title": "Intente ingresar diferentes datos.",
   "kanban.ticket.tickets.of": "de",
+  "kanban.ticket.tickets.before": "hasta",
   "kanban.ticket.delete.confirmText": "Eliminar ticket",
   "kanban.ticket.delete.title": "¿Está seguro de que desea eliminar este ticket?",
   "kanban.ticket.delete.message": "Una vez eliminado, el ticket no se puede recuperar.",
@@ -3246,6 +3247,7 @@
   "kanban.comment.delete.message": "Una vez eliminado, el comentario no se puede recuperar.",
   "kanban.comment.change.title": "camb.",
   "kanban.file.delete.confirmText": "Eliminar archivo",
+  "kanban.ticket.title": "Describa brevemente el problema",
   "kanban.file.delete.title": "¿Está seguro de que desea eliminar este archivo?",
   "kanban.file.delete.message": "Una vez eliminado, el archivo no se podrá recuperar.",
   "kanban.file.noResult.title": "Aún no hay archivos adjuntos",
@@ -3256,6 +3258,5 @@
   "kanban.create.assignee.help": "Especifique la persona responsable de ejecutar la solicitud.",
   "kanban.create.deadline.help": "Indique la fecha límite para completar la solicitud.",
   "kanban.create.deferUntil.title": "¿Hasta qué fecha se debe aplazar la solicitud?",
-  "kanban.ticket.successDelete.title": "Solicitud Eliminada",
-  "trial.title": "Periodo gratuito de 14 días"
+  "kanban.ticket.successDelete.title": "Solicitud Eliminada"
 }

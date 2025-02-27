@@ -1,3 +1,4 @@
+import { padStart } from 'lodash'
 import moment from 'moment'
 
 export const copyToClipboard = value => {
@@ -20,6 +21,11 @@ export const sortByNewest = (items, sortField) =>
     items.sort((a, b) => -a[sortField].localeCompare(b[sortField]))
 
 export const formatDateTimeConversational = date => (date ? moment(date).fromNow() : date)
+
+export const formatDefferedDate = (beforeTitle, date) => {
+    return `${beforeTitle} ${moment(date).format('DD.MM')}`
+}
+
 
 export const isFocusedElementEditable = () =>
     !!document.activeElement.getAttribute('contenteditable') ||

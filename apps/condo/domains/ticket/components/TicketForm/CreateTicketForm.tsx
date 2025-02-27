@@ -125,9 +125,10 @@ export const CreateTicketActionBar = ({ handleSave, isLoading, form }) => {
 
 export interface ICreateTicketFormProps {
     closeModal?: () => void
-}
+    ticketsCount?: number
+} 
 
-export const CreateTicketForm: React.FC<ICreateTicketFormProps> = ({ closeModal }) => {
+export const CreateTicketForm: React.FC<ICreateTicketFormProps> = ({ closeModal, ticketsCount }) => {
     const intl = useIntl()
     const SuccessNotificationDescription = intl.formatMessage({ id: 'pages.condo.ticket.notification.success.description' })
     const CopyLinkMessage = intl.formatMessage({ id: 'pages.condo.marketplace.invoice.form.create.notification.copyLink' })
@@ -173,19 +174,7 @@ export const CreateTicketForm: React.FC<ICreateTicketFormProps> = ({ closeModal 
                 {intl.formatMessage({ id: 'pages.condo.ticket.notification.success.message' }, { number: ticketNumber })}
             </Typography.Text>
         ),
-        description: paymentUrl ? (
-            <Space size={16} direction='vertical'>
-                <Typography.Text size='medium' type='secondary'>{SuccessNotificationWithPaymentLinkDescription}</Typography.Text>
-                <CopyButton url={paymentUrl} copyMessage={CopyLinkMessage} copiedMessage={CopiedLinkMessage}/>
-            </Space>
-        ) : (
-            <>
-            </>
-            // <Typography.Link href={`/ticket/${ticketId}`} target='_blank' rel='noreferrer'>
-            //     {SuccessNotificationDescription}
-            // </Typography.Link>
-        ),
-        duration: paymentUrl && 0,
+        description: SuccessNotificationDescription,
     }), [CopiedLinkMessage, CopyLinkMessage, SuccessNotificationDescription, SuccessNotificationWithPaymentLinkDescription, intl])
 
     const getPaymentLink = useInvoicePaymentLink()
@@ -261,6 +250,7 @@ export const CreateTicketForm: React.FC<ICreateTicketFormProps> = ({ closeModal 
     return useMemo(() => (
         <Tour.Provider>
             <BaseTicketForm
+                ticketsCount={ticketsCount || 1}
                 action={createAction}
                 initialValues={initialValues}
                 organization={organization}

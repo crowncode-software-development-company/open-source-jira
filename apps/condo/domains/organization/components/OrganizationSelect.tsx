@@ -93,7 +93,7 @@ export const InlineOrganizationSelect: React.FC = () => {
 
             // The slash will only be there if we have just registered and we don't have any additional parameters in the address bar.
             if (organizationType === OrganizationTypeType.ManagingCompany && router.route === '/') {
-                await router.push('/tour')
+                await router.push('/')
             }
         },
     })

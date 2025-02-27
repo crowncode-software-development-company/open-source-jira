@@ -14,6 +14,7 @@ import { ActionButton, Actions, Divider, HelpText, LabelText, SelectItem, Select
 
 import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrErrorPage'
 import DatePicker from '../../../common/components/Pickers/DatePicker'
+import { useValidations } from '../../../common/hooks/useValidations'
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
 import { TicketPriority, TicketPriorityCopy, TicketType, TicketTypeCopy } from '../../constants'
 import { color } from '../../styles'
@@ -54,7 +55,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
     const { query } = useRouter()
     const { organization } = useOrganization()
     const { user } = useAuth()
-
+    const { requiredValidator, maxLengthValidator, minLengthValidator } = useValidations()
     const { objs: employeesData, loading: employeesLoading } = OrganizationEmployee.useAllObjects({
         where: {
             organization: { id: organization.id },
@@ -79,6 +80,16 @@ const ProjectTicketCreate = ({ closeModal }) => {
         priority: TicketPriority.MEDIUM,
     }
 
+    const validations = {
+        title: [requiredValidator, minLengthValidator(10), maxLengthValidator(70)],
+        description: [requiredValidator, minLengthValidator(20), maxLengthValidator(1000)],
+        type: [requiredValidator],
+        priority: [requiredValidator],
+        assignee: [requiredValidator],
+        executor: [requiredValidator],
+        deadline: [requiredValidator],
+    }
+
     const onFinish = (values) => {
         console.log('Received values:', values)
         closeModal()
@@ -98,7 +109,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
        
             <Form form={form} layout='vertical' onFinish={onFinish} initialValues={initialValues}>
 
-                <CustomFormItem label={TypeTitle} name='type' help={TypeHelp} rules={[{ required: true }]}>
+                <CustomFormItem label={TypeTitle} name='type' helpText={TypeHelp} rules={validations.type}>
                     <Select
                         placeholder={SelectTitle}
                         withClearValue={false}
@@ -113,7 +124,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
 
                 <Divider />
 
-                <CustomFormItem label={TitleTitle} name='title' help={TitleHelp} rules={[{ required: true }, { max: 70, message: 'Maximum length is 70 characters.' }]}>
+                <CustomFormItem label={TitleTitle} name='title' helpText={TitleHelp} rules={validations.title}>
                     <Input
                         value={form.getFieldValue('title')}
                         onChange={(value) => form.setFieldsValue({ title: value })}
@@ -121,7 +132,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={DescriptionTitle} name='description' help={DescriptionHelp} rules={[{ required: true }]}>
+                <CustomFormItem label={DescriptionTitle} name='description' helpText={DescriptionHelp} rules={validations.description}>
                     <TextEditor 
                         action='create'
                         value={form.getFieldValue('description')}
@@ -129,7 +140,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={PriorityTitle} name='priority' help={ExecutorHelp} rules={[{ required: true }]}>
+                <CustomFormItem label={PriorityTitle} name='priority' helpText={PriorityHelp} rules={validations.priority}>
                     <Select
                         placeholder={SelectTitle}
                         withClearValue={false}
@@ -142,7 +153,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={AssigneeTitle} name='assignee' help={AssigneeHelp} rules={[{ required: true }]}>
+                <CustomFormItem label={AssigneeTitle} name='assignee' helpText={AssigneeHelp} rules={validations.assignee}>
                     <Select
                         placeholder={SelectTitle}
                         withClearValue={false}
@@ -155,7 +166,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={ExecutorTitle} name='executor' help={PriorityHelp} rules={[{ required: true }]}>
+                <CustomFormItem label={ExecutorTitle} name='executor' helpText={ExecutorHelp} rules={validations.executor}>
                     <Select
                         placeholder={SelectTitle}
                         withClearValue={false}
@@ -168,7 +179,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={DeadlineTitle} name='deadline' help={DeadlineHelp} rules={[{ required: true }]}>
+                <CustomFormItem label={DeadlineTitle} name='deadline' helpText={DeadlineHelp} rules={validations.deadline}>
                     <DatePicker
                         value={form.getFieldValue('deadline')}
                         onChange={(value) => form.setFieldsValue({ deadline: value })}
@@ -212,13 +223,13 @@ export const renderUser = (user) => {
     )
 }
   
-const CustomFormItem = ({ label, name, help = '', children, ...props }) => {
+const CustomFormItem = ({ label, name, helpText, children, ...props }) => {
     return (
         <Form.Item 
             label={<LabelText>{label}</LabelText>} 
             name={name}
-            help={<HelpText>{help}</HelpText>}
-            style={{ marginBottom: '-20px' }}
+            help={<HelpText>{props.errors && props.errors[name] ? props.errors[name].message : helpText}</HelpText>}
+            style={{ marginBottom: '-20px' }}   
             {...props}
         >
             {children}

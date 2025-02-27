@@ -55,16 +55,30 @@ const Avatar: React.FC<AvatarProps> = ({ className, avatarUrl, name, size = 32, 
 }
 
 const colors = [
-    '#DA7657',
-    '#6ADA57',
-    '#5784DA',
-    '#AA57DA',
-    '#DA5757',
-    '#DA5792',
-    '#57DACA',
-    '#57A5DA',
+    '#B38B7D',
+    '#8FB37D', 
+    '#7D8BB3',
+    '#A37DB3', 
+    '#B37D7D', 
+    '#B37DA3',
+    '#7DB3A3',
+    '#7DA3B3', 
+    '#D99666',
+    '#66D996',
+    '#9666D9',
+    '#D9B366',
+    '#B366D9',
+    '#D9B3C6', 
+    '#C6D9B3', 
+    '#B3C6D9',
 ]
+const getColorFromName = (name: string) => {
+    const normalizedName = name.toLocaleLowerCase()
+    const firstChar = normalizedName.charAt(0)
+    const lastChar = normalizedName.charAt(normalizedName.length - 1)
 
-const getColorFromName = (name: string) => colors[name.toLocaleLowerCase().charCodeAt(0) % colors.length]
+    const charCodeSum = firstChar.charCodeAt(0) + lastChar.charCodeAt(0)
+    return colors[charCodeSum % colors.length]
+}
 
 export default Avatar

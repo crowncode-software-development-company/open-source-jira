@@ -2380,6 +2380,7 @@ export const GetTicketsDocument = gql`
     details
     clientName
     clientPhone
+    deferredUntil
     classifier {
       id
       category {

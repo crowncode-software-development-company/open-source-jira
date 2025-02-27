@@ -29,7 +29,7 @@ import {
 import { useGetTicketsQuery } from '../../../../gql'
 import { color } from '../../styles'
 import { TicketTypeIcon } from '../../ui'
-import { sortByNewest } from '../../utils'
+import { formatDefferedDate, sortByNewest } from '../../utils'
 
 const ProjectTicketSearch = () => {
     const intl = useIntl()
@@ -39,6 +39,7 @@ const ProjectTicketSearch = () => {
     const MatchingTicketTitle = intl.formatMessage({ id: 'kanban.ticket.matchingTicket.title' })
     const NoResultTitle = intl.formatMessage({ id: 'kanban.ticket.noResults.title' })
     const NoResultTipTitle = intl.formatMessage({ id: 'kanban.ticket.noResults.Tip.title' })
+    const BeforeTitle = intl.formatMessage({ id: 'kanban.ticket.tickets.before' })
     const router = useRouter()
     const { organization } = useOrganization()
     const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(!getSearchTerm)
@@ -106,7 +107,10 @@ const ProjectTicketSearch = () => {
                     <TicketData>
                         <TicketTitleText><NumberTicket>{TicketTitle} №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</TicketTitleText>
                         <TicketTypeId>
-                            <TicketTypeColor $color={ticket.status.colors.primary}>{ticket.status.name}</TicketTypeColor> / {ticket.assignee.name}
+                            <TicketTypeColor $color={ticket.status.colors.primary}>
+                                {ticket.status.name}
+                            </TicketTypeColor>
+                            {ticket.deferredUntil && ` ${formatDefferedDate(BeforeTitle, ticket.deferredUntil)}`} / {ticket.assignee.name}
                         </TicketTypeId>
                     </TicketData>
                     <Avatars>

@@ -36,6 +36,7 @@ query getTickets(
     details
     clientName
     clientPhone
+    deferredUntil
     classifier {
       id
       category {

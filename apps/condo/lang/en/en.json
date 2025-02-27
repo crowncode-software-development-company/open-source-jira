@@ -3240,6 +3240,7 @@
   "kanban.ticket.noResults.title": "We couldn&apos;t find anything matching your search",
   "kanban.ticket.noResults.Tip.title": "Try again with a different term.",
   "kanban.ticket.tickets.of": "of",
+  "kanban.ticket.tickets.before": "before",
   "kanban.ticket.delete.confirmText": "Delete ticket",
   "kanban.ticket.delete.title": "Are you sure you want to delete this ticket?",
   "kanban.ticket.delete.message": "Once you delete, it's gone for good.",
@@ -3254,11 +3255,11 @@
   "kanban.create.type.help": "Start typing to get a list of possible matches.",
   "kanban.create.title.help": "Concisely summarize the issue in one or two sentences.",
   "kanban.create.description.help": "Describe the issue in as much detail as you'd like.",
+  "kanban.ticket.title": "Briefly describe the issue",
   "kanban.create.priority.help": "Priority in relation to other issues.",
   "kanban.create.executor.help": "Specify the executor of the request.",
   "kanban.create.assignee.help": "Specify the person responsible for executing the request.",
   "kanban.create.deadline.help": "Provide the date by which the request needs to be completed.",
   "kanban.create.deferUntil.title": "Until what date should the request be deferred?",
-  "kanban.ticket.successDelete.title": "Ticket Deleted",
-  "trial.title": "Free period of 14 days"
+  "kanban.ticket.successDelete.title": "Ticket Deleted"
 }

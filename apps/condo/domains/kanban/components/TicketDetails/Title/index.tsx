@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
@@ -24,38 +24,36 @@ const TitleTextarea = styled(Textarea)`
     }
   }
 `
-const ErrorText = styled.div`
-  padding-top: 4px;
-  color: ${color.danger};
-  ${font.size(13)}
-`
 
 const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
     const intl = useIntl()
     const TicketTitle = intl.formatMessage({ id: 'Ticket' })
-    const [error, setError] = useState(null)
+    const PlaceholderTitle = intl.formatMessage({ id: 'kanban.ticket.title' })
+    const [title, setTitle] = useState(ticket.meta?.title || `${TicketTitle} №${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`)
+    const [editing, setEditing] = useState(false)
 
     const handleTitleChange = () => {
-        setError(null)
+        if (title === ticket.meta.title) return
+        setEditing(true)
+        updateTicket({ meta: { ...ticket.meta, title } })
+        setEditing(false)
     }
 
     return (
-        <>
-            <TitleTextarea
-                onChange={() => null}
-                minRows={1}
-                disabled
-                placeholder='Short summary'
-                defaultValue={`${TicketTitle} №${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`}
-                onBlur={handleTitleChange}
-                onKeyDown={event => {
-                    if (event.keyCode === KeyCodes.ENTER) {
-                        (event.target as HTMLTextAreaElement).blur() 
-                    }
-                }}
-            />
-            {error && <ErrorText>{error}</ErrorText>}
-        </>
+        <TitleTextarea
+            maxLenth = {70}
+            minRows={1}
+            placeholder={PlaceholderTitle}
+            disabled={editing}
+            value={title}
+            onChange={setTitle}
+            onBlur={handleTitleChange}
+            onKeyDown={event => {
+                if (event.keyCode === KeyCodes.ENTER) {
+                    (event.target as HTMLTextAreaElement).blur() 
+                }
+            }}
+        />
     )
 }
 

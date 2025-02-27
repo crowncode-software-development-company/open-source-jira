@@ -613,6 +613,7 @@ export interface ITicketFormProps {
     OnCompletedMsg?: OnCompletedMsgType<Ticket>
     autoAssign?: boolean
     closeModal?: () => void
+    ticketsCount?: number
     isExisted?: boolean
 }
 
@@ -634,6 +635,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
 
     const {
         action: _action,
+        ticketsCount,
         initialValues,
         organization,
         afterActionCompleted,
@@ -722,6 +724,7 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
         const result = await _action({
             ...otherVariables,
             details: normalizeText(details),
+            meta: { detailsHtml: normalizeText(details), columnPosition: ticketsCount + 1, dv:1 },
         }, ...args)
 
         await syncModifiedFiles(result.id)

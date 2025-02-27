@@ -14,6 +14,7 @@ import { List } from '../List'
 
 const Lists = styled.div`
   display: flex;
+  min-width: 1200px;
   gap: 5px;
 `
 
@@ -90,12 +91,14 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
 
     return (
         <>
-            <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={resetState}
+            <DeferredUntilModal isOpen={isOpenUntil} value={deferredUntil} setValue={setDeferredUntil} onCancel={() => {resetState(); setLocalTickets(tickets)}}
                 onOk={() => {
                     updateTicketStatus(DefferedStatusTitle, currentDraggableTicketId, newColumnPosition, deferredUntil)
                     resetState()
                 }} />
             <DragDropContext onDragEnd={handleTicketDrop}>
+                {console.log(tickets)
+                }
                 <Lists>
                     {Object.keys(ticketStatuses).map((key) => (
                         <List

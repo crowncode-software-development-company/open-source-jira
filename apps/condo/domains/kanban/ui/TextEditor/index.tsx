@@ -56,7 +56,7 @@ interface IProps {
     onChange: (value) => void
 }
 
-const TextEditor: React.FC<IProps> = ({ action, ticketId, value, onChange }) => {
+const TextEditor: React.FC<IProps & ReactQuillProps> = ({ action, ticketId, value, onChange, ...props }) => {
     const quillRef = useRef<ReactQuill>(null)
     const intl = useIntl()
     const PlaceholderTitle = intl.formatMessage({ id: 'kanban.ticket.description.placeholder' })
@@ -184,6 +184,7 @@ const TextEditor: React.FC<IProps> = ({ action, ticketId, value, onChange }) => 
                 onChange={onChange}
                 placeholder={PlaceholderTitle}
                 modules={modules}
+                {...props}
             />
         </EditorCont>
     )

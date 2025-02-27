@@ -3,8 +3,9 @@ import { Draggable } from 'react-beautiful-dnd'
 import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 
-import { color, mixin } from '../../styles'
+import { color, font, mixin } from '../../styles'
 import { Avatar, TicketPriorityIcon, TicketTypeIcon } from '../../ui'
+import { formatDefferedDate } from '../../utils'
 
 const TicketLink = styled.div`
   display: block;
@@ -63,9 +64,17 @@ const Assignees = styled.div`
   margin-left: 2px;
 `
 
+const BeforeText = styled.div`
+background-color: ${color.backgroundLightest};
+border-radius: 7px;
+padding: 0 5px;
+color: ${color.textDark};
+${font.size(12)}
+`
+
 const ProjectBoardListTicket = ({ ticket, index }) => {
     const intl = useIntl()
-    const TicketsTitle = intl.formatMessage({ id: 'Ticket' })
+    const BeforeTitle = intl.formatMessage({ id: 'kanban.ticket.tickets.before' })
     const router = useRouter()
     const handleOpenModal = () => {
         router.push(`?ticketId=${ticket.id}`, undefined, { shallow: true })
@@ -80,11 +89,12 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                     {...provided.dragHandleProps}
                 >
                     <Ticket isbeingdragged={snapshot.isDragging && !snapshot.isDropAnimating ? 'true' : undefined}>
-                        <Title><NumberTicket>{TicketsTitle} №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</Title>
+                        <Title><NumberTicket>№{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</Title>
                         <Bottom>
                             <Icons>
                                 <TicketTypeIcon type='task' size='medium'/>
                                 <TicketPriorityIcon priority={ticket.order || 1} size='medium'/>
+                                {ticket.deferredUntil && <BeforeText>{formatDefferedDate(BeforeTitle, ticket.deferredUntil)}</BeforeText>}
                             </Icons>
                             <Assignees>
                                 <AssigneeAvatar
