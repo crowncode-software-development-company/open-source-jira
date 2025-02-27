@@ -49,17 +49,12 @@ import { TrackingProvider } from '@condo/domains/common/components/TrackingConte
 import UseDeskWidget from '@condo/domains/common/components/UseDeskWidget'
 import { SERVICE_PROVIDER_PROFILE, MARKETPLACE } from '@condo/domains/common/constants/featureflags'
 import {
-    TOUR_CATEGORY,
     DASHBOARD_CATEGORY,
     COMMUNICATION_CATEGORY,
-    PROPERTIES_CATEGORY,
     RESIDENTS_CATEGORY,
     EMPLOYEES_CATEGORY,
-    MARKET_CATEGORY,
-    BILLING_CATEGORY,
-    METERS_CATEGORY,
-    MINIAPPS_CATEGORY,
-    SETTINGS_CATEGORY,
+    KANBAN_CATEGORY,
+    PROPERTIES_CATEGORY,
 } from '@condo/domains/common/constants/menuCategories'
 import { useHotCodeReload } from '@condo/domains/common/hooks/useHotCodeReload'
 import { useMiniappTaskUIInterface } from '@condo/domains/common/hooks/useMiniappTaskUIInterface'
@@ -89,7 +84,7 @@ import {
 import { useNewsItemsAccess } from '@condo/domains/news/hooks/useNewsItemsAccess'
 import { TourProvider } from '@condo/domains/onboarding/contexts/TourContext'
 import { useNoOrganizationToolTip } from '@condo/domains/onboarding/hooks/useNoOrganizationToolTip'
-import { MANAGING_COMPANY_TYPE, SERVICE_PROVIDER_TYPE } from '@condo/domains/organization/constants/common'
+import { MANAGING_COMPANY_TYPE } from '@condo/domains/organization/constants/common'
 import {
     SubscriptionProvider,
     useServiceSubscriptionContext,
@@ -114,7 +109,7 @@ import '@condo/domains/common/components/wdyr'
 import '@open-condo/ui/dist/styles.min.css'
 import '@open-condo/ui/dist/style-vars/variables.css'
 import '@condo/domains/common/components/containers/global-styles.css'
-
+import 'react-quill/dist/quill.snow.css'
 
 const { publicRuntimeConfig: { defaultLocale, sppConfig, isDisabledSsr } } = getConfig()
 
@@ -165,7 +160,6 @@ const MenuItems: React.FC = () => {
     const anyReceiptsLoaded = Boolean(get(billingCtx, 'lastReport', null))
     const hasAccessToBilling = get(role, 'canReadPayments', false) || get(role, 'canReadBillingReceipts', false)
     const isManagingCompany = get(organization, 'type', MANAGING_COMPANY_TYPE) === MANAGING_COMPANY_TYPE
-    const isNoServiceProviderOrganization = get(organization, 'type', MANAGING_COMPANY_TYPE) !== SERVICE_PROVIDER_TYPE
     const hasAccessToTickets = get(role, 'canReadTickets', false)
     const hasAccessToIncidents = get(role, 'canReadIncidents', false)
     const hasAccessToEmployees = get(role, 'canReadEmployees', false)
@@ -177,7 +171,6 @@ const MenuItems: React.FC = () => {
     const hasAccessToSettings = get(role, 'canReadSettings', false)
     const hasAccessToMarketplace = get(role, 'canReadMarketItems', false) ||
         get(role, 'canReadInvoices', false) || get(role, 'canReadPaymentsWithInvoices', false)
-    const hasAccessToTour = get(role, 'canReadTour', false)
 
     const { canRead: hasAccessToNewsItems } = useNewsItemsAccess()
 
@@ -188,18 +181,6 @@ const MenuItems: React.FC = () => {
     }, [updateContext, orgFeatures])
 
     const menuCategoriesData = useMemo<Array<IMenuCategoryData>>(() => ([
-        {
-            key: TOUR_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-tour',
-                    path: 'tour',
-                    icon: AllIcons['Guide'],
-                    label: 'global.section.tour',
-                    access: hasAccessToTour && isManagingCompany,
-                },
-            ].filter(checkItemAccess),
-        },
         {
             key: DASHBOARD_CATEGORY,
             items: [
@@ -222,46 +203,32 @@ const MenuItems: React.FC = () => {
                     label: 'global.section.controlRoom',
                     access: isManagingCompany && hasAccessToTickets,
                 },
-                {
-                    id: 'menuitem-incident',
-                    path: 'incident',
-                    icon: AllIcons['OnOff'],
-                    label: 'global.section.incidents',
-                    access: isManagingCompany && hasAccessToIncidents,
-                },
-                {
-                    id: 'menuitem-news',
-                    path: 'news',
-                    icon: AllIcons['Newspaper'],
-                    label: 'global.section.newsItems',
-                    access: hasAccessToNewsItems,
-                },
             ].filter(checkItemAccess),
         },
-        {
-            key: PROPERTIES_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-property',
-                    path: 'property',
-                    icon: AllIcons['Building'],
-                    label: 'global.section.properties',
-                    access: hasAccessToProperties,
-                },
-            ].filter(checkItemAccess),
-        },
-        {
-            key: RESIDENTS_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-contact',
-                    path: 'contact',
-                    icon: AllIcons['Contacts'],
-                    label: 'global.section.contacts',
-                    access: isManagingCompany && hasAccessToContacts,
-                },
-            ].filter(checkItemAccess),
-        },
+        // {
+        //     key: PROPERTIES_CATEGORY,
+        //     items: [
+        //         {
+        //             id: 'menuitem-property',
+        //             path: 'property',
+        //             icon: AllIcons['Building'],
+        //             label: 'global.section.properties',
+        //             access: hasAccessToProperties,
+        //         },
+        //     ].filter(checkItemAccess),
+        // },
+        // {
+        //     key: RESIDENTS_CATEGORY,
+        //     items: [
+        //         {
+        //             id: 'menuitem-contact',
+        //             path: 'contact',
+        //             icon: AllIcons['Contacts'],
+        //             label: 'global.section.contacts',
+        //             access: isManagingCompany && hasAccessToContacts,
+        //         },
+        //     ].filter(checkItemAccess),
+        // },
         {
             key: EMPLOYEES_CATEGORY,
             items: [
@@ -275,78 +242,18 @@ const MenuItems: React.FC = () => {
             ].filter(checkItemAccess),
         },
         {
-            key: MARKET_CATEGORY,
+            key: KANBAN_CATEGORY,
             items: [
                 {
-                    id: 'menuitem-marketplace',
-                    path: 'marketplace',
-                    icon: AllIcons['Market'],
-                    label: 'global.section.marketplace',
-                    access: isMarketplaceEnabled && hasAccessToMarketplace && isNoServiceProviderOrganization,
+                    id: 'menuitem-kanban',
+                    path: 'kanban',
+                    icon: AllIcons['CreditCard'],
+                    label: 'kanban.title',
+                    access: hasAccessToTickets,
                 },
             ].filter(checkItemAccess),
         },
-        {
-            key: BILLING_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-billing',
-                    path: 'billing',
-                    icon: AllIcons['Wallet'],
-                    label: 'global.section.accrualsAndPayments',
-                    // NOTE: For SPP users billing is available after first receipts-load finished
-                    access: isSPPOrg
-                        ? hasAccessToBilling && anyReceiptsLoaded
-                        : hasAccessToBilling,
-                },
-                {
-                    id: 'menuitem-service-provider-profile',
-                    path: 'service-provider-profile',
-                    icon: AllIcons['Sber'],
-                    label: 'global.section.SPP',
-                    access: hasAccessToBilling && sppBillingId && isSPPOrg,
-                },
-            ].filter(checkItemAccess),
-        },
-        {
-            key: METERS_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-meter',
-                    path: 'meter',
-                    icon: AllIcons['Meters'],
-                    label: 'global.section.meters',
-                    access: hasAccessToMeters,
-                },
-            ].filter(checkItemAccess),
-        },
-        {
-            key: MINIAPPS_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-miniapps',
-                    path: 'miniapps',
-                    icon: AllIcons['Services'],
-                    label: 'global.section.miniapps',
-                    access: hasAccessToServices && isManagingCompany,
-                    // not a ReDoS issue: running on end user browser
-                    // nosemgrep: javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
-                    excludePaths: connectedAppsIds.map((id) => new RegExp(`/miniapps/${id}$`)),
-                },
-            ].filter(checkItemAccess),
-        },
-        {
-            key: SETTINGS_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-settings',
-                    path: 'settings',
-                    icon: AllIcons['Settings'],
-                    label: 'global.section.settings',
-                    access: hasAccessToSettings,
-                },
-            ].filter(checkItemAccess),
-        },
+        
     ]), [hasAccessToAnalytics, isManagingCompany, hasAccessToTickets, hasAccessToIncidents, hasAccessToNewsItems, hasAccessToProperties, hasAccessToContacts, hasAccessToEmployees, isMarketplaceEnabled, hasAccessToMarketplace, isSPPOrg, hasAccessToBilling, anyReceiptsLoaded, sppBillingId, hasAccessToMeters, hasAccessToServices, connectedAppsIds, hasAccessToSettings])
 
     return (

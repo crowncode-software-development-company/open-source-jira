@@ -723,7 +723,7 @@ def _5_1_run_knex_command(ctx, cmd='latest'):
         raise KProblem('ERROR: can\'t run knex command knex.migrate.{}'.format(cmd))
     finally:
         log_file.write_bytes(log)
-        print(log.decode('utf-8'))
+        # print(log.decode('utf-8'))
 
 
 def main(command, keystoneEntryFile='./index.js', merge=False, check=False, empty=False):

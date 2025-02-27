@@ -12,8 +12,8 @@ const generateCustomColorPalette = (primaryColor, secondaryColor) => {
 
 const sberBlue = '#5EB1FC'
 const sberSecondaryBlue = '#3899F1'
-const sberGreen = '#4CD174'
-const sberDarkGreen = '#1B7F8B'
+const sberGreen = '#C77426'
+const sberDarkGreen = '#FFAD4F'
 const sberSecondaryGreen = '#22BB50'
 const sberRed = '#FF4D4F'
 const white = '#fff'
@@ -149,11 +149,11 @@ const transitions = {
 }
 
 const gradients = {
-    onboardingIconGradient: 'linear-gradient(120deg, #00F260, #0575E6, #00F260)',
-    sberActionGradient: 'linear-gradient(115deg, #4CD174 16%, #6DB8F2 84%)',
-    sberActionInversed: 'linear-gradient(115deg, #3DCB68 16%, #58A6E2 84%)',
-    fadeOutGradient: 'linear-gradient(180deg, #FFFFFF 21.92%,rgba(255,255,255,0) 106.02%)',
-    mainGradientPressed: 'linear-gradient(115deg, #2ABB56 16%, #3A97DC 84%);',
+    onboardingIconGradient: 'linear-gradient(90deg, #ffe1bf 0%, #fff0a4 100%)',
+    sberActionGradient: 'linear-gradient(90deg, #f2c88f 0%, #ffeb7c 100%)',
+    sberActionInversed: 'linear-gradient(90deg, #d18a3b 0%, #ffd54f 100%)',
+    fadeOutGradient: 'linear-gradient(90deg, #ffb955 0%, #ffc107 100%)',
+    mainGradientPressed: 'linear-gradient(90deg, #ffad4f 0%, #ffa82e 100%);',
 }
 
 const zIndex = {
@@ -190,7 +190,7 @@ const antGlobalVariables = {
     '@outline-color': inputBorderHover,
     '@outline-fade:': 0,
     '@outline-width': '1px',
-    '@checkbox-color': sberGreen,
+    '@checkbox-color': orange,
     '@checkbox-check-bg': ultraLightGrey,
     '@checkbox-border-width': DEFAULT_BORDER_WIDTH,
     '@form-item-margin-bottom': '0',
@@ -203,7 +203,7 @@ const antGlobalVariables = {
     '@tabs-hover-color': '@black',
     '@tabs-active-color': '@black',
     '@tabs-ink-bar-color': '@black',
-    '@switch-color': sberGreen,
+    '@switch-color': orange,
     '@alert-error-border-color': colors.warningBg,
     '@alert-error-bg-color': colors.warningBg,
     '@alert-info-border-color': '@blue-2',
@@ -220,9 +220,9 @@ const antGlobalVariables = {
     '@warning-color': colors.attentionText,
     '@error-color': colors.warningText,
     '@disabled-color': inputBorderGrey,
-    '@link-color': green[6],
-    '@link-hover-color': green[8],
-    '@link-active-color': colors.sberPrimary[6],
+    '@link-color': orange[6],
+    '@link-hover-color': orange[8],
+    '@link-active-color': orange,
 }
 
 const ELLIPSIS_ROWS = 3
