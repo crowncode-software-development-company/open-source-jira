@@ -2,8 +2,8 @@ import {
     useGetActualOrganizationEmployeesQuery,
     useGetEmployeeInvitesCountQuery,
 } from '@app/condo/gql'
-import { OrganizationTypeType } from '@app/condo/schema'
-import { Dropdown } from 'antd'
+import { OrganizationTypeType, PropertyTypeType } from '@app/condo/schema'
+import { Dropdown, notification } from 'antd'
 import get from 'lodash/get'
 import uniqBy from 'lodash/uniqBy'
 import { useRouter } from 'next/router'
@@ -11,6 +11,7 @@ import React, { useCallback, useMemo, CSSProperties } from 'react'
 
 import { useCachePersistor } from '@open-condo/apollo'
 import { useDeepCompareEffect } from '@open-condo/codegen/utils/useDeepCompareEffect'
+import { getClientSideSenderInfo } from '@open-condo/codegen/utils/userId'
 import { ChevronDown, PlusCircle } from '@open-condo/icons'
 import { useAuth } from '@open-condo/next/auth'
 import { useIntl } from '@open-condo/next/intl'
@@ -23,6 +24,9 @@ import { nonNull } from '@condo/domains/common/utils/nonNull'
 import { useCreateOrganizationModalForm } from '@condo/domains/organization/hooks/useCreateOrganizationModalForm'
 
 import { SBBOLIndicator } from './SBBOLIndicator'
+
+import { useAddressApi } from '../../common/components/AddressApi'
+import { Property } from '../../property/utils/clientSchema'
 
 import type { OrganizationEmployee as OrganizationEmployeeType } from '@app/condo/schema'
 import type { DropdownProps } from 'antd'
@@ -50,6 +54,8 @@ export const InlineOrganizationSelect: React.FC = () => {
     const textSize: TypographyTextProps['size'] = !breakpoints.TABLET_LARGE ? 'small' : 'medium'
 
     const { user } = useAuth()
+    const { addressApi } = useAddressApi()
+
     const {
         employee: activeEmployee,
         organization,
@@ -87,12 +93,28 @@ export const InlineOrganizationSelect: React.FC = () => {
     [actualEmployees]
     )
 
+    const createPropertyAction = Property.useCreate({})
+
     const { setIsVisible: showCreateOrganizationModal, ModalForm: CreateOrganizationModalForm } = useCreateOrganizationModalForm({
         onFinish: async (createdOrganization) => {
-            const organizationType = get(createdOrganization, 'type')
-
+            const organizationType = get(createdOrganization, 'type')   
+            try {
+                const { suggestions } = await addressApi.getSuggestions(' ')
+                if (!suggestions.length) {
+                    notification.error({ message: 'Создайте адрес и пересоздайте организацию' })
+                }
+                await createPropertyAction({
+                    organization: { connect: { id: createdOrganization.id } },
+                    type: PropertyTypeType.Building,
+                    sender: getClientSideSenderInfo(), 
+                    address: suggestions[0].rawValue,
+                })
+            } catch {
+                notification.error({ message: 'Запустите сервис адресов и создайте адрес' })
+            }
             // The slash will only be there if we have just registered and we don't have any additional parameters in the address bar.
             if (organizationType === OrganizationTypeType.ManagingCompany && router.route === '/') {
+
                 await router.push('/')
             }
         },

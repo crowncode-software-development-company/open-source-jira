@@ -1,21 +1,24 @@
-/* eslint-disable react/display-name */
 import { DownOutlined } from '@ant-design/icons'
-import { Form } from 'antd'
+import { Form, notification } from 'antd'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
-import React, { CSSProperties, useEffect, useMemo } from 'react'
+import React, { CSSProperties, useEffect, useMemo, useState } from 'react'
 import { useIntl } from 'react-intl'
 
 import { Close } from '@open-condo/icons'
 import { useAuth } from '@open-condo/next/auth'
 import { useOrganization } from '@open-condo/next/organization'
 
+import { Ticket } from '@condo/domains/ticket/utils/clientSchema'
+
 import { ActionButton, Actions, Divider, HelpText, LabelText, SelectItem, SelectItemLabel, Title, TopActions } from './Styles'
 
 import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrErrorPage'
 import DatePicker from '../../../common/components/Pickers/DatePicker'
 import { useValidations } from '../../../common/hooks/useValidations'
+import { getClientSideSenderInfo } from '../../../common/utils/userid.utils'
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
+import { PropertyTable } from '../../../property/utils/clientSchema'
 import { TicketPriority, TicketPriorityCopy, TicketType, TicketTypeCopy } from '../../constants'
 import { color } from '../../styles'
 import { Avatar, Button, Input, Select, TextEditor, TicketPriorityIcon, TicketTypeIcon } from '../../ui'
@@ -31,8 +34,10 @@ const priorityOptions = Object.values(TicketPriority).map(priority => ({
 }))
 
 const INPUT_STYLE: CSSProperties = { width: '100%', height: '36px', borderRadius: '5px', backgroundColor: color.backgroundLightest }
+const OPEN_STATUS = '6ef3abc4-022f-481b-90fb-8430345ebfc2'
+const DEFAULT_TICKET_SOURCE_CALL_ID = '779d7bb6-b194-4d2c-a967-1f7321b2787f'
 
-const ProjectTicketCreate = ({ closeModal }) => {
+const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) => {
     const intl = useIntl()
     const CreateTicketTitle = intl.formatMessage({ id: 'CreateTicket' })
     const CancelTitle = intl.formatMessage({ id: 'Cancel' })
@@ -51,12 +56,15 @@ const ProjectTicketCreate = ({ closeModal }) => {
     const AssigneeHelp = intl.formatMessage({ id: 'kanban.create.assignee.help' })
     const ExecutorHelp = intl.formatMessage({ id: 'kanban.create.executor.help' })
     const DeadlineHelp = intl.formatMessage({ id: 'kanban.create.deadline.help' })
+    const SuccessNotification = intl.formatMessage({ id: 'tour.step.createTicket.completed.title' })
+    const ErrorNotification = intl.formatMessage({ id: 'ErrorOccurred' })
+    const [isCreating, setIsCreating] = useState(false)
     const [form] = Form.useForm()
     const { query } = useRouter()
     const { organization } = useOrganization()
     const { user } = useAuth()
     const { requiredValidator, maxLengthValidator, minLengthValidator } = useValidations()
-    const { objs: employeesData, loading: employeesLoading } = OrganizationEmployee.useAllObjects({
+    const { objs: employeesData, loading: employeesLoading, error: employeesError } = OrganizationEmployee.useAllObjects({
         where: {
             organization: { id: organization.id },
             user: { deletedAt: null },
@@ -77,45 +85,73 @@ const ProjectTicketCreate = ({ closeModal }) => {
     const initialValues = {
         assignee: user.id,
         deadline: dayjs().add(7, 'day'),
+        details: ' ',
         priority: TicketPriority.MEDIUM,
     }
 
     const validations = {
         title: [requiredValidator, minLengthValidator(10), maxLengthValidator(70)],
-        description: [requiredValidator, minLengthValidator(20), maxLengthValidator(1000)],
+        description: [maxLengthValidator(1000)],
         type: [requiredValidator],
-        priority: [requiredValidator],
         assignee: [requiredValidator],
         executor: [requiredValidator],
-        deadline: [requiredValidator],
     }
 
-    const onFinish = (values) => {
-        console.log('Received values:', values)
-        closeModal()
-        form.resetFields()
+    const createTicketAction = Ticket.useCreate({
+        sender: getClientSideSenderInfo(),
+        status: { connect: { id: OPEN_STATUS } },
+        source: { connect: { id: DEFAULT_TICKET_SOURCE_CALL_ID } },
+        kanbanOrder: ticketsCount * 10000000,
+    })
+
+    const { loading: propertyLoading, error: propertyError, objs: properties } = PropertyTable.useObjects({ where: { organization: { id: organization.id } } })
+    const randomPropertyId = properties[0]?.id
+
+    const onFinish = async (values) => {
+        setIsCreating(true)
+        try {
+            await createTicketAction({
+                ...values,
+                property: { connect: { id: randomPropertyId } },
+                assignee: { connect: { id: values.assignee } },
+                executor: { connect: { id: values.executor } },
+                organization: { connect: { id: organization.id } },
+            })
+            notification.success({ message: SuccessNotification })
+            refetchTicketsBoard()
+            closeModal()
+            form.resetFields()
+        } catch { 
+            notification.error({ message: ErrorNotification })
+        } finally {
+            setIsCreating(false)
+        }
     }
 
-    if (employeesLoading) { 
-        return <LoadingOrErrorPage loading={employeesLoading} />
+    if (employeesLoading || propertyLoading) { 
+        return <LoadingOrErrorPage
+            loading={employeesLoading || propertyLoading}
+            error={propertyError || employeesError} />
     }
 
     return (
         <>
             <TopActions>
+                {console.log(properties)
+                }
                 <Title>{CreateTicketTitle}</Title>
                 <Button icon={<Close/>} iconSize={24} variant='empty' onClick={closeModal} />
             </TopActions>
        
-            <Form form={form} layout='vertical' onFinish={onFinish} initialValues={initialValues}>
+            <Form disabled={isCreating} form={form} layout='vertical' onFinish={onFinish} initialValues={initialValues}>
 
-                <CustomFormItem label={TypeTitle} name='type' helpText={TypeHelp} rules={validations.type}>
+                <CustomFormItem label={TypeTitle} name='customClassifier' helpText={TypeHelp} rules={validations.type}>
                     <Select
                         placeholder={SelectTitle}
                         withClearValue={false}
-                        value={form.getFieldValue('type')}
-                        onChange={(value) => form.setFieldsValue({ type: value })}
-                        name='type'
+                        value={form.getFieldValue('customClassifier')}
+                        onChange={(value) => form.setFieldsValue({ customClassifier: value })}
+                        name='customClassifier'
                         options={typeOptions}
                         renderOption={renderType}
                         renderValue={renderType}
@@ -132,15 +168,15 @@ const ProjectTicketCreate = ({ closeModal }) => {
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={DescriptionTitle} name='description' helpText={DescriptionHelp} rules={validations.description}>
+                <CustomFormItem label={DescriptionTitle} name='details' helpText={DescriptionHelp} rules={validations.description}>
                     <TextEditor 
                         action='create'
-                        value={form.getFieldValue('description')}
-                        onChange={(value) => form.setFieldsValue({ description: value })}
+                        value={form.getFieldValue('details')}
+                        onChange={(value) => form.setFieldsValue({ details: value })}
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={PriorityTitle} name='priority' helpText={PriorityHelp} rules={validations.priority}>
+                <CustomFormItem label={PriorityTitle} name='priority' helpText={PriorityHelp}>
                     <Select
                         placeholder={SelectTitle}
                         withClearValue={false}
@@ -179,7 +215,7 @@ const ProjectTicketCreate = ({ closeModal }) => {
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={DeadlineTitle} name='deadline' helpText={DeadlineHelp} rules={validations.deadline}>
+                <CustomFormItem label={DeadlineTitle} name='deadline' helpText={DeadlineHelp}>
                     <DatePicker
                         value={form.getFieldValue('deadline')}
                         onChange={(value) => form.setFieldsValue({ deadline: value })}
