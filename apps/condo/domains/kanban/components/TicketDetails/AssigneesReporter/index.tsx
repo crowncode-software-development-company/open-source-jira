@@ -52,20 +52,22 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
 
     const handleAssigneeChange = async (userId) => {
         setAssigneeLoading(true)
-        const assignee = {
-            connect: { id: userId },
+        try {
+            const assignee = { connect: { id: userId } }
+            await updateTicket({ assignee })
+        } finally {
+            setAssigneeLoading(false)
         }
-        await updateTicket({ assignee })
-        setAssigneeLoading(false)
     }
 
     const handleExecutorChange = async (userId) => {
         setExecutorLoading(true)
-        const executor = {
-            connect: { id:userId },
+        try {
+            const executor = { connect: { id: userId } }
+            await updateTicket({ executor })
+        } finally {
+            setExecutorLoading(false)
         }
-        await updateTicket({ executor })
-        setExecutorLoading(false)
     }
 
     return (

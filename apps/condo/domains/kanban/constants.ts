@@ -5,11 +5,11 @@ export const TicketType = {
 }
 
 export const TicketPriority = {
-    HIGHEST: 5,
-    HIGH: 4,
-    MEDIUM: 3,
-    LOW: 2,
-    LOWEST: 1,
+    HIGHEST: 500,
+    HIGH: 400,
+    MEDIUM: 300,
+    LOW: 200,
+    LOWEST: 100,
 }
 
 export const TicketTypeCopy = {

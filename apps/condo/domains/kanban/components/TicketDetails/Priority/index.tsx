@@ -8,31 +8,31 @@ import { Select, TicketPriorityIcon, Spinner } from '../../../ui'
 import { SectionTitle } from '../Styles'
 
 const Priority = styled.div<{ $isvalue?: boolean }>`
-display: flex;
-align-items: center;
-${props =>
+    display: flex;
+    align-items: center;
+    ${props =>
         props.$isvalue &&
-  css`
-    padding: 3px 4px 3px 0px;
-    border-radius: 4px;
-    &:hover,
-    &:focus {
-      background: ${color.backgroundLight};
-    }
-  `}
+        css`
+            padding: 3px 4px 3px 0px;
+            border-radius: 4px;
+            &:hover,
+            &:focus {
+            background: ${color.backgroundLight};
+            }
+    `}
 `
 
 const Label = styled.div`
-padding: 0 3px 0 3px;
-${font.size(14.5)}
+    padding: 0 3px 0 3px;
+    ${font.size(14.5)}
 `
 
 const SelectCont = styled.div`
-width: 100;
-display: flex;
-flex-direction:row;
-align-items:center;
-gap: 5px;
+    width: 100;
+    display: flex;
+    flex-direction:row;
+    align-items:center;
+    gap: 5px;
 `
 
 const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
@@ -42,8 +42,11 @@ const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
 
     const handleUpdatePriority = async (updatedPriority) => {
         setLoading(true)
-        await updateTicket({ order: updatedPriority })
-        setLoading(false)
+        try {
+            await updateTicket({ priority: updatedPriority })
+        } finally {
+            setLoading(false)
+        }
     }
 
     return ( 
@@ -55,7 +58,7 @@ const ProjectBoardIssueDetailsPriority = ({ ticket, updateTicket }) => {
                     withClearValue={false}
                     dropdownWidth={250}
                     name='priority'
-                    value={ticket.order || 1}
+                    value={ticket.priority}
                     options={Object.values(TicketPriority).map(priority => ({
                         value: priority,
                         label: TicketPriorityCopy[priority],

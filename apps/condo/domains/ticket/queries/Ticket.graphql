@@ -13,7 +13,6 @@ query getTickets(
     id
     number
     createdAt
-    order
     isEmergency
     isPayable
     isWarranty
@@ -21,7 +20,10 @@ query getTickets(
     statusUpdatedAt
     completedAt
     deadline
-    meta
+    title
+    kanbanOrder
+    priority
+    customClassifier
     lastResidentCommentAt
     lastCommentWithResidentTypeAt
     propertyAddressMeta {
@@ -176,7 +178,6 @@ query getTicketById($id: ID!) {
     isEmergency
     isPayable
     isWarranty
-    order
     statusReopenedCounter
     statusUpdatedAt
     canReadByResident
@@ -199,7 +200,10 @@ query getTicketById($id: ID!) {
     clientPhone
     details
     isPayable
-    meta
+    title
+    kanbanOrder
+    priority
+    customClassifier
     organization {
       id
       type

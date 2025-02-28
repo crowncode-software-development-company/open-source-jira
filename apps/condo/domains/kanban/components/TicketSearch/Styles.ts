@@ -110,7 +110,3 @@ export const TicketLink = styled.div`
   display: block;
   margin-bottom: 5px;
 `
-
-export const NumberTicket = styled.span`
-font-weight: 600;
-`

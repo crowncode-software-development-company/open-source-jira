@@ -19,7 +19,6 @@ import {
     NoResultsTitle,
     NoResultsTip,
     TicketLink,
-    NumberTicket,
     TicketTypeColor,
     TicketDataContainer,
     Avatars,
@@ -33,7 +32,6 @@ import { formatDefferedDate, sortByNewest } from '../../utils'
 
 const ProjectTicketSearch = () => {
     const intl = useIntl()
-    const TicketTitle = intl.formatMessage({ id: 'Ticket' })
     const SearchTitle = intl.formatMessage({ id: 'kanban.ticket.searchTicket.placeholder' })
     const RecentTicketTitle = intl.formatMessage({ id: 'kanban.ticket.recentTicket.title' })
     const MatchingTicketTitle = intl.formatMessage({ id: 'kanban.ticket.matchingTicket.title' })
@@ -65,6 +63,7 @@ const ProjectTicketSearch = () => {
             where: { 
                 organization: { id: organization.id },
                 OR: [
+                    { title_contains_i: searchValue },
                     { details_contains_i: searchValue },
                     { number: +searchValue  }, 
                     { classifier: { category: { name_contains_i: searchValue } } }, 
@@ -102,15 +101,15 @@ const ProjectTicketSearch = () => {
             key={index}
             onClick={() => handleOpenModal(ticket.id)}>
             <Ticket>
-                <TicketTypeIcon size='large' type='task'/>
+                <TicketTypeIcon size='large' type={ticket.customClassifier || 'task'}/>
                 <TicketDataContainer>
                     <TicketData>
-                        <TicketTitleText><NumberTicket>{TicketTitle} №{ticket.number}</NumberTicket> / {ticket.classifier.category.name} 🠖 {ticket.classifier.place.name}</TicketTitleText>
+                        <TicketTitleText> {ticket.title || `№${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`}</TicketTitleText>
                         <TicketTypeId>
                             <TicketTypeColor $color={ticket.status.colors.primary}>
                                 {ticket.status.name}
                             </TicketTypeColor>
-                            {ticket.deferredUntil && ` ${formatDefferedDate(BeforeTitle, ticket.deferredUntil)}`} / {ticket.assignee.name}
+                            {ticket.deferredUntil && ` ${formatDefferedDate(BeforeTitle, ticket.deferredUntil)}`} / {ticket.assignee.name} & {ticket.executor.name}
                         </TicketTypeId>
                     </TicketData>
                     <Avatars>

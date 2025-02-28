@@ -724,7 +724,6 @@ export const BaseTicketForm: React.FC<ITicketFormProps> = (props) => {
         const result = await _action({
             ...otherVariables,
             details: normalizeText(details),
-            meta: { detailsHtml: normalizeText(details), columnPosition: ticketsCount + 1, dv:1 },
         }, ...args)
 
         await syncModifiedFiles(result.id)

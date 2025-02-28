@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { TicketType, TicketTypeCopy } from '../../../constants'
@@ -23,30 +23,42 @@ export const TypeLabel = styled.div`
   ${font.size(15)}
 `
 
-const ProjectBoardIssueDetailsType = ({ ticket }) => (
-    <Select
-        variant='empty'
-        dropdownWidth={150}
-        withClearValue={false}
-        name='type'
-        value='task'
-        options={Object.values(TicketType).map(type => ({
-            value: type,
-            label: TicketTypeCopy[type],
-        }))}
-        onChange={type => null}
-        renderValue={({ value: type }) => (
-            <TypeButton variant='empty' icon={<TicketTypeIcon type='task' size='large'/>}>
-                {`Task-${ticket.number}`}
-            </TypeButton>
-        )}
-        renderOption={({ value: type }) => (
-            <Type key={type} onClick={() => null}>
-                <TicketTypeIcon type={type} size='large'/>
-                <TypeLabel>{TicketTypeCopy[type]}</TypeLabel>
-            </Type>
-        )}
-    />
-)
+const ProjectBoardIssueDetailsType = ({ ticket, updateTicket }) => {
+    const [loading, setLoading] = useState(false)
+
+    const handleUpdateType = async (updatedType) => {
+        setLoading(true)
+        try {
+            await updateTicket({ customClassifier: updatedType })
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (
+        <Select
+            variant='empty'
+            dropdownWidth={150}
+            withClearValue={false}
+            name='type'
+            value={ticket.customClassifier || 'task'}
+            onChange={type => handleUpdateType( type )}
+            options={Object.values(TicketType).map(type => ({
+                value: type,
+                label: TicketTypeCopy[type],
+            }))}
+            renderValue={({ value: type }) => (
+                <TypeButton variant='empty' icon={<TicketTypeIcon type={type || 'task'} size='medium'/>}>
+                    {`${TicketTypeCopy[ticket.customClassifier] || 'Task'}-${ticket.number}`}
+                </TypeButton>
+            )}
+            renderOption={({ value: type }) => (
+                <Type key={type}>
+                    <TicketTypeIcon type={type} size='large'/>
+                    <TypeLabel>{TicketTypeCopy[type]}</TypeLabel>
+                </Type>
+            )}
+        />)
+}
 
 export default ProjectBoardIssueDetailsType

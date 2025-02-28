@@ -39,7 +39,7 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
 
         const updateData = {
             status: { connect: { id: ticketStatuses[newType].id } },
-            meta: { ...currentTicket.meta, columnPosition: newListPosition, dv: 1 },
+            kanbanOrder: newListPosition,
             ...(deferUntil && { deferredUntil: deferUntil }),
         }
 
@@ -71,7 +71,7 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
         setLocalTickets(prevTickets =>
             prevTickets.map(ticket =>
                 ticket.id === draggableId 
-                    ? { ...ticket, status: { ...ticket.status, name: destination.droppableId }, meta: { columnPosition: newListPosition } }
+                    ? { ...ticket, status: { ...ticket.status, name: destination.droppableId }, kanbanOrder: newListPosition }
                     : ticket
             )
         )

@@ -56,12 +56,13 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
             setOpenUntil(true)
         } else {
             setLoading(true)
-            const status = {
-                connect: { id: ticketStatuses[updatedStatus].id },
+            try {
+                const status = { connect: { id: ticketStatuses[updatedStatus].id } }
+                await updateTicket({ status })
+            } finally {
+                setLoading(false)
             }
-            await updateTicket({ status })
         }
-        setLoading(false)
     }
 
     const options = Object.keys(ticketStatuses).map(name => ({

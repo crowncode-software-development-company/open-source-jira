@@ -148,9 +148,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, handleClose
     return (
         <>
             <TopActions>
-                <Type ticket={ticket} />
-                {console.log(ticket)
-                }
+                <Type ticket={ticket}  updateTicket={updateTicketAction}/>
                 <TopActionsRight>
                     <CopyLinkButton />
                     <Delete ticket={ticket} refetchTicketsBoard={refetchTicketsBoard} handleCloseModals={handleCloseModals}/>

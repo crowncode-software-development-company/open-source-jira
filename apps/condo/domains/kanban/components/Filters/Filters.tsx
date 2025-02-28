@@ -71,12 +71,12 @@ const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters })
                 )}
             </Avatars>
 
-            <StyledButton
+            {!uniqueEmployeesInTickets && <StyledButton
                 variant='empty'
                 onClick={() => mergeFilters({ myOnly: !myOnly, userIds: [] })}
             >
                 {MyTicketTitle}
-            </StyledButton>
+            </StyledButton>}
             {!areFiltersCleared && (
                 <ClearAll onClick={() => mergeFilters(defaultFilters)}>{ClearTitle}</ClearAll>
             )}

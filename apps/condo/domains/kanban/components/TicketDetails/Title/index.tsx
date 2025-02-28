@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { KeyCodes } from '../../../constants'
 import { color, font } from '../../../styles'
 import { Textarea } from '../../../ui'
+import { generateErrors, is } from '../../../validation'
 
 const TitleTextarea = styled(Textarea)`
   margin: 18px 0 0 -12px;
@@ -25,35 +26,58 @@ const TitleTextarea = styled(Textarea)`
   }
 `
 
+const ErrorText = styled.div`
+  padding-top: 4px;
+  color: ${color.danger};
+  ${font.size(13)}
+`
+
+
 const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
     const intl = useIntl()
     const TicketTitle = intl.formatMessage({ id: 'Ticket' })
     const PlaceholderTitle = intl.formatMessage({ id: 'kanban.ticket.title' })
-    const [title, setTitle] = useState(ticket.meta?.title || `${TicketTitle} №${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`)
+    const [title, setTitle] = useState(ticket.title || `${TicketTitle} №${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`)
     const [editing, setEditing] = useState(false)
+    const [error, setError] = useState('')
+    
+    const handleTitleChange = async () => {
+        setError(null)
+        if (title === ticket.title) return
 
-    const handleTitleChange = () => {
-        if (title === ticket.meta.title) return
-        setEditing(true)
-        updateTicket({ meta: { ...ticket.meta, title } })
-        setEditing(false)
+        const errors = generateErrors(intl, { title }, { title: [is.required(), is.minLength(10), is.maxLength(100)] })
+  
+        if (errors.title) {
+            setError(errors.title)
+        } else {
+            setEditing(true)
+            try {
+                await updateTicket({ title })
+            } finally {
+                setEditing(false)
+            }
+        }
+
     }
 
     return (
-        <TitleTextarea
-            maxLenth = {70}
-            minRows={1}
-            placeholder={PlaceholderTitle}
-            disabled={editing}
-            value={title}
-            onChange={setTitle}
-            onBlur={handleTitleChange}
-            onKeyDown={event => {
-                if (event.keyCode === KeyCodes.ENTER) {
-                    (event.target as HTMLTextAreaElement).blur() 
-                }
-            }}
-        />
+        <>
+            <TitleTextarea
+                maxLenth = {70}
+                minRows={1}
+                placeholder={PlaceholderTitle}
+                disabled={editing}
+                value={title}
+                onChange={setTitle}
+                onBlur={handleTitleChange}
+                onKeyDown={event => {
+                    if (event.keyCode === KeyCodes.ENTER) {
+                        (event.target as HTMLTextAreaElement).blur() 
+                    }
+                }}
+            />
+            {error && <ErrorText>{error}</ErrorText>}
+        </>
     )
 }
 

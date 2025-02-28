@@ -10,14 +10,11 @@ export const filterTickets = ({ projectTickets, filters, userId }) => {
 }
 
 export const getSortedListTickets = (ticket, status) => ticket.filter(ticket => ticket.status.name === status).sort((a, b) => {
-    const aColumnPosition = a.meta?.columnPosition ?? Infinity
-    const bColumnPosition = b.meta?.columnPosition ?? Infinity
-
-    if (aColumnPosition === bColumnPosition) {
+    if (a.kanbanOrder === b.kanbanOrder) {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     }
 
-    return aColumnPosition - bColumnPosition
+    return a.kanbanOrder - b.kanbanOrder
 })
 
 export const formatTicketsCount = (allListTickets, filteredListTickets, TicketsOfTitle) => {

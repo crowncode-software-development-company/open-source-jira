@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { color, font, mixin } from '../../../styles'
 import { Button, TextEditedContent, TextEditor } from '../../../ui'
-import { getTextContentsFromHtmlString, isEmptyHtml } from '../../../utils'
+import { isEmptyHtml } from '../../../utils'
 
 const Title = styled.div`
   padding: 20px 0 6px;
@@ -15,7 +15,7 @@ const EmptyLabel = styled.div`
   margin-left: -7px;
   padding: 7px;
   border-radius: 3px;
-  color: ${color.textLight}
+  color: ${color.textLight};
   transition: background 0.1s;
   ${font.size(15)}
   ${mixin.clickable}
@@ -38,26 +38,24 @@ const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket, refetchTic
     const AddDescriptionTitle = intl.formatMessage({ id: 'kanban.ticket.addDescription.title' })
     const SaveTitle = intl.formatMessage({ id: 'Save' })
     const CancelTitle = intl.formatMessage({ id: 'Cancel' })
-    const [descriptionHtml, setDescriptionHtml] = useState<string>(ticket.meta?.detailsHtml || ticket.details)
+    const [descriptionHtml, setDescriptionHtml] = useState<string>(ticket.details)
     const [isEditing, setEditing] = useState(false)
 
     const handleUpdate = async () => {
         setEditing(false)
-        const descriptionText = getTextContentsFromHtmlString(descriptionHtml)
         try {
             updateTicket({
-                details: descriptionText,
-                meta: { ...ticket.meta, detailsHtml: descriptionHtml, dv: 1 },
+                details: descriptionHtml,
             })
             await refetchTicketFiles()
         }
         catch {
-            setDescriptionHtml(ticket.meta?.detailsHtml || ticket.details)
+            setDescriptionHtml(descriptionHtml)
         }
     }
 
     const handleCancel = () => {
-        setDescriptionHtml(ticket.meta?.detailsHtml || ticket.details)
+        setDescriptionHtml(descriptionHtml)
         setEditing(false)
     }
 

@@ -2502,7 +2502,6 @@ export const GetTicketsDocument = gql`
     id
     number
     createdAt
-    order
     isEmergency
     isPayable
     isWarranty
@@ -2510,7 +2509,10 @@ export const GetTicketsDocument = gql`
     statusUpdatedAt
     completedAt
     deadline
-    meta
+    title
+    kanbanOrder
+    priority
+    customClassifier
     lastResidentCommentAt
     lastCommentWithResidentTypeAt
     propertyAddressMeta {
@@ -2824,7 +2826,6 @@ export const GetTicketByIdDocument = gql`
     isEmergency
     isPayable
     isWarranty
-    order
     statusReopenedCounter
     statusUpdatedAt
     canReadByResident
@@ -2847,7 +2848,10 @@ export const GetTicketByIdDocument = gql`
     clientPhone
     details
     isPayable
-    meta
+    title
+    kanbanOrder
+    priority
+    customClassifier
     organization {
       id
       type

@@ -26,8 +26,11 @@ const ProjectBoardIssueDetailsDeadline = ({ ticket, updateTicket }) => {
     const onPeriodChange = async (newDate) => {
         setDeadline(newDate)
         setLoading(true)
-        await updateTicket({ deadline: newDate })
-        setLoading(false)
+        try {
+            await updateTicket({ deadline: newDate })
+        } finally {
+            setLoading(false)
+        }
     }
     return (
         <>

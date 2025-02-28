@@ -49,19 +49,23 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted })
 
     const handleCommentCreate = async () => {
         setIsCommentCreating(true)
-        await createCommentAction({
-            variables: {
-                data: {
-                    content: body,
-                    ticket: { connect: { id: ticketId } },
-                    user: { connect: { id: user?.id || null } },
-                    dv: 1,
-                    sender: getClientSideSenderInfo(),
+        try {
+            await createCommentAction({
+                variables: {
+                    data: {
+                        content: body,
+                        ticket: { connect: { id: ticketId } },
+                        user: { connect: { id: user?.id || null } },
+                        dv: 1,
+                        sender: getClientSideSenderInfo(),
+                    },
                 },
-            },
-        })
-        clearForm()
-        setIsCommentCreating(false)
+            })
+        }
+        finally {
+            clearForm()
+            setIsCommentCreating(false)
+        }
     }
 
     const clearForm = () => {
