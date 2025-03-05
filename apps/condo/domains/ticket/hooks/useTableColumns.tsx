@@ -38,17 +38,16 @@ import { IFilters } from '@condo/domains/ticket/utils/helpers'
 
 const COLUMNS_WIDTH = {
     commentsIndicator: '0%',
-    favorite: '4%',
-    number: '6%',
-    createdAt: '8%',
-    status: '8%',
+    number: '10%',
+    createdAt: '15%',
+    status: '15%',
     address: '14%',
     unitName: '8%',
-    details: '12%',
+    details: '25%',
     categoryClassifier: '12%',
     clientName: '10%',
-    executor: '10%',
-    assignee: '10%',
+    executor: '17%',
+    assignee: '17%',
 }
 
 export function useTableColumns<T> (
@@ -63,7 +62,7 @@ export function useTableColumns<T> (
     const DateMessage = intl.formatMessage({ id: 'Date' })
     const StatusMessage = intl.formatMessage({ id: 'Status' })
     const ClientNameMessage = intl.formatMessage({ id: 'Contact' })
-    const DescriptionMessage = intl.formatMessage({ id: 'Description' })
+    const DescriptionMessage = intl.formatMessage({ id: 'Title' })
     const AddressMessage = intl.formatMessage({ id: 'field.Address' })
     const ExecutorMessage = intl.formatMessage({ id: 'field.Executor' })
     const ResponsibleMessage = intl.formatMessage({ id: 'field.Responsible' })
@@ -168,13 +167,6 @@ export function useTableColumns<T> (
                 className: 'comments-column',
             },
             {
-                key: 'favorite',
-                width: COLUMNS_WIDTH.favorite,
-                render: renderIsFavoriteTicket,
-                align: 'center',
-                className: 'favorite-column',
-            },
-            {
                 title: NumberMessage,
                 sortOrder: get(sorterMap, 'number'),
                 filteredValue: getFilteredValue<IFilters>(filters, 'number'),
@@ -213,63 +205,14 @@ export function useTableColumns<T> (
                 filterIcon: getFilterIcon,
             },
             {
-                title: AddressMessage,
-                dataIndex: 'property',
-                sortOrder: get(sorterMap, 'property'),
-                filteredValue: getFilteredValue<IFilters>(filters, 'property'),
-                key: 'property',
-                sorter: true,
-                width: COLUMNS_WIDTH.address,
-                render: renderAddress,
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'property'),
-                filterIcon: getFilterIcon,
-            },
-            {
-                title: UnitMessage,
-                dataIndex: 'unitName',
-                sortOrder: get(sorterMap, 'unitName'),
-                filteredValue: getFilteredValue(filters, 'unitName'),
-                key: 'unitName',
-                sorter: true,
-                width: COLUMNS_WIDTH.unitName,
-                render: getUnitRender(intl, search),
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'unitName'),
-                filterIcon: getFilterIcon,
-                ellipsis: true,
-            },
-            {
                 title: DescriptionMessage,
-                dataIndex: 'details',
+                dataIndex: 'title',
                 filteredValue: getFilteredValue<IFilters>(filters, 'details'),
                 key: 'details',
                 width: COLUMNS_WIDTH.details,
                 filterDropdown: getFilterDropdownByKey(filterMetas, 'details'),
                 filterIcon: getFilterIcon,
                 render: getTicketDetailsRender(search),
-            },
-            {
-                title: ClassifierTitle,
-                dataIndex: ['classifier', 'category', 'name'],
-                filteredValue: getFilteredValue(filters, 'categoryClassifier'),
-                key: 'categoryClassifier',
-                width: COLUMNS_WIDTH.categoryClassifier,
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'categoryClassifier'),
-                filterIcon: getFilterIcon,
-                render: getClassifierRender(intl, search),
-                ellipsis: true,
-            },
-            {
-                title: ClientNameMessage,
-                sortOrder: get(sorterMap, 'clientName'),
-                filteredValue: getFilteredValue<IFilters>(filters, 'clientName'),
-                dataIndex: 'clientName',
-                key: 'clientName',
-                sorter: true,
-                width: COLUMNS_WIDTH.clientName,
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'clientName'),
-                render: getTicketUserNameRender(search),
-                filterIcon: getFilterIcon,
-                ellipsis: true,
             },
             {
                 title: ExecutorMessage,

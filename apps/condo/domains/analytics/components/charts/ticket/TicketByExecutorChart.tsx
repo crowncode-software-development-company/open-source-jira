@@ -106,9 +106,6 @@ const TicketByExecutorChart: TicketChartCardType = ({ data, organizationId }) =>
                     {SearchInput}
                 </Col>
                 <Col span={24}>
-                    {PropertySearchInput}
-                </Col>
-                <Col span={24}>
                     {chart}
                 </Col>
                 <Col span={24}>

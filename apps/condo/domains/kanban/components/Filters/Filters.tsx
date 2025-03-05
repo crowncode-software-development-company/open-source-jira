@@ -71,7 +71,7 @@ const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters })
                 )}
             </Avatars>
 
-            {!uniqueEmployeesInTickets && <StyledButton
+            {uniqueEmployeesInTickets.length > 0 && <StyledButton
                 variant='empty'
                 onClick={() => mergeFilters({ myOnly: !myOnly, userIds: [] })}
             >

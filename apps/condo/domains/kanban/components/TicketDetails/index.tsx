@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { getClientSideSenderInfo } from '@open-condo/codegen/utils/userId'
 import { Close } from '@open-condo/icons'
 import { useAuth } from '@open-condo/next/auth'
+import { useOrganization } from '@open-condo/next/organization'
 
 import AssigneesExecutor from './AssigneesReporter'
 import Comments from './Comments'
@@ -21,7 +22,7 @@ import Status from './Status'
 import Title from './Title'
 import Type from './Type'
 
-import { useGetTicketByIdQuery, useGetTicketCommentsQuery, useUpdateTicketMutation } from '../../../../gql'
+import { useGetTicketByIdQuery, useGetTicketCommentsQuery, useGetTicketStatusesQuery, useUpdateTicketMutation } from '../../../../gql'
 import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrErrorPage'
 import { useNotificationMessages } from '../../../common/hooks/useNotificationMessages'
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
@@ -54,13 +55,15 @@ const TopActionsRight = styled.div`
   margin-left: 30px;
 `
 
-const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, handleCloseModals, refetchTicketsBoard }) => {
+const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) => {
     const { user } = useAuth()
     const { query } = useRouter()
+    const { organization } = useOrganization()
     const intl = useIntl()
     const { getSuccessfulChangeNotification } = useNotificationMessages()
     const ErrorTitle = intl.formatMessage({ id: 'ErrorOccurred' })
     const { ticketId } = query as { ticketId: string }
+
     const {
         data: ticketByIdData,
         loading: ticketLoading,
@@ -73,6 +76,18 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, handleClose
     const ticket = useMemo(() => ticketByIdData?.tickets?.filter(Boolean)[0], [ticketByIdData?.tickets])
 
     const {
+        loading: isStatusesFetching,
+        data: ticketStatusesData,
+    } = useGetTicketStatusesQuery()
+    
+    const ticketStatuses = useMemo(() => {
+        return ticketStatusesData?.statuses?.filter(Boolean).reduce((acc, status) => {
+            acc[status.name] = { id: status.id, colors: { primary: status.colors.primary, secondary: status.colors.secondary } }
+            return acc
+        }, {}) || {}
+    }, [ticketStatusesData?.statuses])
+        
+    const {
         loading: ticketCommentsLoading,
         data: ticketCommentsData,
         refetch: refetchTicketComments,
@@ -83,8 +98,8 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, handleClose
     const comments = useMemo(() => ticketCommentsData?.ticketComments?.filter(Boolean) || [],
         [ticketCommentsData?.ticketComments])
 
-    const pollCommentsQuery = useMemo(() => ({ ticket: { organization: { id: organizationId } } }),
-        [organizationId])
+    const pollCommentsQuery = useMemo(() => ({ ticket: { organization: { id: organization.id } } }),
+        [organization])
 
     usePollTicketComments({
         ticket,
@@ -117,7 +132,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, handleClose
 
     const { objs: employeesData, loading: employeesLoading } = OrganizationEmployee.useAllObjects({
         where: {
-            organization: { id: organizationId },
+            organization: { id: organization.id },
             user: { deletedAt: null },
             deletedAt: null,
             isBlocked: false,
@@ -134,7 +149,7 @@ const ProjectBoardTicketDetails = ({ organizationId, ticketStatuses, handleClose
         skip: !ticketId,
     })
 
-    const loading = ticketLoading || ticketCommentsLoading || !ticket || employeesLoading
+    const loading = isStatusesFetching || ticketLoading || ticketCommentsLoading || !ticket || employeesLoading
 
     if (loading) {
         return (

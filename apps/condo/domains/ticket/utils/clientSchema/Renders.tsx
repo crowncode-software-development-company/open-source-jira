@@ -266,11 +266,7 @@ export const getClassifierRender = (intl, search?: FilterValue) => {
 
 export const getTicketDetailsRender = (search?: FilterValue) => {
     return function render (details: string, ticket: Ticket) {
-        const address = get(ticket, ['property', 'address'])
-        const maxDetailsLength = address ? address.length : details.length
-        const trimmedDetails = details.length > maxDetailsLength ? `${details.substring(0, maxDetailsLength)}…` : details
-
-        return getTableCellRenderer({ search, extraTitle: details })(trimmedDetails)
+        return getTableCellRenderer({ search, extraTitle: details })(details)
     }
 }
 

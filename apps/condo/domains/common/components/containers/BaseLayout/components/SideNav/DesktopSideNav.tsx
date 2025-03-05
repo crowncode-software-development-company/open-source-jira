@@ -57,11 +57,6 @@ export const DesktopSideNav: React.FC<ISideNavProps> = (props) => {
                 <div className='expand-button' onClick={toggleCollapsed}>
                     {isCollapsed ? <ChevronRight size='small'/> : <ChevronLeft size='small'/>}
                 </div>
-                {hasAccessToAppeals && (
-                    <div className='actions-container'>
-                        <ResidentActions minified={isCollapsed}/>
-                    </div>
-                )}
                 <div className='menu-items-container'>
                     {menuData}
                 </div>

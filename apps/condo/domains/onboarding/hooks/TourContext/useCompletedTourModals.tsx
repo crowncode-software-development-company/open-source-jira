@@ -178,18 +178,6 @@ export const useCompletedTourModals = ({ activeStep, setActiveTourStep, refetchS
     }, [activeStep, organizationId, refetchSteps, updateCompletedFlowModalData, updateTourStep])
 
     const completedStepModalDataDescription: CompletedStepModalDataType = useMemo(() => ({
-        createProperty: {
-            availableTourFlow: [TourStepTypeType.Ticket, TourStepTypeType.Meter, TourStepTypeType.Resident],
-            subtitleLinkHref: '/property',
-            subtitleLinkIcon: Building,
-            newFeatures: {
-                employee: [CreateTicketsOnPropertyEmployeeFeature, CreateNewsOnPropertyEmployeeFeature, CreateReadingsOnPropertyEmployeeFeature],
-                resident: [CreateTicketsResidentFeature, ReadNewsResidentFeature],
-            },
-            onButtonClick: {
-                default: () => { router.push('/property') },
-            },
-        },
         createPropertyMap: {
             availableTourFlow: [TourStepTypeType.Ticket, TourStepTypeType.Meter, TourStepTypeType.Resident],
             subtitleLinkHref: '/property',
@@ -218,19 +206,6 @@ export const useCompletedTourModals = ({ activeStep, setActiveTourStep, refetchS
                 [TourStepTypeType.Ticket]: () => { router.push('/ticket') },
                 [TourStepTypeType.Meter]: () => { router.push('/meter?tab=meter') },
                 [TourStepTypeType.Resident]: handleViewGuideClick,
-            },
-        },
-        createTicket: {
-            availableTourFlow: [TourStepTypeType.Ticket],
-            subtitleLinkHref: '/ticket',
-            subtitleLinkIcon: LayoutList,
-            newFeatures: {
-                employee: [TrackAndChangeTicketStatusEmployeeFeature, ChatWithResidentEmployeeFeature, ChatWithEmployeesEmployeeFeature],
-                resident: [TrackTicketsResidentFeature, ChatWithOrganizationResidentFeature],
-            },
-            onButtonClick: {
-                default: () => { router.push('/tour') },
-                [TourStepTypeType.Ticket]: handleViewGuideClick,
             },
         },
         createMeterReadings: {

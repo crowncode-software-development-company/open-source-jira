@@ -14,11 +14,10 @@ import { ProjectBoard } from '@condo/domains/kanban/components/Board'
 import ProjectTicketCreate from '@condo/domains/kanban/components/TicketCreate/TicketCreate'
 import ProjectBoardTicketDetails from '@condo/domains/kanban/components/TicketDetails'
 import ProjectTicketSearch from '@condo/domains/kanban/components/TicketSearch/TicketSearch'
-import { CreateTicketForm } from '@condo/domains/ticket/components/TicketForm/CreateTicketForm'
 
-import { useGetTicketsQuery, useGetTicketStatusesQuery } from '../../gql'
+import { useGetTicketsQuery } from '../../gql'
 
-export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, refetchAllTickets }) => {
+export const KanbanPageContent = ({ tickets, refetchAllTickets }) => {
     const router = useRouter()
     const [isTicketOpen, setTicketOpen] = useState(false)
     const [isCreateTicketOpen, setCreateTicketOpen] = useState(false)
@@ -54,10 +53,10 @@ export const KanbanPageContent = ({ organizationId, tickets, ticketStatuses, ref
             </Modal>
 
             <Modal zIndex={100} width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
-                <ProjectBoardTicketDetails organizationId={organizationId} ticketStatuses = {ticketStatuses} handleCloseModals = {handleCloseModals} refetchTicketsBoard={refetchAllTickets}/>
+                <ProjectBoardTicketDetails handleCloseModals = {handleCloseModals} refetchTicketsBoard={refetchAllTickets}/>
             </Modal>
             
-            <ProjectBoard tickets={tickets} ticketStatuses={ticketStatuses} refetchAllTickets={refetchAllTickets}/>
+            <ProjectBoard tickets={tickets} refetchAllTickets={refetchAllTickets}/>
         </>
     )
 }
@@ -80,23 +79,11 @@ const KanbanPage: PageComponentType = () => {
         fetchPolicy: 'network-only',
     })
     const tickets = useMemo(() => ticketsData?.tickets?.filter(Boolean) || [], [ticketsData?.tickets])
-    
-    const {
-        loading: isStatusesFetching,
-        data: ticketStatusesData,
-    } = useGetTicketStatusesQuery()
 
-    const ticketStatuses = useMemo(() => {
-        return ticketStatusesData?.statuses?.filter(Boolean).reduce((acc, status) => {
-            acc[status.name] = { id: status.id, colors: { primary: status.colors.primary, secondary: status.colors.secondary } }
-            return acc
-        }, {}) || {}
-    }, [ticketStatusesData?.statuses])
-
-    if (isTicketsFetching || isStatusesFetching) {
+    if (isTicketsFetching) {
         return (
             <LoadingOrErrorPage
-                loading={isTicketsFetching || isStatusesFetching}
+                loading={isTicketsFetching }
             />
         )
     }
@@ -113,7 +100,7 @@ const KanbanPage: PageComponentType = () => {
                             <Typography.Title>{kanbanTitle}</Typography.Title>
                         }
                     />
-                    <KanbanPageContent organizationId={organization.id} tickets={tickets} ticketStatuses={ticketStatuses} refetchAllTickets={refetchAllTickets}/>
+                    <KanbanPageContent tickets={tickets} refetchAllTickets={refetchAllTickets}/>
                 </PageContent>
             </PageWrapper>
         </>

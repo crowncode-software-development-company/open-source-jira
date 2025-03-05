@@ -146,7 +146,7 @@ export const CreateEmployeeForm: React.FC = () => {
                                         <Col span={24}>
                                             <Row gutter={[0, 40]}>
                                                 <Col span={24}>
-                                                    <Form.Item name='role' label={RoleLabel} {...INPUT_LAYOUT_PROPS} labelAlign='left' >
+                                                    <Form.Item hidden name='role' label={RoleLabel} {...INPUT_LAYOUT_PROPS} labelAlign='left' >
                                                         <EmployeeRoleSelect
                                                             employeeRoles={employeeRoles}
                                                         />
@@ -165,35 +165,7 @@ export const CreateEmployeeForm: React.FC = () => {
                                                         <Input placeholder={FullNamePlaceholder} />
                                                     </Form.Item>
                                                 </Col>
-                                                <Col span={24}>
-                                                    <Form.Item name='position' label={PositionLabel} {...INPUT_LAYOUT_PROPS} labelAlign='left'>
-                                                        <Input />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Form.Item noStyle dependencies={['role']}>
-                                                    {
-                                                        ({ getFieldsValue }) => {
-                                                            const { role } = getFieldsValue(['role'])
-                                                            const selectedRole = find(employeeRoles, { id: role })
-
-                                                            return (
-                                                                get(selectedRole, 'canBeAssignedAsExecutor') && (
-                                                                    <Col span={24}>
-                                                                        <GraphQlSearchInputWithCheckAll
-                                                                            checkAllFieldName='hasAllSpecializations'
-                                                                            checkAllInitialValue={true}
-                                                                            selectFormItemProps={specializationsFormItemProps}
-                                                                            selectProps={specializationsSelectProps}
-                                                                            CheckAllMessage={CheckAllMessage}
-                                                                            checkBoxOffset={8}
-                                                                            form={form}
-                                                                        />
-                                                                    </Col>
-                                                                )
-                                                            )
-                                                        }
-                                                    }
-                                                </Form.Item>
+                                                
                                                 <Col span={24}>
                                                     <Form.Item
                                                         name='phone'
@@ -207,18 +179,7 @@ export const CreateEmployeeForm: React.FC = () => {
                                                         <PhoneInput placeholder={ExamplePhoneMsg} block />
                                                     </Form.Item>
                                                 </Col>
-                                                <Col span={24}>
-                                                    <Form.Item
-                                                        name='email'
-                                                        label={EmailLabel}
-                                                        labelAlign='left'
-                                                        validateFirst
-                                                        rules={validations.email}
-                                                        {...INPUT_LAYOUT_PROPS}
-                                                    >
-                                                        <Input placeholder={ExampleEmailMsg}/>
-                                                    </Form.Item>
-                                                </Col>
+                                               
                                             </Row>
                                         </Col>
                                         <Col span={24}>
@@ -247,25 +208,6 @@ export const CreateEmployeeForm: React.FC = () => {
                                         </Col>
                                     </Row>
                                 </Col>
-                                {breakpoints.TABLET_LARGE && (
-                                    <Col span={10}>
-                                        <Form.Item dependencies={['role']}>
-                                            {({ getFieldValue }) => {
-                                                const roleId = getFieldValue('role')
-                                                const role = employeeRoles.find(x => x.id === roleId)
-                                                if (!role || !role.description) return null
-                                                return (
-                                                    <Alert
-                                                        type='info'
-                                                        showIcon
-                                                        message={intl.formatMessage({ id: 'employee.Role.whoIs' }, { roleName: role.name.toLowerCase() })}
-                                                        description={role.description}
-                                                    />
-                                                )
-                                            }}
-                                        </Form.Item>
-                                    </Col>
-                                )}
                             </Row>
                         </>
                     )
