@@ -99,11 +99,11 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                             <Assignees>
                                 <AssigneeAvatar
                                     size={24}
-                                    name={ticket.assignee.name}
+                                    name={ticket.assignee?.name || 'Х'}
                                 />
                                 <AssigneeAvatar
                                     size={24}
-                                    name={ticket.executor.name}
+                                    name={ticket.executor?.name || 'Х'}
                                 />
                             </Assignees>
                         </Bottom>

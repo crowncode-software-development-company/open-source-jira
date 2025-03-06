@@ -10,8 +10,8 @@ const REQUEST_CACHE_KEY = '/api/version'
 const FETCH_ROUTE = `${serverUrl}/api/version`
 
 async function fetchBuildInfo () {
-    const response = await fetch(FETCH_ROUTE)
-    return await response.json()
+    // const response = await fetch(FETCH_ROUTE)
+    return await { build: '66db97e3b4380960afa70546b1d599c580fcb5d1' }
 }
 
 /**

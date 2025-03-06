@@ -76,11 +76,11 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
             <SelectCont>
                 <Select
                     variant='empty'
-                    dropdownWidth={250}
+                    dropdownWidth={300}
                     withClearValue={false}
                     placeholder='Unassigned'
                     name='assignees'
-                    value={ticket.assignee.id}
+                    value={ticket.assignee?.id || null}
                     options={employeesOptions}
                     onChange={employeeIds => handleAssigneeChange(employeeIds)}
                     renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
@@ -92,11 +92,11 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
             <SelectCont>
                 <Select
                     variant='empty'
-                    dropdownWidth={250}
+                    dropdownWidth={300}
                     withClearValue={false}
                     placeholder='Unreported'
                     name='reporter'
-                    value={ticket.executor.id}
+                    value={ticket.executor?.id || null}
                     options={employeesOptions}
                     onChange={employeeIds => handleExecutorChange(employeeIds)}
                     renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}

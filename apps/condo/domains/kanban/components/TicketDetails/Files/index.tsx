@@ -16,6 +16,7 @@ import { useNotificationMessages } from '../../../../common/hooks/useNotificatio
 import { runMutation } from '../../../../common/utils/mutations.utils'
 import { getClientSideSenderInfo } from '../../../../common/utils/userid.utils'
 import { color, font } from '../../../styles'
+import { Spinner } from '../../../ui'
 import { UploadFile as UploadFileComponent } from '../../../ui/UploadFile'
 
 const Files = styled.div`
@@ -81,6 +82,7 @@ const ProjectBoardTicketDetailsFiles = ({ ticket, files, refetchTicketFiles }) =
     const NoResultFilesTitle = intl.formatMessage({ id: 'kanban.file.noResult.title' })
     const [deletedFile, setDeletedFile] = useState(null)
     const [isOpen, setOpen] = useState(false)
+    const [loading, setLoading] = useState(false)
     const { getSuccessfulChangeNotification } = useNotificationMessages()
     const { downloadFile } = useDownloadFileFromServer()
 
@@ -93,24 +95,31 @@ const ProjectBoardTicketDetailsFiles = ({ ticket, files, refetchTicketFiles }) =
 
     const update = TicketFile.useUpdate({})
     const handleDeleteFile = () => {
+        setLoading(true)
         runMutation({
             action:() => update(updateData,  deletedFile),
             intl,
             OnCompletedMsg: getSuccessfulChangeNotification,
             onCompleted: () => refetchTicketFiles(),
             onError: () => notification.error({ message: ErrorTitle }),
+            onFinally: () => setLoading(false),
         })
         setOpen(false)
     }
 
     const handleFileDownload = useCallback(async (file: UploadFile) => {
-        await downloadFile({ name: file.name, url: file.url })
+        setLoading(true)
+        try {
+            await downloadFile({ name: file.name, url: file.url })
+        }
+        finally {
+            setLoading(false)
+        }
     }, [downloadFile])
 
 
     const handleOnRemoveFile = (deletedFile) => {
         setOpen(true)
-        console.log(files, deletedFile)
         setDeletedFile(files.find((file) => file.file.id === deletedFile.uid))
     }
 
@@ -138,7 +147,8 @@ const ProjectBoardTicketDetailsFiles = ({ ticket, files, refetchTicketFiles }) =
             </Modal>
             <Header>
                 <Title>{FileLabel}</Title>
-                <UploadFileComponent refetchTicketFiles={refetchTicketFiles} ticketId={ticket.id}/>
+                <UploadFileComponent loading={loading} setLoading={setLoading} refetchTicketFiles={refetchTicketFiles} ticketId={ticket.id}/>
+                {loading && <Spinner size={20}/> }
             </Header>
             {files.length ? 
                 <div style={{ width: '200px' }}>

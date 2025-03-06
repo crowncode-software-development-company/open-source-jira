@@ -64,8 +64,6 @@ const ProjectBoardTicketDetailsDescription = ({ ticket, updateTicket, refetchTic
     return (
         <>
             <Title>{DescriptionTitle}</Title>
-            {console.log(ticket)
-            }
             {isEditing ? (
                 <>
                     <TextEditor action='update' ticketId ={ticket.id} value = {descriptionHtml}  onChange={(value) => setDescriptionHtml(value)}/>

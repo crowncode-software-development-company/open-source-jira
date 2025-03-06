@@ -99,15 +99,11 @@ export const InlineOrganizationSelect: React.FC = () => {
         onFinish: async (createdOrganization) => {
             const organizationType = get(createdOrganization, 'type')   
             try {
-                const { suggestions } = await addressApi.getSuggestions(' ')
-                if (!suggestions.length) {
-                    notification.error({ message: 'Создайте адрес и пересоздайте организацию' })
-                }
                 await createPropertyAction({
                     organization: { connect: { id: createdOrganization.id } },
                     type: PropertyTypeType.Building,
                     sender: getClientSideSenderInfo(), 
-                    address: suggestions[0].rawValue,
+                    address: 'г Екатеринбург, ул 100-летия Уральского университета, стр 1',
                 })
             } catch {
                 notification.error({ message: 'Запустите сервис адресов и создайте адрес' })

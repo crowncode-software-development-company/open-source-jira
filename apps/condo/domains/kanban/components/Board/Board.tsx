@@ -1,9 +1,12 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
 
+import { useOrganization } from '@open-condo/next/organization'
+
 import { useGetTicketStatusesQuery } from '../../../../gql'
 import { Loader } from '../../../common/components/Loader'
 import useMergeState from '../../hooks/useMergeState'
+import { useTicketStatuses } from '../../hooks/useTicketStatuses'
 import Filters from '../Filters/Filters'
 import { Header } from '../Header'
 import Lists from '../Lists/Lists'
@@ -25,18 +28,13 @@ const HeaderContainer = styled.div`
 const ProjectBoard = ({ tickets, refetchAllTickets }) => {
 
     const [filters, mergeFilters] = useMergeState(defaultFilters)
-
+    const { organization } = useOrganization()
     const {
         loading: isStatusesFetching,
         data: ticketStatusesData,
     } = useGetTicketStatusesQuery()
 
-    const ticketStatuses = useMemo(() => {
-        return ticketStatusesData?.statuses?.filter(Boolean).reduce((acc, status) => {
-            acc[status.name] = { id: status.id, colors: { primary: status.colors.primary, secondary: status.colors.secondary } }
-            return acc
-        }, {}) || {}
-    }, [ticketStatusesData?.statuses])
+    const { statuses } = useTicketStatuses(organization, ticketStatusesData)
 
     return (
         <>
@@ -54,7 +52,7 @@ const ProjectBoard = ({ tickets, refetchAllTickets }) => {
                 tickets={tickets}
                 filters={filters}
                 refetchAllTickets={refetchAllTickets}
-                ticketStatuses={ticketStatuses}
+                ticketStatuses={statuses}
             />}
         </>
     )

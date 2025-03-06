@@ -1,4 +1,3 @@
-// @ts-check
 const { withSentryConfig } = require('@sentry/nextjs')
 const withCSS = require('@zeit/next-css')
 const withLess = require('@zeit/next-less')
@@ -11,9 +10,6 @@ const conf = require('@open-condo/config')
 const { antGlobalVariables } = require('@condo/domains/common/constants/style')
 const { getCurrentVersion } = require('@condo/domains/common/utils/VersioningMiddleware')
 
-// Tell webpack to compile the "@open-condo/next" package, necessary
-// https://www.npmjs.com/package/next-transpile-modules
-// NOTE: FormTable require rc-table module
 const withTM = withTMModule([
     '@open-condo/codegen',
     '@open-condo/next',
@@ -25,13 +21,12 @@ const withTM = withTMModule([
 ])
 
 const serverUrl = process.env.SERVER_URL || 'http://localhost:3000'
-const apolloGraphQLUrl = `${serverUrl}/admin/api`
+const apolloGraphQLUrl = 'http://localhost:3000/api/graphql'
 const addressServiceUrl = conf['ADDRESS_SERVICE_URL']
 const mapApiKey = conf['MAP_API_KEY']
 const behaviorRecorder = { 'plerdy': conf['BEHAVIOR_RECORDER_PLERDY_CONFIG'] }
 const featureFlagsConfig = conf['FEATURE_FLAGS_CONFIG']
 const docsConfig = { 'isGraphqlPlaygroundEnabled': conf['ENABLE_DANGEROUS_GRAPHQL_PLAYGROUND'] === 'true' }
-// TODO(DOMA-8696): Update next.config in cc, eps, miniapp
 const hCaptcha = conf['HCAPTCHA_CONFIG'] && JSON.parse(conf['HCAPTCHA_CONFIG'])
 const disableCaptcha = conf.DISABLE_CAPTCHA === 'true'
 const yandexMetrikaID = conf['YANDEX_METRIKA_ID']
@@ -64,10 +59,13 @@ const termsOfUseUrl = conf['LEGAL_TERMS_OF_USE_URL']
 const privacyPolicyUrl = conf['LEGAL_PRIVACY_POLICY_URL']
 const dataProcessingConsentUrl = conf['LEGAL_DATA_PROCESSING_CONSENT_URL']
 const isSnowfallDisabled = conf['IS_SNOWFALL_DISABLED'] === 'true'
+const GRAPHQL_PROXY_NAME = conf['GRAPHQL_PROXY_NAME'] || 'Next'
 
 let nextConfig = withTM(withLess(withCSS({
+    serverRuntimeConfig: {
+        proxyName: GRAPHQL_PROXY_NAME,
+    },
     publicRuntimeConfig: {
-        // Will be available on both server and client
         serverUrl,
         apolloGraphQLUrl,
         addressServiceUrl,
@@ -125,7 +123,6 @@ let nextConfig = withTM(withLess(withCSS({
     webpack: (config) => {
         const plugins = config.plugins
 
-        // NOTE: Replace Moment.js with Day.js in antd project
         config.plugins = [...plugins, new AntdDayjsWebpackPlugin()]
 
         config.module.rules = [
@@ -136,7 +133,6 @@ let nextConfig = withTM(withLess(withCSS({
 
         return config
     },
-
 })))
 
 if (sentryConfig['client']) {

@@ -97,8 +97,6 @@ const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses
                     resetState()
                 }} />
             <DragDropContext onDragEnd={handleTicketDrop}>
-                {console.log(tickets)
-                }
                 <Lists>
                     {Object.keys(ticketStatuses).map((key) => (
                         <List

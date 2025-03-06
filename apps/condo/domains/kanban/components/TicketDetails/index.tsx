@@ -28,6 +28,7 @@ import { useNotificationMessages } from '../../../common/hooks/useNotificationMe
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
 import { usePollTicketComments } from '../../../ticket/hooks/usePollTicketComments'
 import { TicketFile } from '../../../ticket/utils/clientSchema'
+import { useTicketStatuses } from '../../hooks/useTicketStatuses'
 import { Button } from '../../ui'
 
 const Content = styled.div`
@@ -74,18 +75,13 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
         skip: !ticketId,
     })
     const ticket = useMemo(() => ticketByIdData?.tickets?.filter(Boolean)[0], [ticketByIdData?.tickets])
-
     const {
         loading: isStatusesFetching,
         data: ticketStatusesData,
     } = useGetTicketStatusesQuery()
-    
-    const ticketStatuses = useMemo(() => {
-        return ticketStatusesData?.statuses?.filter(Boolean).reduce((acc, status) => {
-            acc[status.name] = { id: status.id, colors: { primary: status.colors.primary, secondary: status.colors.secondary } }
-            return acc
-        }, {}) || {}
-    }, [ticketStatusesData?.statuses])
+
+    const { statuses } = useTicketStatuses(organization, ticketStatusesData)
+
         
     const {
         loading: ticketCommentsLoading,
@@ -178,7 +174,7 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
                     <Comments refetchTicketComments={refetchTicketComments} user={user} ticket={ticket} comments={comments} />  
                 </Left>
                 <Right>
-                    <Status ticket={ticket} ticketStatuses={ticketStatuses} updateTicket={updateTicketAction}/>
+                    <Status ticket={ticket} ticketStatuses={statuses} updateTicket={updateTicketAction}/>
                     <AssigneesExecutor ticket={ticket} updateTicket={updateTicketAction} employees={employees} />
                     <Priority ticket={ticket} updateTicket={updateTicketAction} />
                     <Deadline ticket={ticket} updateTicket={updateTicketAction} />

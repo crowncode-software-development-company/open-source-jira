@@ -32,7 +32,7 @@ const StyledIcon = styled.div`
     }
 `
 
-export const UploadFile = ({ ticketId, refetchTicketFiles }) => {
+export const UploadFile = ({ ticketId, refetchTicketFiles, loading, setLoading }) => {
     const intl = useIntl()
     const { getSuccessfulChangeNotification } = useNotificationMessages()
 
@@ -49,6 +49,7 @@ export const UploadFile = ({ ticketId, refetchTicketFiles }) => {
     const options = {
         showUploadList: false,
         customRequest: (options: UploadRequestOption) => {
+            setLoading(true)
             const { onSuccess } = options
             const file = options.file as UploadFileInterface
             if (file.size > MAX_UPLOAD_FILE_SIZE) {
@@ -59,7 +60,7 @@ export const UploadFile = ({ ticketId, refetchTicketFiles }) => {
                 onSuccess(onSuccessFunction())
             }).catch(err => {
                 notification.error({ message: UploadFailedErrorMessage })
-            })
+            }).finally(() => setLoading(false))
         },
     }
       
