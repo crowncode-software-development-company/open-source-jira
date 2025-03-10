@@ -116,7 +116,7 @@ export const EmployeePageContent: React.FC<EmployeePageContent> = ({
     const isMyEmployee = userId && employeeUserId && userId === employeeUserId
     const isEmployeeBlocked = get(employee, 'isBlocked')
 
-    const name = get(employee, 'name')
+    const name = get(employee.user, 'name')
     const phone = get(employee, 'phone')
     const email = get(employee, 'email')
     const hasAllSpecializations = get(employee, 'hasAllSpecializations')

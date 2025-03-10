@@ -7,7 +7,7 @@ import { ChevronDown } from '@open-condo/icons'
 
 import {  color, font, mixin } from '../../../styles'
 import { Select, Spinner } from '../../../ui'
-import { formatDefferedDate } from '../../../utils'
+import { formatDefferedDate, ticketHasDeferUntil } from '../../../utils'
 import { DeferredUntilModal } from '../../DeferredUntilModal/DeferredUntilModal'
 import { SectionTitle } from '../Styles'
 
@@ -64,7 +64,6 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
             }
         }
     }
-
     const options = Object.keys(ticketStatuses).map(name => ({
         value: name,
         label: name,
@@ -121,7 +120,7 @@ const ProjectBoardTicketDetailsStatus = ({ ticket, ticketStatuses, updateTicket 
                         )
                     }}
                 />
-                {ticket.deferredUntil && <BeforeText>{formatDefferedDate(BeforeTitle, ticket.deferredUntil)}</BeforeText>}
+                {ticketHasDeferUntil(ticket) && <BeforeText>{formatDefferedDate(BeforeTitle, ticket.deferredUntil)}</BeforeText>}
             </StatusContainer>
         </>
     )

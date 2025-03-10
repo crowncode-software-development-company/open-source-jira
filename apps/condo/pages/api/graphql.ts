@@ -12,10 +12,6 @@ const proxy = httpProxy.createProxy()
 
 proxy.on('proxyReq', (proxyReq, req, res, options) => {
     proxyReq.setHeader('via', proxyName)
-    console.log('Request headers:', req.headers)
-    console.log('Request method:', req.method)
-    console.log('Request URL:', req.url)
-    console.log(`Proxying request to: ${JSON.stringify(options.target)}`)
 })
 
 proxy.on('error', (err, req, res) => {

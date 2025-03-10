@@ -106,7 +106,7 @@ export const InlineOrganizationSelect: React.FC = () => {
                     address: 'г Екатеринбург, ул 100-летия Уральского университета, стр 1',
                 })
             } catch {
-                notification.error({ message: 'Запустите сервис адресов и создайте адрес' })
+                notification.error({ message: 'Error' })
             }
             finally {
             // The slash will only be there if we have just registered and we don't have any additional parameters in the address bar.

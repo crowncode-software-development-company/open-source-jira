@@ -1,22 +1,19 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/react'
 import { Col, Form, Row } from 'antd'
-import find from 'lodash/find'
 import get from 'lodash/get'
 import { useRouter } from 'next/router'
 import { Rule } from 'rc-field-form/lib/interface'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 
 import { useApolloClient } from '@open-condo/next/apollo'
 import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
-import { ActionBar, Alert, Button } from '@open-condo/ui'
+import { ActionBar, Button } from '@open-condo/ui'
 
 import Input from '@condo/domains/common/components/antd/Input'
 import { FormWithAction } from '@condo/domains/common/components/containers/FormList'
 import LoadingOrErrorPage from '@condo/domains/common/components/containers/LoadingOrErrorPage'
-import { GraphQlSearchInputWithCheckAll } from '@condo/domains/common/components/GraphQlSearchInputWithCheckAll'
-import { useLayoutContext } from '@condo/domains/common/components/LayoutContext'
 import { PhoneInput } from '@condo/domains/common/components/PhoneInput'
 import { useValidations } from '@condo/domains/common/hooks/useValidations'
 import { EmployeeRoleSelect } from '@condo/domains/organization/components/EmployeeRoleSelect'
@@ -26,7 +23,6 @@ import {
 } from '@condo/domains/organization/utils/clientSchema'
 import {
     ClassifiersQueryRemote,
-    TicketClassifierTypes,
 } from '@condo/domains/ticket/utils/clientSchema/classifierSearch'
 
 
@@ -47,20 +43,14 @@ export const CreateEmployeeForm: React.FC = () => {
     const FullNamePlaceholder = intl.formatMessage({ id: 'field.FullName' })
     const FullNameRequiredMessage = intl.formatMessage({ id: 'employee.FullName.requiredError' })
     const FullNameInvalidCharMessage = intl.formatMessage({ id:'field.FullName.invalidChar' })
-    const PositionLabel = intl.formatMessage({ id: 'employee.Position' })
     const PhoneLabel = intl.formatMessage({ id: 'Phone' })
-    const EmailLabel = intl.formatMessage({ id: 'Email' })
-    const SpecializationsLabel = intl.formatMessage({ id: 'employee.Specializations' })
     const RoleLabel = intl.formatMessage({ id: 'employee.Role' })
     const ExamplePhoneMsg = intl.formatMessage({ id: 'example.Phone' })
-    const ExampleEmailMsg = intl.formatMessage({ id: 'example.Email' })
     const ServerErrorMsg = intl.formatMessage({ id: 'ServerError' })
-    const CheckAllMessage = intl.formatMessage({ id: 'CheckAll' })
 
     const classifiersLoader = new ClassifiersQueryRemote(useApolloClient())
     const { organization } = useOrganization()
     const router = useRouter()
-    const { breakpoints } = useLayoutContext()
 
     const organizationId = get(organization, 'id', null)
 
@@ -83,34 +73,16 @@ export const CreateEmployeeForm: React.FC = () => {
         router.push('/employee/')
     })
 
-    const searchClassifers = (_, input) =>
-        // When user will try to select classifier items from existing list and will not type search query,
-        // not all classifier items will be presented and it will seem to user, like they are missing.
-        // Load all of them.
-        classifiersLoader.search(input, TicketClassifierTypes.category, { first: undefined })
-            .then(result=>result.map((classifier)=> ({ text: classifier.name, value: classifier.id })))
 
     useEffect(()=> {
         classifiersLoader.init()
         return () => classifiersLoader.clear()
     }, [])
-
-    const specializationsFormItemProps = useMemo(() => ({
-        name: 'specializations',
-        label: SpecializationsLabel,
-        validateFirst: true,
-        ...INPUT_LAYOUT_PROPS,
-    }), [SpecializationsLabel])
-
-    const specializationsSelectProps = useMemo(() => ({
-        search: searchClassifers,
-    }), [searchClassifers])
-
     if (loading || error)
         return <LoadingOrErrorPage title={InviteEmployeeLabel} loading={loading} error={error ? ServerErrorMsg : null} />
 
     const initialValues = {
-        role: get(employeeRoles, [0, 'id'], ''),
+        role: employeeRoles.find(role => role.nameNonLocalized === 'employee.role.Administrator.name').id,
         hasAllSpecializations: true,
     }
 

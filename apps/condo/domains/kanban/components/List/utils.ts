@@ -2,8 +2,8 @@ export const filterTickets = ({ projectTickets, filters, userId }) => {
     const { userIds, myOnly } = filters
 
     return projectTickets.filter(ticket => {
-        const isUserIncluded = userIds.length === 0 || userIds.includes(ticket.assignee.id) || userIds.includes(ticket.executor.id)
-        const isMyTicket = !myOnly || (userId && (ticket.assignee.id === userId || ticket.executor.id === userId))
+        const isUserIncluded = userIds.length === 0 || userIds.includes(ticket.assignee?.id) || userIds.includes(ticket.executor?.id)
+        const isMyTicket = !myOnly || (userId && (ticket.assignee?.id === userId || ticket.executor?.id === userId))
 
         return isUserIncluded && isMyTicket
     })

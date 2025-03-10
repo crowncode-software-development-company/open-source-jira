@@ -88,7 +88,7 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ ticketId, user, onCompleted })
                 ) : (
                     <>
                         <FakeTextarea onClick={() => setIsCommentFormOpen(true)}>{AddCommentTitle}</FakeTextarea>
-                        <ProTip setIsCommentCreating={setIsCommentCreating} />
+                        <ProTip setIsCommentFormOpen={setIsCommentFormOpen} />
                     </>
                 )}
             </Right>

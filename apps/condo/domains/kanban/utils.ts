@@ -1,4 +1,3 @@
-import { padStart } from 'lodash'
 import moment from 'moment'
 
 export const copyToClipboard = value => {
@@ -20,7 +19,11 @@ export const getTextContentsFromHtmlString = html => {
 export const sortByNewest = (items, sortField) =>
     items.sort((a, b) => -a[sortField].localeCompare(b[sortField]))
 
-export const formatDateTimeConversational = date => (date ? moment(date).fromNow() : date)
+export const formatDateTimeConversational = date => {
+    if (!date) return date
+    const modifiedDate = moment(date).add(10, 'seconds')
+    return modifiedDate.fromNow()
+}
 
 export const formatDefferedDate = (beforeTitle, date) => {
     return `${beforeTitle} ${moment(date).format('DD.MM')}`
@@ -35,4 +38,25 @@ export function isEmptyHtml (html) {
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = html
     return !tempDiv.innerText.trim() && !tempDiv.querySelector('img')
+}
+
+export function truncateDescription (details: string, maxLength = 35): string {
+    if (details.length <= maxLength) {
+        return details
+    }
+    let truncated = details.slice(0, maxLength)
+    const lastSpaceIndex = truncated.lastIndexOf(' ')
+    if (lastSpaceIndex !== -1) {
+        truncated = truncated.slice(0, lastSpaceIndex)
+    }
+
+    return `${truncated}...`
+}
+
+export function ticketHasDeferUntil (ticket): boolean {
+    if (ticket.deferredUntil && ticket.status.id === 'c14a58e0-6b5d-4ec2-b91c-980a90509c7f') {
+        return true
+    } else {
+        return false
+    }
 }

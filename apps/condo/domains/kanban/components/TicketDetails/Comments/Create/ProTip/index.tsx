@@ -30,10 +30,10 @@ const TipLetter = styled.span`
 `
 
 interface IProps {
-    setIsCommentCreating: React.Dispatch<React.SetStateAction<boolean>>
+    setIsCommentFormOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setIsCommentCreating }) => {
+const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setIsCommentFormOpen }) => {
     const intl = useIntl()
     const TipTitle = intl.formatMessage({ id: 'kanban.ticket.proTip.title' })
     const PressTitle = intl.formatMessage({ id: 'kanban.ticket.proTip.press.title' })
@@ -43,7 +43,7 @@ const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setIsC
         const handleKeyDown = event => {
             if (!isFocusedElementEditable() && event.keyCode === KeyCodes.M) {
                 event.preventDefault()
-                setIsCommentCreating(true)
+                setIsCommentFormOpen(true)
             }
         }
 
@@ -52,7 +52,7 @@ const ProjectBoardIssueDetailsCommentsCreateProTip: React.FC<IProps> = ({ setIsC
         return () => {
             document.removeEventListener('keydown', handleKeyDown)
         }
-    }, [setIsCommentCreating])
+    }, [setIsCommentFormOpen])
 
     return (
         <Tip>

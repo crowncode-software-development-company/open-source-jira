@@ -626,7 +626,6 @@ export const TicketTypeFilterSwitch = ({ ticketFilterQuery }) => {
                 label={
                     <>
                         {OwnTicketsMessage}
-                        {isNumber(ownTicketsCount) && <sup>{ownTicketsCount}</sup>}
                     </>
                 }
             />

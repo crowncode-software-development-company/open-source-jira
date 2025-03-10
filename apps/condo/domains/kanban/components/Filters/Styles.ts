@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import { color, font, mixin } from '../../styles'
-import { Avatar, Button } from '../../ui'
+import { Avatar, Button, Spinner } from '../../ui'
 
 
 export const Filters = styled.div`
@@ -9,6 +9,11 @@ export const Filters = styled.div`
   align-items: center;
    margin-bottom: 10px;
 `
+
+export const StyledSpinner = styled(Spinner)`
+   margin-bottom: 10px;
+`
+
 
 export const Avatars = styled.div`
   display: flex;

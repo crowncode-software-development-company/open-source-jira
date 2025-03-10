@@ -39,15 +39,15 @@ align-items:center;
 gap: 5px;
 `
 
-const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, employees }) => {
+const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, users }) => {
     const intl = useIntl()
     const AssigneeMessage = intl.formatMessage({ id: 'pages.ticket.autoAssignment.columns.assignee.title' })
     const ExecutorMessage = intl.formatMessage({ id: 'pages.ticket.autoAssignment.columns.executor.title' })
     const [assigneeLoading, setAssigneeLoading] = useState(false)
     const [executorLoading, setExecutorLoading] = useState(false)
-    const getEmployeeById = employeeId => employees.find(employee => employee.user.id === employeeId)
+    const getUserById = userId => users.find(user => user.id === userId)
 
-    const employeesOptions = employees.map(employee => ({ value: employee.user.id, label: employee.user.name }))
+    const usersOptions = users.map(user => ({ value: user.id, label: user.name }))
 
 
     const handleAssigneeChange = async (userId) => {
@@ -81,10 +81,10 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
                     placeholder='Unassigned'
                     name='assignees'
                     value={ticket.assignee?.id || null}
-                    options={employeesOptions}
-                    onChange={employeeIds => handleAssigneeChange(employeeIds)}
-                    renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
-                    renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
+                    options={usersOptions}
+                    onChange={userIds => handleAssigneeChange(userIds)}
+                    renderValue={({ value: userId }) => renderUser(getUserById(userId), true)}
+                    renderOption={({ value: userId }) => renderUser(getUserById(userId))}
                 />
                 {assigneeLoading && <Spinner size={20}/>}
             </SelectCont>
@@ -97,10 +97,10 @@ const ProjectBoardIssueDetailsAssigneesExecutor = ({ ticket, updateTicket, emplo
                     placeholder='Unreported'
                     name='reporter'
                     value={ticket.executor?.id || null}
-                    options={employeesOptions}
-                    onChange={employeeIds => handleExecutorChange(employeeIds)}
-                    renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId), true)}
-                    renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
+                    options={usersOptions}
+                    onChange={userIds => handleExecutorChange(userIds)}
+                    renderValue={({ value: userId }) => renderUser(getUserById(userId), true)}
+                    renderOption={({ value: userId }) => renderUser(getUserById(userId))}
                 />
                 {executorLoading && <Spinner size={20}/>}
             </SelectCont>

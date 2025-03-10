@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { Fragment, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useIntl } from 'react-intl'
 
 import { Search } from '@open-condo/icons'
@@ -26,9 +26,10 @@ import {
 } from './Styles'
 
 import { useGetTicketsQuery } from '../../../../gql'
+import { SortTicketsBy } from '../../../../schema'
 import { color } from '../../styles'
 import { TicketTypeIcon } from '../../ui'
-import { formatDefferedDate, sortByNewest } from '../../utils'
+import { formatDefferedDate, sortByNewest, ticketHasDeferUntil, truncateDescription } from '../../utils'
 
 const ProjectTicketSearch = () => {
     const intl = useIntl()
@@ -72,6 +73,8 @@ const ProjectTicketSearch = () => {
                     { executor: { name_contains_i: searchValue  } },
                 ],
             },
+            sortBy: SortTicketsBy.CreatedAtDesc,
+            first: 20,
         },
         skip: !router.query['search-modal'],
         fetchPolicy: 'network-only',
@@ -95,6 +98,13 @@ const ProjectTicketSearch = () => {
     }
    
     const recentTicket = sortByNewest(tickets, 'createdAt').slice(0, 10)
+
+    const renderAssignees = (executorName, assigneeName) =>  {
+        if (executorName && assigneeName) {
+            return `${assigneeName} & ${executorName}`
+        }
+        return `${assigneeName || ''}${executorName || ''}`
+    }
     
     const renderTicket = (ticket, index) =>  (
         <TicketLink
@@ -104,17 +114,17 @@ const ProjectTicketSearch = () => {
                 <TicketTypeIcon size='large' type={ticket.customClassifier || 'task'}/>
                 <TicketDataContainer>
                     <TicketData>
-                        <TicketTitleText> {ticket.title || `№${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`}</TicketTitleText>
+                        <TicketTitleText> {ticket.title || `№${ticket.number} / ${truncateDescription(ticket.details, 50)}`}</TicketTitleText>
                         <TicketTypeId>
                             <TicketTypeColor $color={ticket.status.colors.primary}>
                                 {ticket.status.name}
                             </TicketTypeColor>
-                            {ticket.deferredUntil && ` ${formatDefferedDate(BeforeTitle, ticket.deferredUntil)}`} / {ticket.assignee.name} & {ticket.executor.name}
+                            {ticketHasDeferUntil(ticket) && ` ${formatDefferedDate(BeforeTitle, ticket.deferredUntil)}`} / {renderAssignees(ticket.assignee?.name, ticket.executor?.name)}
                         </TicketTypeId>
                     </TicketData>
                     <Avatars>
-                        <StyledAvatar name={ticket.assignee.name} size={30}/>
-                        <StyledAvatar name={ticket.executor.name} size={30}/>
+                        <StyledAvatar name={ticket.assignee?.name} size={30}/>
+                        <StyledAvatar name={ticket.executor?.name} size={30}/>
                     </Avatars>
                 </TicketDataContainer>
             </Ticket>

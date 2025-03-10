@@ -73,9 +73,15 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
             isRejected: false,
         },
     })
-    const employees = useMemo(() => employeesData?.filter(Boolean) || [], [employeesData])
-    const employeeOptions = employees.map(employee => ({ value: employee.user.id, label: employee.user.name }))
-    const getEmployeeById = employeeId => employees.find(employee => employee.user.id === employeeId)
+    const users = useMemo(() => {
+        return employeesData?.filter(Boolean).map(employee => ({
+            name: employee.user?.name || '',
+            id: employee.user?.id || '',
+        })) || []
+    }, [employeesData])
+    
+    const usersOptions = users.map(user => ({ value: user.id, label: user.name }))
+    const getUserById = userId => users.find(user => user.id === userId)
 
     useEffect(() => {
         form.resetFields()
@@ -196,9 +202,9 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
                         value={form.getFieldValue('assignee')}
                         onChange={(value) => form.setFieldsValue({ assignee: value })}
                         name='assignee'
-                        options={employeeOptions}
-                        renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
-                        renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
+                        options={usersOptions}
+                        renderOption={({ value: userId }) => renderUser(getUserById(userId))}
+                        renderValue={({ value: userId }) => renderUser(getUserById(userId))}
                     />
                 </CustomFormItem>
 
@@ -209,9 +215,9 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
                         value={form.getFieldValue('executor')}
                         onChange={(value) => form.setFieldsValue({ executor: value })}
                         name='executor'
-                        options={employeeOptions}
-                        renderOption={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
-                        renderValue={({ value: employeeId }) => renderUser(getEmployeeById(employeeId))}
+                        options={usersOptions}
+                        renderOption={({ value: userId }) => renderUser(getUserById(userId))}
+                        renderValue={({ value: userId }) => renderUser(getUserById(userId))}
                     />
                 </CustomFormItem>
 

@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 
 import { color, font, mixin } from '../../styles'
 import { Avatar, TicketPriorityIcon, TicketTypeIcon } from '../../ui'
-import { formatDefferedDate } from '../../utils'
+import { formatDefferedDate, ticketHasDeferUntil, truncateDescription } from '../../utils'
 
 const TicketLink = styled.div`
   display: block;
@@ -28,6 +28,7 @@ const Ticket = styled.div<TicketProps>`
   background: #fff;
   box-shadow: 0px 1px 2px 0px rgba(9, 30, 66, 0.25);
   transition: background 0.1s;
+  overflow-wrap: break-word;
   ${mixin.clickable}
   @media (max-width: 1100px) {
     padding: 10px 8px;
@@ -77,6 +78,7 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
     const handleOpenModal = () => {
         router.push(`?ticketId=${ticket.id}`, undefined, { shallow: true })
     }
+
     return (
         <Draggable draggableId={ticket.id.toString()} index={index}>
             {(provided, snapshot) => (
@@ -88,22 +90,22 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                 >
                     <Ticket isbeingdragged={snapshot.isDragging && !snapshot.isDropAnimating ? 'true' : undefined}>
                         <Title>
-                            {ticket.title || `№${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`}
+                            {ticket.title || `№${ticket.number} / ${truncateDescription(ticket.details)}`}
                         </Title>
                         <Bottom>
                             <Icons>
                                 <TicketTypeIcon type={ticket.customClassifier || 'task'} size='medium'/>
                                 <TicketPriorityIcon priority={ticket.priority} size='medium'/>
-                                {ticket.deferredUntil && <BeforeText>{formatDefferedDate(BeforeTitle, ticket.deferredUntil)}</BeforeText>}
+                                {ticketHasDeferUntil(ticket) && <BeforeText>{formatDefferedDate(BeforeTitle, ticket.deferredUntil)}</BeforeText>}
                             </Icons>
                             <Assignees>
                                 <AssigneeAvatar
                                     size={24}
-                                    name={ticket.assignee?.name || 'Х'}
+                                    name={ticket.assignee?.name}
                                 />
                                 <AssigneeAvatar
                                     size={24}
-                                    name={ticket.executor?.name || 'Х'}
+                                    name={ticket.executor?.name}
                                 />
                             </Assignees>
                         </Bottom>

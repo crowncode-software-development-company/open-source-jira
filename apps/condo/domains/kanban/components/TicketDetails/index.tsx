@@ -24,7 +24,6 @@ import Type from './Type'
 
 import { useGetTicketByIdQuery, useGetTicketCommentsQuery, useGetTicketStatusesQuery, useUpdateTicketMutation } from '../../../../gql'
 import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrErrorPage'
-import { useNotificationMessages } from '../../../common/hooks/useNotificationMessages'
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
 import { usePollTicketComments } from '../../../ticket/hooks/usePollTicketComments'
 import { TicketFile } from '../../../ticket/utils/clientSchema'
@@ -61,7 +60,6 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
     const { query } = useRouter()
     const { organization } = useOrganization()
     const intl = useIntl()
-    const { getSuccessfulChangeNotification } = useNotificationMessages()
     const ErrorTitle = intl.formatMessage({ id: 'ErrorOccurred' })
     const { ticketId } = query as { ticketId: string }
 
@@ -107,7 +105,6 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
         onCompleted: async () => {
             await refetchTicket()
             await refetchTicketsBoard()
-            notification.success(getSuccessfulChangeNotification())
         },
         onError: async () => {
             notification.error({ message: ErrorTitle })
@@ -136,7 +133,12 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
         },
     })
     
-    const employees = useMemo(() => employeesData?.filter(Boolean) || [], [employeesData])
+    const users = useMemo(() => {
+        return employeesData?.filter(Boolean).map(employee => ({
+            name: employee.user?.name || '',
+            id: employee.user?.id || '',
+        })) || []
+    }, [employeesData])
     
     const { objs: files, refetch: refetchTicketFiles } = TicketFile.useObjects({
         where: { ticket: { id: ticket ? ticket.id : null } },
@@ -175,7 +177,7 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
                 </Left>
                 <Right>
                     <Status ticket={ticket} ticketStatuses={statuses} updateTicket={updateTicketAction}/>
-                    <AssigneesExecutor ticket={ticket} updateTicket={updateTicketAction} employees={employees} />
+                    <AssigneesExecutor ticket={ticket} updateTicket={updateTicketAction} users={users} />
                     <Priority ticket={ticket} updateTicket={updateTicketAction} />
                     <Deadline ticket={ticket} updateTicket={updateTicketAction} />
                     <Dates ticket={ticket} /> 

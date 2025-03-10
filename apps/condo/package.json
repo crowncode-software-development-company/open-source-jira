@@ -7,7 +7,7 @@
     "prepare": "node ./bin/prepare.js",
     "dev": "yarn build:deps && NODE_ENV=development node --trace-warnings ./../../bin/run-keystone-app.js & yarn types:watch",
     "dev:frontend": "next dev",
-    "build:frontend": "next build",
+    "build:frontend": "yarn build:deps && next build",
     "start:frontend": "next start",
     "debug": "node inspect node_modules/.bin/keystone dev",
     "build:static": "yarn workspace @open-condo/ui build:sb -o ../../apps/condo/public/ui && mv -f public/ui/ui/* public/ui",

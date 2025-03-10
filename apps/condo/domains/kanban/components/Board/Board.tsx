@@ -48,12 +48,14 @@ const ProjectBoard = ({ tickets, refetchAllTickets }) => {
                     mergeFilters={mergeFilters}/>}
             </HeaderContainer>
             
-            {isStatusesFetching ? <Loader fill size='default'/> : <Lists
-                tickets={tickets}
-                filters={filters}
-                refetchAllTickets={refetchAllTickets}
-                ticketStatuses={statuses}
-            />}
+            {isStatusesFetching ? 
+                <Loader fill size='default'/> : 
+                <Lists
+                    tickets={tickets}
+                    filters={filters}
+                    refetchAllTickets={refetchAllTickets}
+                    ticketStatuses={statuses}
+                />}
         </>
     )
 }

@@ -93,7 +93,7 @@ export const useTableColumns = (
                 sorter: true,
                 filterDropdown: getFilterDropdownByKey(filterMetas, 'name'),
                 filterIcon: getFilterIcon,
-                render: (name, employee) => employee?.isBlocked ? renderBlockedEmployee(name) : render(name),
+                render: (name, employee) => employee?.isBlocked ? renderBlockedEmployee(name) : render(employee.user.name),
                 width: '15%',
             },
             {

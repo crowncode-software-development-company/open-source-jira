@@ -33,7 +33,7 @@ interface IUseCreateOrganizationModalFormProps {
 
 const MODAL_VALIDATE_TRIGGERS = ['onBlur', 'onSubmit']
 const FORM_ITEM_STYLES = { width: '60%' }
-const ORGANIZATION_TYPE_FORM_ITEM_STYLES = { marginBottom: 8 }
+const ORGANIZATION_TYPE_FORM_ITEM_STYLES = { marginBottom: 20 }
 const { publicRuntimeConfig: { defaultLocale } } = getConfig()
 const MUTATION_EXTRA_DATA = { country: defaultLocale }
 
@@ -161,21 +161,22 @@ export const useCreateOrganizationModalForm = ({ onFinish }: IUseCreateOrganizat
             ErrorToFormFieldMsgMapping={ErrorToFormFieldMsgMapping}
             showCancelButton={false}
             validateTrigger={MODAL_VALIDATE_TRIGGERS}
+            initialValues={{ tin: '000' }}
         >
-            <Form.Item name='type' style={ORGANIZATION_TYPE_FORM_ITEM_STYLES}>
-                <RadioGroup defaultValue={MANAGING_COMPANY_TYPE}>
-                    <Space direction='vertical' size={16}>
-                        <Radio value={MANAGING_COMPANY_TYPE} label={ManagingCompanyMessage}/>
-                        <Radio value={SERVICE_PROVIDER_TYPE} label={ServiceProviderMessage}/>
-                    </Space>
-                </RadioGroup>
-            </Form.Item>
-            <Form.Item name='name' label={NameMsg} rules={validators.name} validateFirst>
+            <Form.Item name='name' label={NameMsg} rules={validators.name} validateFirst style={ORGANIZATION_TYPE_FORM_ITEM_STYLES}>
                 <Input
                     placeholder={CreateOrganizationPlaceholder}
                 />
             </Form.Item>
-            <Form.Item name='tin' style={FORM_ITEM_STYLES} label={InnMessage} rules={validators.tin} validateFirst>
+            <Form.Item hidden name='type'>
+                <RadioGroup defaultValue={SERVICE_PROVIDER_TYPE}>
+                    <Space direction='vertical' size={16}>
+                        <Radio disabled value={MANAGING_COMPANY_TYPE} label={ManagingCompanyMessage}/>
+                        <Radio value={SERVICE_PROVIDER_TYPE} label={ServiceProviderMessage}/>
+                    </Space>
+                </RadioGroup>
+            </Form.Item>
+            <Form.Item hidden name='tin' style={FORM_ITEM_STYLES} label={InnMessage} rules={validators.tin} validateFirst>
                 <Input />
             </Form.Item>
         </BaseModalForm>

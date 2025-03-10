@@ -18,6 +18,7 @@ export const SearchInputDebounced = styled(InputDebounced)`
   height: 40px;
   input {
     border: none;
+    outline: none;
     border-bottom: 2px solid ${color.primary};
     background: #fff;
     ${font.size(21)}
@@ -28,11 +29,9 @@ export const SearchInputDebounced = styled(InputDebounced)`
       border-bottom: 2px solid ${color.primary};
       background: #fff;
     }
-    &:focus {
-      outline: none;
-    }
   }
 `
+
 export const SearchSpinner = styled(Spinner)`
   position: absolute;
   top: 5px;

@@ -15,6 +15,8 @@ export const Letter = styled.div<{ size?: number }>`
   display: inline-block;
   width: ${props => props.size}px;
   height: ${props => props.size}px;
+  min-width: ${props => props.size}px;
+  min-height: ${props => props.size}px;
   border-radius: 100%;
   text-transform: uppercase;
   color: #fff;
@@ -48,9 +50,11 @@ const Avatar: React.FC<AvatarProps> = ({ className, avatarUrl, name, size = 32, 
     }
 
     return (
-        <Letter color={getColorFromName(name)} {...sharedProps}>
-            <span>{name.charAt(0)}</span>
-        </Letter>
+        <>
+            {name && <Letter color={getColorFromName(name)} {...sharedProps}>
+                <span>{name.charAt(0)}</span>
+            </Letter>}
+        </>
     )
 }
 

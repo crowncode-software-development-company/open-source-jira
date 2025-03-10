@@ -12,6 +12,7 @@ import {
     StyledAvatar,
     StyledButton,
     ClearAll,
+    StyledSpinner,
 } from './Styles'
 
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
@@ -48,7 +49,7 @@ const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters })
     const areFiltersCleared = userIds.length === 0 && !myOnly
 
     if (employeesLoading) { 
-        return <Spinner />
+        return <StyledSpinner size={26} />
     }
 
     return (

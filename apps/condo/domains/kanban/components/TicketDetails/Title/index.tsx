@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { KeyCodes } from '../../../constants'
 import { color, font } from '../../../styles'
 import { Textarea } from '../../../ui'
+import { truncateDescription } from '../../../utils'
 import { generateErrors, is } from '../../../validation'
 
 const TitleTextarea = styled(Textarea)`
@@ -37,7 +38,7 @@ const ProjectBoardIssueDetailsTitle = ({ ticket, updateTicket }) => {
     const intl = useIntl()
     const TicketTitle = intl.formatMessage({ id: 'Ticket' })
     const PlaceholderTitle = intl.formatMessage({ id: 'kanban.ticket.title' })
-    const [title, setTitle] = useState(ticket.title || `${TicketTitle} №${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`)
+    const [title, setTitle] = useState(ticket.title || `${TicketTitle} №${ticket.number} / ${truncateDescription(ticket.details)}...`)
     const [editing, setEditing] = useState(false)
     const [error, setError] = useState('')
     

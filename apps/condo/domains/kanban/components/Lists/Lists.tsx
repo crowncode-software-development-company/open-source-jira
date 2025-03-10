@@ -1,14 +1,15 @@
+import { notification } from 'antd'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
+import { getClientSideSenderInfo } from '@open-condo/codegen/utils/userId'
+
 import { calculateTicketColumnPosition, isPositionChanged } from './utils'
 
-import { useNotificationMessages } from '../../../common/hooks/useNotificationMessages'
-import { runMutation } from '../../../common/utils/mutations.utils'
-import { Ticket } from '../../../ticket/utils/clientSchema'
+import { useUpdateTicketMutation } from '../../../../gql'
 import { DeferredUntilModal } from '../DeferredUntilModal/DeferredUntilModal'
 import { List } from '../List'
 
@@ -21,38 +22,44 @@ const Lists = styled.div`
 const ProjectBoardLists = ({ tickets, filters, refetchAllTickets, ticketStatuses }) => {
     const intl = useIntl()
     const DefferedStatusTitle = intl.formatMessage({ id: 'ticket.status.DEFERRED.name' })
-    const { getSuccessfulChangeNotification } = useNotificationMessages()
     const [localTickets, setLocalTickets] = useState(tickets)
     const [deferredUntil, setDeferredUntil] = useState(dayjs())
     const [isOpenUntil, setOpenUntil] = useState(false)
     const [currentDraggableTicketId, setCurrentDraggableTicketId] = useState('')
     const [newColumnPosition, setNewColumnPosition] = useState(null)
 
-    const update = Ticket.useUpdate({})
-
     useEffect(() => {
         setLocalTickets(tickets)
     }, [tickets])
 
-    const updateTicketStatus = (newType, id, newListPosition, deferUntil?) => {
-        const currentTicket = tickets.find(ticket => ticket.id === id)
+    const [updateTicket] = useUpdateTicketMutation({
+        onCompleted: async () => {
+            await refetchAllTickets()
+            await  resetState()
+        },
+        onError: async () => {
+            setLocalTickets(tickets),
+            notification.error({ message: intl.formatMessage({ id: 'ErrorOccurred' }) })
+        },    
+    })
+        
 
-        const updateData = {
+    const updateTicketStatus = async (newType, id, newListPosition, deferUntil?) => {
+        const updatedData = {
             status: { connect: { id: ticketStatuses[newType].id } },
             kanbanOrder: newListPosition,
             ...(deferUntil && { deferredUntil: deferUntil }),
         }
 
-        runMutation({
-            action: () => update(updateData, currentTicket),
-            intl,
-            OnCompletedMsg: getSuccessfulChangeNotification,
-            onCompleted: () => {
-                refetchAllTickets()
-                resetState()
+        await updateTicket({
+            variables: {
+                id,
+                data: { 
+                    ...updatedData,
+                    dv: 1,
+                    sender: getClientSideSenderInfo(),
+                },
             },
-            onError: () => setLocalTickets(tickets),
-            OnErrorMsg: intl.formatMessage({ id: 'ErrorOccurred' }),
         })
     }
 

@@ -187,13 +187,13 @@ export const Dashboard: React.FC<{ organizationId: string }> = ({ organizationId
             <Col span={24}>
                 <TableFiltersContainer>
                     <Row gutter={[24, 24]} align='middle' justify='start' wrap>
-                        <Col span={TABLET_LARGE ? 24 : 48}>
+                        <Col span={TABLET_LARGE ? 24 : 24}>
                             <DateRangeSearch disabled={loading} />
                         </Col>
                     </Row>
                 </TableFiltersContainer>
             </Col>
-            <Col xl={width > DASHBOARD_WIDTH_BREAKPOINT ? 24 : 48} lg={24}>
+            <Col span={24}>
                 <PerformanceCard
                     organizationId={organizationId}
                     paymentSum={paymentSum}
