@@ -118,7 +118,7 @@ export const UserInfoPageContent: React.FC<UserInfoPageContentProps> = ({ useAll
                                     <UserAvatar borderRadius={24}/>
                                 </Col>
                                 <Col xs={24} lg={20} offset={!breakpoints.TABLET_LARGE ? 0 : 1}>
-                                    <Row gutter={ROW_GUTTER_BIG}>
+                                    <Row gutter={ROW_GUTTER_MID}>
                                         <Col span={24}>
                                             <Row gutter={ROW_GUTTER_MID}>
                                                 <Col span={24}>
@@ -216,22 +216,6 @@ export const UserInfoPageContent: React.FC<UserInfoPageContentProps> = ({ useAll
                                                             )
                                                         }}
                                                     </LocaleContext.Consumer>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={24}>
-                                            <Row gutter={ROW_GUTTER_MID}>
-                                                <Col lg={5} xs={10}>
-                                                    <Typography.Text type='secondary'>
-                                                        {GlobalHintsTitle}
-                                                    </Typography.Text>
-                                                </Col>
-                                                <Col lg={5} offset={1}>
-                                                    <Switch
-                                                        checked={showGlobalHints}
-                                                        onChange={handleGlobalHintsChange}
-                                                        disabled={!user}
-                                                    />
                                                 </Col>
                                             </Row>
                                         </Col>

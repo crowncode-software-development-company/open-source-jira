@@ -5,6 +5,7 @@ import { Button } from '../../ui'
 
 export const SelectItem = styled.div<{ $withbottommargin?: boolean }>`
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   margin-right: 15px;

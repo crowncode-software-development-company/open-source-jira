@@ -21,7 +21,7 @@ const withTM = withTMModule([
 ])
 
 const serverUrl = process.env.SERVER_URL || 'http://localhost:3000'
-const apolloGraphQLUrl = `${process.env.SERVER_URL}/api/graphql`
+const apolloGraphQLUrl = 'http://localhost:3000/api/graphql'
 const addressServiceUrl = conf['ADDRESS_SERVICE_URL']
 const mapApiKey = conf['MAP_API_KEY']
 const behaviorRecorder = { 'plerdy': conf['BEHAVIOR_RECORDER_PLERDY_CONFIG'] }

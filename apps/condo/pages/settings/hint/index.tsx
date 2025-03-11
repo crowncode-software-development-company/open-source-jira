@@ -5,6 +5,7 @@ import React from 'react'
 import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { usePreviousSortAndFilters } from '@condo/domains/common/hooks/usePreviousQueryParams'
 import { PageComponentType } from '@condo/domains/common/types'
@@ -22,18 +23,7 @@ const PropertyHintsPage: PageComponentType = () => {
     const employeeId = get(link, 'id')
     usePreviousSortAndFilters({ employeeSpecificKey: employeeId })
 
-    return (
-        <>
-            <Head>
-                <title>{PageTitle}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <TicketPropertyHintSettings />
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage />
 }
 
 PropertyHintsPage.requiredAccess = SettingsReadPermissionRequired

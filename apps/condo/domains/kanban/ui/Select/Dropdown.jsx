@@ -188,9 +188,6 @@ const SelectDropdown = ({
                 onKeyDown={handleInputKeyDown}
                 onChange={event => setSearchValue(event.target.value)}
             />
-
-            {!isValueEmpty && withClearValue && <Close size='small' />}
-
             <Options ref={$optionsRef}>
                 {filteredOptions.map(option => (
                     <Option

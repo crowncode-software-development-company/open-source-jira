@@ -7,6 +7,7 @@ import React from 'react'
 import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageHeader, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { Loader } from '@condo/domains/common/components/Loader'
 import { PageComponentType } from '@condo/domains/common/types'
@@ -47,18 +48,7 @@ const TicketSubmittingPage: PageComponentType = () => {
     const intl = useIntl()
     const PageTitle = intl.formatMessage({ id: 'pages.condo.settings.ticketDeadlines.pageTitle' })
 
-    return (
-        <>
-            <Head>
-                <title>{PageTitle}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <OnlyProgressionMeterReadingsContent />
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage/>
 }
 
 TicketSubmittingPage.requiredAccess = SettingsReadPermissionRequired

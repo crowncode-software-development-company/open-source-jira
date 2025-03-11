@@ -5,6 +5,7 @@ import React from 'react'
 import { useIntl } from '@open-condo/next/intl'
 import { Tour } from '@open-condo/ui'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { PageComponentType } from '@condo/domains/common/types'
 import { OrganizationRequired } from '@condo/domains/organization/components/OrganizationRequired'
@@ -18,29 +19,7 @@ const CreatePropertyPage: PageComponentType = () => {
     const intl = useIntl()
     const PageTitleMsg = intl.formatMessage({ id: 'pages.condo.property.index.CreatePropertyTitle' })
 
-    return (
-        <>
-            <Head>
-                <title>{PageTitleMsg}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <Row gutter={PROPERTY_CREATE_PAGE_GUTTER}>
-                        <Col span={24}>
-                            <Typography.Title level={1} style={PROPERTY_CREATE_PAGE_TITLE_STYLE}>
-                                {PageTitleMsg}
-                            </Typography.Title>
-                        </Col>
-                        <Col span={24}>
-                            <Tour.Provider>
-                                <PropertyForm/>
-                            </Tour.Provider>
-                        </Col>
-                    </Row>
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage/>
 }
 
 CreatePropertyPage.requiredAccess = OrganizationRequired

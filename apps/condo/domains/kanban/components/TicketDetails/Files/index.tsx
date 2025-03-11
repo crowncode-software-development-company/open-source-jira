@@ -86,12 +86,17 @@ const ProjectBoardTicketDetailsFiles = ({ ticket, files, refetchTicketFiles }) =
     const { getSuccessfulChangeNotification } = useNotificationMessages()
     const { downloadFile } = useDownloadFileFromServer()
 
-    const uploadFiles = useMemo(() => files.map(({ file }) => ({
-        uid: file.id,
-        name: file.originalFilename,
-        status: 'done' as UploadFileStatus,
-        url: file.publicUrl,
-    })), [files])
+    const uploadFiles = useMemo(() => files.map(({ file }) => {
+        const originalUrl = file.publicUrl
+        const newUrl = originalUrl.replace('https://condo.d.doma.ai', '')
+
+        return {
+            uid: file.id,
+            name: file.originalFilename,
+            status: 'done' as UploadFileStatus,
+            url: newUrl,
+        }
+    }), [files])
 
     const update = TicketFile.useUpdate({})
     const handleDeleteFile = () => {

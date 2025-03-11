@@ -10,12 +10,11 @@ export const useTicketStatuses = (organization, ticketStatusesData) => {
         const keys = Object.keys(statusTransitions)
         
         const orderedStatusIds = getOrderedStatuses(statusTransitions, keys[1])
-        console.log(orderedStatusIds)
-        
+
         const statuses = orderedStatusIds
             .map(statusId => {
                 const status = ticketStatusesData.statuses.find(s => s.id === statusId)
-                if (status) {
+                if (status && status.type !== 'closed') {
                     return {
                         [status.name]: { 
                             id: status.id,
@@ -30,10 +29,6 @@ export const useTicketStatuses = (organization, ticketStatusesData) => {
             })
             .filter(Boolean) 
             .reduce((acc, curr) => Object.assign(acc, curr), {})
-    
-        console.log(statuses)
-            
-
         return { statuses }
     }, [organization, ticketStatusesData])
 }

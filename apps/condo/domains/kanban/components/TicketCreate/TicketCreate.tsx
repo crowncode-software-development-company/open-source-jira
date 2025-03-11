@@ -89,7 +89,6 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
     [query['create-modal']])
 
     const initialValues = {
-        assignee: user.id,
         deadline: dayjs().add(7, 'day'),
         details: ' ',
         priority: TicketPriority.MEDIUM,
@@ -97,10 +96,8 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
 
     const validations = {
         title: [requiredValidator, minLengthValidator(10), maxLengthValidator(70)],
-        description: [maxLengthValidator(1000)],
+        description: [maxLengthValidator(3000)],
         type: [requiredValidator],
-        assignee: [requiredValidator],
-        executor: [requiredValidator],
     }
 
     const createTicketAction = Ticket.useCreate({
@@ -119,8 +116,8 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
             await createTicketAction({
                 ...values,
                 property: { connect: { id: randomPropertyId } },
-                assignee: { connect: { id: values.assignee } },
-                executor: { connect: { id: values.executor } },
+                ...(values.assignee && { assignee: { connect: { id: values.assignee } } }),
+                ...(values.executor && { executor: { connect: { id: values.executor } } }),
                 organization: { connect: { id: organization.id } },
             })
             notification.success({ message: SuccessNotification })
@@ -195,29 +192,25 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={AssigneeTitle} name='assignee' helpText={AssigneeHelp} rules={validations.assignee}>
+                <CustomFormItem label={AssigneeTitle} name='assignee' helpText={AssigneeHelp}>
                     <Select
                         placeholder={SelectTitle}
-                        withClearValue={false}
                         value={form.getFieldValue('assignee')}
                         onChange={(value) => form.setFieldsValue({ assignee: value })}
-                        name='assignee'
                         options={usersOptions}
                         renderOption={({ value: userId }) => renderUser(getUserById(userId))}
-                        renderValue={({ value: userId }) => renderUser(getUserById(userId))}
+                        renderValue={({ value: userId, removeOptionValue }) => renderUser(getUserById(userId), removeOptionValue)}
                     />
                 </CustomFormItem>
 
-                <CustomFormItem label={ExecutorTitle} name='executor' helpText={ExecutorHelp} rules={validations.executor}>
+                <CustomFormItem label={ExecutorTitle} name='executor' helpText={ExecutorHelp}>
                     <Select
                         placeholder={SelectTitle}
-                        withClearValue={false}
                         value={form.getFieldValue('executor')}
                         onChange={(value) => form.setFieldsValue({ executor: value })}
-                        name='executor'
                         options={usersOptions}
                         renderOption={({ value: userId }) => renderUser(getUserById(userId))}
-                        renderValue={({ value: userId }) => renderUser(getUserById(userId))}
+                        renderValue={({ value: userId, removeOptionValue }) => renderUser(getUserById(userId), removeOptionValue)}
                     />
                 </CustomFormItem>
 
@@ -256,9 +249,9 @@ export const renderPriority = ({ value: priority }) => (
     </SelectItem>
 )
 
-export const renderUser = (user) => {
+export const renderUser = (user, removeOptionValue?) => {
     return (
-        <SelectItem key={user.id}>
+        <SelectItem key={user.id} onClick={() => removeOptionValue?.()}>
             <Avatar size={20} name={user.name}/>
             <SelectItemLabel>{user.name}</SelectItemLabel>
         </SelectItem>

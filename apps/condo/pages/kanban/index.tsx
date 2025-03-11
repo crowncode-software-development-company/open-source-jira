@@ -53,7 +53,7 @@ export const KanbanPageContent = ({ tickets, refetchAllTickets }) => {
                 <ProjectTicketSearch/>
             </Modal>
 
-            <Modal zIndex={100} width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
+            <Modal zIndex={100} width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ minWidth: 600, top: 20 }} closable={false} transitionName=''>
                 <ProjectBoardTicketDetails handleCloseModals = {handleCloseModals} refetchTicketsBoard={refetchAllTickets}/>
             </Modal>
             

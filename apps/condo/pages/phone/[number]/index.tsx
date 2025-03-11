@@ -25,6 +25,7 @@ import { useOrganization } from '@open-condo/next/organization'
 import { ActionBar, Button, Carousel, Space, Typography } from '@open-condo/ui'
 
 import { Button as DeprecatedButton } from '@condo/domains/common/components/Button'
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper, useLayoutContext } from '@condo/domains/common/components/containers/BaseLayout'
 import { BuildingIcon } from '@condo/domains/common/components/icons/BuildingIcon'
 import { PlusIcon } from '@condo/domains/common/components/icons/PlusIcon'
@@ -948,13 +949,7 @@ const ClientCardPage: PageComponentType = () => {
     const organizationQuery = { organization: { id: organizationId } }
     const ticketsQuery = { ...organizationQuery, ...ticketFilterQuery, property: { deletedAt: null } }
 
-    return (
-        <ClientCardPageContentWrapper
-            organizationQuery={organizationQuery}
-            ticketsQuery={ticketsQuery}
-            canManageContacts={canManageContacts}
-        />
-    )
+    return <AccessDeniedPage/>
 }
 //#endregion
 

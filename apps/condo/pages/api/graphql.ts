@@ -4,7 +4,6 @@ import getConfig from 'next/config'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const {
-    publicRuntimeConfig: { serverUrl },
     serverRuntimeConfig: { proxyName },
 } = getConfig()
 

@@ -8,6 +8,7 @@ import { useOrganization } from '@open-condo/next/organization'
 import { TabItem } from '@open-condo/ui'
 
 import { AcquiringIntegrationContext } from '@condo/domains/acquiring/utils/clientSchema'
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageHeader, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { TablePageContent } from '@condo/domains/common/components/containers/BaseLayout/BaseLayout'
 import { hasFeature } from '@condo/domains/common/components/containers/FeatureFlag'
@@ -111,23 +112,7 @@ const SettingsPage: PageComponentType = () => {
         <Typography.Title style={TITLE_STYLES}>{PageTitle}</Typography.Title>
     ), [PageTitle])
 
-    return (
-        <>
-            <Head>
-                <title>
-                    {PageTitle}
-                </title>
-            </Head>
-            <PageWrapper>
-                <OrganizationRequired>
-                    <PageHeader title={titleContent}/>
-                    <TablePageContent>
-                        <SettingsPageContent settingsTabs={settingsTabs} availableTabs={availableTabs}/>
-                    </TablePageContent>
-                </OrganizationRequired>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage/>
 }
 
 SettingsPage.requiredAccess = SettingsReadPermissionRequired

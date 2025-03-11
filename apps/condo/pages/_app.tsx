@@ -205,30 +205,6 @@ const MenuItems: React.FC = () => {
                 },
             ].filter(checkItemAccess),
         },
-        // {
-        //     key: PROPERTIES_CATEGORY,
-        //     items: [
-        //         {
-        //             id: 'menuitem-property',
-        //             path: 'property',
-        //             icon: AllIcons['Building'],
-        //             label: 'global.section.properties',
-        //             access: hasAccessToProperties,
-        //         },
-        //     ].filter(checkItemAccess),
-        // },
-        // {
-        //     key: RESIDENTS_CATEGORY,
-        //     items: [
-        //         {
-        //             id: 'menuitem-contact',
-        //             path: 'contact',
-        //             icon: AllIcons['Contacts'],
-        //             label: 'global.section.contacts',
-        //             access: isManagingCompany && hasAccessToContacts,
-        //         },
-        //     ].filter(checkItemAccess),
-        // },
         {
             key: EMPLOYEES_CATEGORY,
             items: [
@@ -273,23 +249,6 @@ const MenuItems: React.FC = () => {
                             excludePaths={item.excludePaths}
                         />
                     ))}
-                    {get(appsByCategories, category.key, []).map((app) => {
-                        // not a ReDoS issue: running on end user browser
-                        // nosemgrep: javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
-                        const miniAppsPattern = new RegExp(`/miniapps/${app.id}/.+`)
-                        return <MenuItem
-                            id={`menu-item-app-${app.id}`}
-                            key={`menu-item-app-${app.id}`}
-                            path={`/miniapps/${app.id}`}
-                            icon={get(AllIcons, app.icon, AllIcons['QuestionCircle'])}
-                            label={app.name}
-                            labelRaw
-                            disabled={disabled}
-                            isCollapsed={isCollapsed}
-                            toolTipDecorator={disabled ? wrapElementIntoNoOrganizationToolTip : null}
-                            excludePaths={[miniAppsPattern]}
-                        />
-                    })}
                 </Fragment>
             ))}
         </div>

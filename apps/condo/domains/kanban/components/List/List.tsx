@@ -15,7 +15,7 @@ const List = styled.div`
   flex-direction: column;
   margin: 0;
   min-height: 400px;
-  width: calc((100% / 6) - (5px * (6 - 1) / 6));
+  width: calc((100% / 5) - (5px * (5 - 1) / 5));
   flex: 0 0 auto;
   border-radius: 3px;
   background: ${color.backgroundLightest};

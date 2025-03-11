@@ -28,6 +28,12 @@ export const DeferredUntilModal = ({ isOpen, onCancel, onOk, value, setValue }) 
     const intl = useIntl()
     const DateTextTitle = intl.formatMessage({ id: 'kanban.create.deferUntil.title' })
     
+    const disabledDate = (date) => {
+        const today = dayjs()
+        const maxDate = today.add(364, 'day')
+        return date < today || date > maxDate
+    }
+    
     return (
         <Modal open={isOpen} closable={true} transitionName='' onCancel={onCancel} onOk={onOk}>
             <DateBody>
@@ -36,7 +42,7 @@ export const DeferredUntilModal = ({ isOpen, onCancel, onOk, value, setValue }) 
                     style={INPUT_STYLE}
                     value={value}
                     onChange={(newDate) => setValue(newDate)}
-                    disabledDate={(date) => date < dayjs()}
+                    disabledDate={(date) => disabledDate(date)}
                     clearIcon={false}
                     suffixIcon={<DownOutlined />}
                     format='DD.MM.YYYY'

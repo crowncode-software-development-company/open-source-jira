@@ -11,6 +11,7 @@ import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
 import { ActionBar, Button } from '@open-condo/ui'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import {
     DeleteButtonWithConfirmModal,
@@ -63,75 +64,7 @@ const TheContactRolePage: PageComponentType = () => {
         return <Loader/>
     }
 
-    return (
-        <>
-            <Head>
-                <title>{contactRoleTitleMessage}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <Row gutter={BIG_VERTICAL_GUTTER}>
-                        <Col span={24}>
-                            <Typography.Title>{contactRoleTitleMessage}</Typography.Title>
-                        </Col>
-                        {canManageContactRoles && !isCustomRole && (<Col>
-                            <Row gutter={BIG_VERTICAL_GUTTER}>
-                                <Col span={24}>
-                                    <Alert
-                                        icon={<ExclamationCircleOutlined/>}
-                                        message={<Typography.Text strong>{ReadOnlyRoleWarningTitle}</Typography.Text>}
-                                        description={ReadOnlyRoleWarningMessage}
-                                        type='warning'
-                                        showIcon
-                                    />
-                                </Col>
-                            </Row>
-                        </Col>)
-                        }
-                        <Col span={24}>
-                            <Row gutter={MEDIUM_VERTICAL_GUTTER}>
-                                <Col span={24}>
-                                    <PageFieldRow title={NameMessage}>
-                                        {contactRoleName}
-                                    </PageFieldRow>
-                                </Col>
-                                <Col span={24}>
-                                    <PageFieldRow title={TypeMessage}>
-                                        {isCustomRole ? CustomType : DefaultType}
-                                    </PageFieldRow>
-                                </Col>
-                            </Row>
-                        </Col>
-                        {
-                            canManageContactRoles && isCustomRole && (
-                                <Col span={24}>
-                                    <ActionBar
-                                        actions={[
-                                            <Link key='upload' href={`/settings/contactRole/${contactRoleId}/update`}>
-                                                <Button
-                                                    type='primary'
-                                                >
-                                                    {UpdateMessage}
-                                                </Button>
-                                            </Link>,
-                                            <DeleteButtonWithConfirmModal
-                                                key='delete'
-                                                title={ConfirmDeleteTitle}
-                                                message={ConfirmDeleteMessage}
-                                                okButtonLabel={DeleteMessage}
-                                                action={handleDeleteButtonClick}
-                                                buttonContent={DeleteMessage}
-                                            />,
-                                        ]}
-                                    />
-                                </Col>
-                            )
-                        }
-                    </Row>
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage />
 }
 
 TheContactRolePage.requiredAccess = SettingsReadPermissionRequired

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
 
-import { ChevronDown, PlusCircle } from '@open-condo/icons'
+import { ChevronDown, Close, PlusCircle } from '@open-condo/icons'
 
 import Dropdown from './Dropdown'
 import {
@@ -116,7 +116,7 @@ const Select = ({
     }
 
     const removeOptionValue = optionValue => {
-        handleChange(value.filter(val => val !== optionValue))
+        handleChange(null)
     }
 
     const handleFocusedSelectKeydown = event => {
@@ -151,7 +151,7 @@ const Select = ({
                 {isValueEmpty && <Placeholder>{placeholder}</Placeholder>}
 
                 {!isValueEmpty && !isMulti && propsRenderValue
-                    ? propsRenderValue({ value })
+                    ? propsRenderValue({ value,  removeOptionValue: () => removeOptionValue(value) })
                     : getOptionLabel(value)}
 
                 {!isValueEmpty && isMulti && (

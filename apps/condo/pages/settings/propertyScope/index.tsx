@@ -3,6 +3,7 @@ import React from 'react'
 
 import { useIntl } from '@open-condo/next/intl'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { PageComponentType } from '@condo/domains/common/types'
 import { PropertyScopeSettingsContent } from '@condo/domains/scope/components/PropertyScopeSettingsContent'
@@ -13,18 +14,7 @@ const PropertyScopesPage: PageComponentType = () => {
     const intl = useIntl()
     const PageTitle = intl.formatMessage({ id: 'pages.condo.settings.propertyScope.title' })
 
-    return (
-        <>
-            <Head>
-                <title>{PageTitle}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <PropertyScopeSettingsContent />
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage/>
 }
 
 PropertyScopesPage.requiredAccess = SettingsReadPermissionRequired
