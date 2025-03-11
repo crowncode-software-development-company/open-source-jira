@@ -7,7 +7,7 @@ import identity from 'lodash/identity'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import { useRouter } from 'next/router'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
 
 import { useCachePersistor } from '@open-condo/apollo'
 import { useAuth } from '@open-condo/next/auth'
@@ -25,13 +25,12 @@ import { getFilteredValue } from '@condo/domains/common/utils/helpers'
 import { getSorterMap, parseQuery } from '@condo/domains/common/utils/tables.utils'
 import { useAutoRefetchTickets } from '@condo/domains/ticket/contexts/AutoRefetchTicketsContext'
 import {
-    FavoriteTicketIndicator,
     getClassifierRender, getCommentsIndicatorRender,
     getStatusRender,
     getTicketDetailsRender,
     getTicketNumberRender,
-    getTicketUserNameRender,
     getUnitRender,
+    getPriorityRender,
 } from '@condo/domains/ticket/utils/clientSchema/Renders'
 import { IFilters } from '@condo/domains/ticket/utils/helpers'
 
@@ -39,15 +38,16 @@ import { IFilters } from '@condo/domains/ticket/utils/helpers'
 const COLUMNS_WIDTH = {
     commentsIndicator: '0%',
     number: '10%',
-    createdAt: '15%',
-    status: '15%',
+    createdAt: '14%',
+    status: '12%',
+    priority: '12%',
+    details: '21%', 
+    executor: '16%', 
+    assignee: '16%',
     address: '14%',
     unitName: '8%',
-    details: '25%',
     categoryClassifier: '12%',
     clientName: '10%',
-    executor: '17%',
-    assignee: '17%',
 }
 
 export function useTableColumns<T> (
@@ -61,6 +61,7 @@ export function useTableColumns<T> (
     const NumberMessage = intl.formatMessage({ id: 'ticketsTable.Number' })
     const DateMessage = intl.formatMessage({ id: 'Date' })
     const StatusMessage = intl.formatMessage({ id: 'Status' })
+    const PriorityMessage = intl.formatMessage({ id: 'kanban.ticket.priority.title' })
     const ClientNameMessage = intl.formatMessage({ id: 'Contact' })
     const DescriptionMessage = intl.formatMessage({ id: 'Title' })
     const AddressMessage = intl.formatMessage({ id: 'field.Address' })
@@ -99,6 +100,7 @@ export function useTableColumns<T> (
             return getAddressRender(propertyData, DeletedMessage, search)
         },
         [DeletedMessage, search])
+        
 
     const renderExecutor = useCallback(
         (executor) => getTableCellRenderer({ search })(get(executor, ['name'])),
@@ -147,14 +149,6 @@ export function useTableColumns<T> (
         }
     }, [isRefetchTicketsFeatureEnabled, refetch, refetchInterval, setIsRefetching])
 
-    const renderIsFavoriteTicket = useCallback((ticket) => {
-        return (
-            <FavoriteTicketIndicator
-                ticketId={ticket.id}
-            />
-        )
-    }, [])
-
     return useMemo(() => ({
         columns: [
             {
@@ -177,7 +171,7 @@ export function useTableColumns<T> (
                 filterDropdown: getFilterDropdownByKey(filterMetas, 'number'),
                 filterIcon: getFilterIcon,
                 render: getTicketNumberRender(intl, search),
-                align: 'left',
+                align: 'center',
                 className: 'number-column',
             },
             {
@@ -203,6 +197,18 @@ export function useTableColumns<T> (
                 width: COLUMNS_WIDTH.status,
                 filterDropdown: renderStatusFilterDropdown,
                 filterIcon: getFilterIcon,
+            },
+            {
+                title: PriorityMessage,
+                sortOrder: get(sorterMap, 'priority'),
+                filteredValue: getFilteredValue<IFilters>(filters, 'priority'),
+                render: getPriorityRender(intl, search),
+                dataIndex: 'priority',
+                key: 'priority',
+                sorter: true,
+                width: COLUMNS_WIDTH.priority,
+                filterIcon: getFilterIcon,
+                align: 'center',
             },
             {
                 title: DescriptionMessage,

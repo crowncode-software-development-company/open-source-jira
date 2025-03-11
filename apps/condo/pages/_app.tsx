@@ -206,18 +206,6 @@ const MenuItems: React.FC = () => {
             ].filter(checkItemAccess),
         },
         {
-            key: EMPLOYEES_CATEGORY,
-            items: [
-                {
-                    id: 'menuitem-employee',
-                    path: 'employee',
-                    icon: AllIcons['Employee'],
-                    label: 'global.section.employees',
-                    access: hasAccessToEmployees,
-                },
-            ].filter(checkItemAccess),
-        },
-        {
             key: KANBAN_CATEGORY,
             items: [
                 {
@@ -229,7 +217,18 @@ const MenuItems: React.FC = () => {
                 },
             ].filter(checkItemAccess),
         },
-        
+        {
+            key: EMPLOYEES_CATEGORY,
+            items: [
+                {
+                    id: 'menuitem-employee',
+                    path: 'employee',
+                    icon: AllIcons['Employee'],
+                    label: 'global.section.employees',
+                    access: hasAccessToEmployees,
+                },
+            ].filter(checkItemAccess),
+        },
     ]), [hasAccessToAnalytics, isManagingCompany, hasAccessToTickets, hasAccessToIncidents, hasAccessToNewsItems, hasAccessToProperties, hasAccessToContacts, hasAccessToEmployees, isMarketplaceEnabled, hasAccessToMarketplace, isSPPOrg, hasAccessToBilling, anyReceiptsLoaded, sppBillingId, hasAccessToMeters, hasAccessToServices, connectedAppsIds, hasAccessToSettings])
 
     return (

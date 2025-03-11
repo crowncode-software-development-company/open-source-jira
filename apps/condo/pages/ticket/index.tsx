@@ -1,8 +1,6 @@
 /** @jsx jsx */
 import {
-    useGetCallRecordFragmentExistenceQuery,
     useGetTicketExistenceQuery,
-    useGetTicketsCountersByStatusQuery,
     useGetTicketsCountLazyQuery,
     useGetTicketsCountQuery,
     useGetTicketsQuery,
@@ -14,25 +12,22 @@ import { Col, Modal, Row, RowProps } from 'antd'
 import get from 'lodash/get'
 import isNull from 'lodash/isNull'
 import isNumber from 'lodash/isNumber'
-import isString from 'lodash/isString'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import Head from 'next/head'
-import Link from 'next/link'
-import { NextRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { TableComponents } from 'rc-table/lib/interface'
-import React, { CSSProperties, Key, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useCachePersistor } from '@open-condo/apollo'
-import { useDeepCompareEffect } from '@open-condo/codegen/utils/useDeepCompareEffect'
 import { useFeatureFlags } from '@open-condo/featureflags/FeatureFlagsContext'
-import { Phone } from '@open-condo/icons'
-import { useAuth } from '@open-condo/next/auth'
+import { PlusCircle, Search } from '@open-condo/icons'
 import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
 import { Typography, RadioGroup, Radio, Space } from '@open-condo/ui'
 // TODO(DOMA-4844): Replace with @open-condo/ui/colors
+import { colors } from '@open-condo/ui/dist/colors'
 
+import Input from '@condo/domains/common/components/antd/Input'
 import { PageHeader, PageWrapper, useLayoutContext } from '@condo/domains/common/components/containers/BaseLayout'
 import { TablePageContent } from '@condo/domains/common/components/containers/BaseLayout/BaseLayout'
 import LoadingOrErrorPage from '@condo/domains/common/components/containers/LoadingOrErrorPage'
@@ -40,6 +35,7 @@ import { EmptyListContent } from '@condo/domains/common/components/EmptyListCont
 import { ImportWrapper } from '@condo/domains/common/components/Import/Index'
 import { Loader } from '@condo/domains/common/components/Loader'
 import { DEFAULT_PAGE_SIZE, Table, TableRecord } from '@condo/domains/common/components/Table/Index'
+import { TableFiltersContainer } from '@condo/domains/common/components/TableFiltersContainer'
 import { useTracking } from '@condo/domains/common/components/TrackingContext'
 import { useWindowTitleContext, WindowTitleContextProvider } from '@condo/domains/common/components/WindowTitleContext'
 import { EMOJI } from '@condo/domains/common/constants/emoji'
@@ -52,13 +48,15 @@ import {
 } from '@condo/domains/common/hooks/useMultipleFiltersModal'
 import { usePreviousSortAndFilters } from '@condo/domains/common/hooks/usePreviousQueryParams'
 import { useQueryMappers } from '@condo/domains/common/hooks/useQueryMappers'
+import { useSearch } from '@condo/domains/common/hooks/useSearch'
 import { PageComponentType } from '@condo/domains/common/types'
 import { getFiltersQueryData } from '@condo/domains/common/utils/filters.utils'
 import { updateQuery } from '@condo/domains/common/utils/helpers'
 import { getPageIndexFromOffset, parseQuery } from '@condo/domains/common/utils/tables.utils'
+import ProjectTicketCreate from '@condo/domains/kanban/components/TicketCreate/TicketCreate'
 import ProjectBoardTicketDetails from '@condo/domains/kanban/components/TicketDetails'
+import Button from '@condo/domains/kanban/ui/Button'
 import { TicketReadPermissionRequired } from '@condo/domains/ticket/components/PageAccess'
-import { TicketStatusFilter } from '@condo/domains/ticket/components/TicketStatusFilter/TicketStatusFilter'
 import {
     AutoRefetchTicketsContextProvider,
     useAutoRefetchTickets,
@@ -72,6 +70,7 @@ import { useFiltersTooltipData } from '@condo/domains/ticket/hooks/useFiltersToo
 import { useImporterFunctions } from '@condo/domains/ticket/hooks/useImporterFunctions'
 import { useTableColumns } from '@condo/domains/ticket/hooks/useTableColumns'
 import { useTicketTableFilters } from '@condo/domains/ticket/hooks/useTicketTableFilters'
+import { IFilters } from '@condo/domains/ticket/utils/helpers'
 
 
 type TicketType = 'all' | 'own' | 'favorite'
@@ -113,18 +112,6 @@ const StyledTable = styled(Table)`
   }
 `
 
-const getInitialSelectedTicketKeys = (router: NextRouter) => {
-    if ('selectedTicketIds' in router.query && isString(router.query.selectedTicketIds)) {
-        try {
-            return JSON.parse(router.query.selectedTicketIds as string)
-        } catch (error) {
-            console.warn('Failed to parse property value "selectedTicketIds"', error)
-            return []
-        }
-    }
-    return []
-}
-
 const TicketTable = ({
     sortBy,
     total,
@@ -138,8 +125,6 @@ const TicketTable = ({
     const router = useRouter()
 
     const tooltipData = useFiltersTooltipData()
-
-    const [selectedTicketKeys, setSelectedTicketKeys] = useState<Key[]>(() => getInitialSelectedTicketKeys(router))
 
     const handleRowAction = useCallback((record) => {
         return {
@@ -164,11 +149,6 @@ const TicketTable = ({
             ),
         },
     }), [tooltipData, filters, tickets, total])
-
-    useDeepCompareEffect(() => {
-        if (total === null) return
-        setSelectedTicketKeys([])
-    }, [filters, sortBy])
 
     return (
         <Row gutter={[0, 40]}>
@@ -198,10 +178,11 @@ const TicketsTableContainer = ({
     playSoundOnNewTickets,
 }) => {
     const intl = useIntl()
-    const [isTicketOpen, setTicketOpen] = useState(false)
+    const [isTicketOpen, setIsTicketOpen] = useState(false)
+    const [isTicketCreateOpen, setIsTicketCreateOpen] = useState(false)
     const router = useRouter()
     const { filters, offset } = useMemo(() => parseQuery(router.query), [router.query])
-
+    const { organization } = useOrganization()
     const [isRefetching, setIsRefetching] = useState(false)
     const ticketsCountRef = useRef(null)
     const audio = useAudio()
@@ -271,9 +252,11 @@ const TicketsTableContainer = ({
     } = useTableColumns(filterMetas, tickets, refetchTickets, isRefetching, setIsRefetching)
 
     useEffect(() => {
-        if (router.query.ticketId) {  
-            setTicketOpen(true)
-        } else null
+        if (router.query.ticketId && !isTicketOpen) {  
+            setIsTicketOpen(true)
+        }  else if (router.query['create-modal']) {
+            setIsTicketCreateOpen(true)
+        }
     }, [router.query]) 
 
     useEffect(() => {
@@ -283,15 +266,25 @@ const TicketsTableContainer = ({
     }, [loadNewTicketCount, playSoundOnNewTickets])
 
     const handleCloseModals = async () => {
-        setTicketOpen(false)
-        const currentUrl = new URL(window.location.href)
-        currentUrl.searchParams.delete('ticketId')
-        router.push(currentUrl.toString(), undefined, { shallow: true })
+        setIsTicketCreateOpen(false)
+        setIsTicketOpen(false)
+        const newQuery = router.query
+        delete newQuery.ticketId
+        delete newQuery['create-modal'] 
+
+        await router.push({
+            pathname: router.pathname,
+            query: newQuery,
+        }, undefined, { shallow: true })
     }
-    const loading = (isTicketsFetching || columnsLoading || baseQueryLoading) && !isRefetching
+
+    const loading = (isTicketsFetching || columnsLoading || baseQueryLoading) && !isRefetching 
 
     return (
         <>
+            <Modal zIndex={100} width={1040} open={isTicketCreateOpen} onCancel={handleCloseModals} closable={false} footer={null} style={{ top: 10, padding: 5 }} transitionName=''>
+                <ProjectTicketCreate closeModal={handleCloseModals} refetchTicketsBoard={refetchTickets}/>
+            </Modal>
             <Modal zIndex={100} width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
                 <ProjectBoardTicketDetails handleCloseModals = {handleCloseModals} refetchTicketsBoard={refetchTickets}/>
             </Modal>
@@ -309,13 +302,14 @@ const TicketsTableContainer = ({
     )
 }
 
-const SORTABLE_PROPERTIES = ['number', 'status', 'order', 'details', 'property', 'unitName', 'assignee', 'executor', 'createdAt', 'clientName']
+const SORTABLE_PROPERTIES = ['number', 'status', 'order', 'priority', 'details', 'property', 'unitName', 'assignee', 'executor', 'createdAt', 'clientName']
 const TICKETS_DEFAULT_SORT_BY = ['order_ASC', 'createdAt_DESC']
-const SMALL_HORIZONTAL_GUTTER: RowProps['gutter'] = [10, 0]
+const SMALL_HORIZONTAL_GUTTER: RowProps['gutter'] = [10, 10]
 const TICKET_STATUS_FILTER_CONTAINER_ROW_STYLES: CSSProperties = {
     flexWrap: 'nowrap',
     overflowX: 'auto',
     paddingBottom: '20px',
+    marginBottom:'10px',
 }
 const ALL_TICKETS_COUNT_CONTAINER_STYLES: CSSProperties = {
     display: 'flex',
@@ -326,15 +320,8 @@ const LOADER_STYLES = { display: 'flex', alignItems: 'center', justifyContent: '
 
 const TicketStatusFilterContainer = ({ searchTicketsQuery, searchTicketsWithoutStatusQuery }) => {
     const intl = useIntl()
-    const OpenedTicketsMessage = intl.formatMessage({ id: 'ticket.status.OPEN.many' })
-    const InProgressTicketsMessage = intl.formatMessage({ id: 'ticket.status.IN_PROGRESS.many' })
-    const CanceledTicketsMessage = intl.formatMessage({ id: 'ticket.status.DECLINED.many' })
-    const CompletedTicketsMessage = intl.formatMessage({ id: 'ticket.status.COMPLETED.many' })
-    const DeferredTicketsMessage = intl.formatMessage({ id: 'ticket.status.DEFERRED.many' })
-    const ClosedTicketsMessage = intl.formatMessage({ id: 'ticket.status.CLOSED.many' })
-
-    const { persistor } = useCachePersistor()
-
+    const CreateTicketTitle = intl.formatMessage({ id: 'CreateTicket' })
+    const router = useRouter()
     const {
         data: allTicketsCountData,
         loading: allTicketsCountLoading,
@@ -345,16 +332,13 @@ const TicketStatusFilterContainer = ({ searchTicketsQuery, searchTicketsWithoutS
     })
     const allTicketsCount = useMemo(() => allTicketsCountData?.meta?.count, [allTicketsCountData?.meta?.count])
 
-    const {
-        data: ticketsCountByStatusesData,
-        loading: ticketsCountByStatusesLoading,
-    } = useGetTicketsCountersByStatusQuery({
-        variables: {
-            whereWithoutStatuses: searchTicketsWithoutStatusQuery,
-        },
-    })
+    const loading = allTicketsCountLoading 
 
-    const loading = allTicketsCountLoading || ticketsCountByStatusesLoading
+    const handleCreateModalOpen = async () => {
+        const currentUrl = new URL(window.location.href)
+        currentUrl.searchParams.set('create-modal', 'true')
+        await router.push(currentUrl.toString(), undefined, { shallow: true })
+    }
 
     return loading ? <Loader style={LOADER_STYLES}/> : (
         <Row gutter={SMALL_HORIZONTAL_GUTTER} style={TICKET_STATUS_FILTER_CONTAINER_ROW_STYLES}>
@@ -367,49 +351,40 @@ const TicketStatusFilterContainer = ({ searchTicketsQuery, searchTicketsWithoutS
                     }
                 </Typography.Text>
             </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={OpenedTicketsMessage}
-                    type={TicketStatusTypeType.NewOrReopened}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={InProgressTicketsMessage}
-                    type={TicketStatusTypeType.Processing}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={CompletedTicketsMessage}
-                    type={TicketStatusTypeType.Completed}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={DeferredTicketsMessage}
-                    type={TicketStatusTypeType.Deferred}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={CanceledTicketsMessage}
-                    type={TicketStatusTypeType.Canceled}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={ClosedTicketsMessage}
-                    type={TicketStatusTypeType.Closed}
-                    count={ticketsCountByStatusesData}
-                />
+            <Col style={ALL_TICKETS_COUNT_CONTAINER_STYLES}>
+                <Button icon={<PlusCircle size='small'/>} onClick = {handleCreateModalOpen}>{CreateTicketTitle}</Button>
             </Col>
         </Row>
+    )
+}
+
+const FILTERS_CONTAINER_ROW_GUTTER: RowProps['gutter'] = [20, 20]
+
+
+const FiltersContainer = () => {
+    const intl = useIntl()
+    const SearchPlaceholder = intl.formatMessage({ id: 'filters.FullSearch' })
+    const [search, changeSearch] = useSearch<IFilters>()
+    const handleSearchChange = useCallback((e) => {
+        changeSearch(e.target.value)
+    }, [changeSearch])
+
+    return (
+        <>
+            <TableFiltersContainer>
+                <Row gutter={FILTERS_CONTAINER_ROW_GUTTER} align='middle'>
+                    <Col span={24}>
+                        <Input
+                            placeholder={SearchPlaceholder}
+                            onChange={handleSearchChange}
+                            value={search}
+                            allowClear
+                            suffix={<Search size='medium' color={colors.gray[7]}/>}
+                        />
+                    </Col>
+                </Row>
+            </TableFiltersContainer>
+        </>
     )
 }
 
@@ -501,6 +476,9 @@ export const TicketsPageContent = ({
         <>
             <Row gutter={LARGE_VERTICAL_ROW_GUTTER}>
                 <Col span={24}>
+                    <FiltersContainer />
+                </Col>
+                <Col span={24}>
                     <TicketStatusFilterContainer
                         searchTicketsQuery={searchTicketsQuery}
                         searchTicketsWithoutStatusQuery={searchTicketsWithoutStatusQuery}
@@ -524,8 +502,6 @@ export const TicketTypeFilterSwitch = ({ ticketFilterQuery }) => {
     const intl = useIntl()
     const AllTicketsMessage = intl.formatMessage({ id: 'pages.condo.ticket.filters.TicketType.all' })
     const OwnTicketsMessage = intl.formatMessage({ id: 'pages.condo.ticket.filters.TicketType.own' })
-
-    const { user } = useAuth()
     const router = useRouter()
     const { filters } = useMemo(() => parseQuery(router.query), [router.query])
 
@@ -553,23 +529,10 @@ export const TicketTypeFilterSwitch = ({ ticketFilterQuery }) => {
 
     // NOTE: we have index "ticket_org_assign_exec_deletedAt" for this filter
     // If you change filter condition, you need to change index
-    const ownTicketsQuery = { OR: [{ executor: { id: user.id }, assignee: { id: user.id } }] }
-    const { data: ownTicketsCountData, refetch: refetchOwnTickets } = useGetTicketsCountQuery({
-        variables: {
-            where: {
-                ...ticketFilterQuery,
-                ...ownTicketsQuery,
-            },
-        },
-        fetchPolicy: 'network-only',
-    })
-    const ownTicketsCount = useMemo(() => ownTicketsCountData?.meta?.count, [ownTicketsCountData?.meta?.count])
-
     const { isRefetchTicketsFeatureEnabled, refetchInterval } = useAutoRefetchTickets()
     const refetch = useCallback(async () => {
-        await refetchOwnTickets()
         await refetchAllTickets()
-    }, [refetchAllTickets, refetchOwnTickets])
+    }, [refetchAllTickets])
 
     useEffect(() => {
         if (isRefetchTicketsFeatureEnabled) {
@@ -636,10 +599,6 @@ export const TicketTypeFilterSwitch = ({ ticketFilterQuery }) => {
 const TicketsPage: PageComponentType = () => {
     const intl = useIntl()
     const PageTitleMessage = intl.formatMessage({ id: 'pages.condo.ticket.index.PageTitle' })
-    const CallRecordsLogMessage = intl.formatMessage({ id: 'callRecord.index.title' })
-
-    const { persistor } = useCachePersistor()
-
     const { ticketFilterQuery, ticketFilterQueryLoading } = useTicketVisibility()
 
     const userOrganization = useOrganization()
@@ -664,17 +623,6 @@ const TicketsPage: PageComponentType = () => {
     })
     const isTicketsExists = useMemo(() => ticketExistenceData?.tickets?.length > 0,
         [ticketExistenceData?.tickets?.length])
-
-    const {
-        data: callRecordFragmentExistenceData,
-    } = useGetCallRecordFragmentExistenceQuery({
-        variables: {
-            organizationId: userOrganizationId,
-        },
-        skip: !persistor,
-    })
-    const isCallRecordsExists = useMemo(() => callRecordFragmentExistenceData?.callRecordFragments?.length > 0,
-        [callRecordFragmentExistenceData?.callRecordFragments?.length])
 
     return (
         <>
@@ -702,18 +650,6 @@ const TicketsPage: PageComponentType = () => {
                                     </Col>
                                     <Col>
                                         <Space size={20} direction={breakpoints.TABLET_SMALL ? 'horizontal' : 'vertical'}>
-                                            {
-                                                isCallRecordsExists && (
-                                                    <Link href='/callRecord'>
-                                                        <Typography.Link size='large'>
-                                                            <Space size={8}>
-                                                                <Phone size='medium'/>
-                                                                {CallRecordsLogMessage}
-                                                            </Space>
-                                                        </Typography.Link>
-                                                    </Link>
-                                                )
-                                            }
                                             {
                                                 !ticketExistenceLoading && isTicketsExists && (
                                                     <TicketTypeFilterSwitch

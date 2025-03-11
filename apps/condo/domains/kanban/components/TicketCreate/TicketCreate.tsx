@@ -6,13 +6,13 @@ import React, { CSSProperties, useEffect, useMemo, useState } from 'react'
 import { useIntl } from 'react-intl'
 
 import { Close } from '@open-condo/icons'
-import { useAuth } from '@open-condo/next/auth'
 import { useOrganization } from '@open-condo/next/organization'
 
 import { Ticket } from '@condo/domains/ticket/utils/clientSchema'
 
 import { ActionButton, Actions, Divider, HelpText, LabelText, SelectItem, SelectItemLabel, Title, TopActions } from './Styles'
 
+import { useGetTicketsCountQuery } from '../../../../gql'
 import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrErrorPage'
 import DatePicker from '../../../common/components/Pickers/DatePicker'
 import { useValidations } from '../../../common/hooks/useValidations'
@@ -37,7 +37,7 @@ const INPUT_STYLE: CSSProperties = { width: '100%', height: '36px', borderRadius
 const OPEN_STATUS = '6ef3abc4-022f-481b-90fb-8430345ebfc2'
 const DEFAULT_TICKET_SOURCE_CALL_ID = '779d7bb6-b194-4d2c-a967-1f7321b2787f'
 
-const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) => {
+const ProjectTicketCreate = ({ closeModal, refetchTicketsBoard }) => {
     const intl = useIntl()
     const CreateTicketTitle = intl.formatMessage({ id: 'CreateTicket' })
     const CancelTitle = intl.formatMessage({ id: 'Cancel' })
@@ -62,7 +62,6 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
     const [form] = Form.useForm()
     const { query } = useRouter()
     const { organization } = useOrganization()
-    const { user } = useAuth()
     const { requiredValidator, maxLengthValidator, minLengthValidator } = useValidations()
     const { objs: employeesData, loading: employeesLoading, error: employeesError } = OrganizationEmployee.useAllObjects({
         where: {
@@ -100,11 +99,25 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
         type: [requiredValidator],
     }
 
+    const {
+        loading: totalTicketsCountLoading,
+        data: totalTicketsCountData,
+    } = useGetTicketsCountQuery({
+        variables: {
+            where: {
+                organization: { id: organization.id },
+            },
+        },
+        fetchPolicy: 'network-only',
+    })
+    const totalTicketsCount = useMemo(() => totalTicketsCountData?.meta?.count, [totalTicketsCountData?.meta?.count])
+
+
     const createTicketAction = Ticket.useCreate({
         sender: getClientSideSenderInfo(),
         status: { connect: { id: OPEN_STATUS } },
         source: { connect: { id: DEFAULT_TICKET_SOURCE_CALL_ID } },
-        kanbanOrder: ticketsCount * 10000000,
+        kanbanOrder: (totalTicketsCount * 10000) + 100000000,
     })
 
     const { loading: propertyLoading, error: propertyError, objs: properties } = PropertyTable.useObjects({ where: { organization: { id: organization.id } } })
@@ -131,17 +144,17 @@ const ProjectTicketCreate = ({ ticketsCount, closeModal, refetchTicketsBoard }) 
         }
     }
 
-    if (employeesLoading || propertyLoading) { 
+    const loading = employeesLoading || propertyLoading || totalTicketsCountLoading 
+
+    if (loading) { 
         return <LoadingOrErrorPage
-            loading={employeesLoading || propertyLoading}
+            loading={loading}
             error={propertyError || employeesError} />
     }
 
     return (
         <>
             <TopActions>
-                {console.log(properties)
-                }
                 <Title>{CreateTicketTitle}</Title>
                 <Button icon={<Close/>} iconSize={24} variant='empty' onClick={closeModal} />
             </TopActions>

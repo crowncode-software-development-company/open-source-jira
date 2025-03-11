@@ -24,6 +24,7 @@ import { TicketTag } from '@condo/domains/ticket/components/TicketTag'
 import { TICKET_TYPE_TAG_STYLE } from '@condo/domains/ticket/constants/style'
 import { useFavoriteTickets } from '@condo/domains/ticket/contexts/FavoriteTicketsContext'
 
+import { TicketPriorityIcon } from '../../../kanban/ui'
 import {
     getDeadlineType,
     getHumanizeDeadlineDateDifference,
@@ -264,6 +265,16 @@ export const getClassifierRender = (intl, search?: FilterValue) => {
     }
 }
 
+export const getPriorityRender = (intl, search?: FilterValue) => {
+    return function render (priority, record) {
+        return (
+            <Space direction='vertical' size={7}>
+                <TicketPriorityIcon priority={priority} size='medium' />
+            </Space>
+        )
+    }
+}
+
 export const getTicketDetailsRender = (search?: FilterValue) => {
     return function render (details: string, ticket: Ticket) {
         return getTableCellRenderer({ search, extraTitle: details })(details)
@@ -271,11 +282,6 @@ export const getTicketDetailsRender = (search?: FilterValue) => {
 }
 
 export const getStatusRender = (intl, search?: FilterValue) => {
-    const EmergencyMessage = intl.formatMessage({ id: 'Emergency' })
-    const WarrantyMessage = intl.formatMessage({ id: 'Warranty' })
-    const ReturnedMessage = intl.formatMessage({ id: 'Returned' })
-    const PayableMessage = intl.formatMessage({ id: 'Payable' })
-
     return function render (status, record) {
         const { primary: backgroundColor, secondary: color } = status.colors
         const extraProps = { style: { color } }
@@ -288,36 +294,6 @@ export const getStatusRender = (intl, search?: FilterValue) => {
                     status.name && (
                         <TicketTag color={backgroundColor} style={{ fontSize: '12px', fontWeight: 600 }}>
                             {highlightedContent}
-                        </TicketTag>
-                    )
-                }
-                {
-                    record.isEmergency && (
-                        <TicketTag style={TICKET_TYPE_TAG_STYLE.emergency}>
-                            <Typography.Text type='danger'>
-                                {EmergencyMessage}
-                            </Typography.Text>
-                        </TicketTag>
-                    )
-                }
-                {
-                    record.isPayable && (
-                        <TicketTag style={TICKET_TYPE_TAG_STYLE.payable}>
-                            {PayableMessage}
-                        </TicketTag>
-                    )
-                }
-                {
-                    record.isWarranty && (
-                        <TicketTag style={TICKET_TYPE_TAG_STYLE.warranty}>
-                            {WarrantyMessage}
-                        </TicketTag>
-                    )
-                }
-                {
-                    record.statusReopenedCounter > 0 && (
-                        <TicketTag style={TICKET_TYPE_TAG_STYLE.returned}>
-                            {ReturnedMessage} {record.statusReopenedCounter > 1 && `(${record.statusReopenedCounter})`}
                         </TicketTag>
                     )
                 }

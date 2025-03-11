@@ -20,8 +20,8 @@ const withTM = withTMModule([
     '@emotion/styled',
 ])
 
-const serverUrl = process.env.SERVER_URL || 'http://localhost:3000'
-const apolloGraphQLUrl = 'http://localhost:3000/api/graphql'
+const serverUrl = process.env.JIRA_SERVER_URL || 'http://localhost:3000'
+const apolloGraphQLUrl = `${process.env.JIRA_SERVER_URL}/api/graphql`
 const addressServiceUrl = conf['ADDRESS_SERVICE_URL']
 const mapApiKey = conf['MAP_API_KEY']
 const behaviorRecorder = { 'plerdy': conf['BEHAVIOR_RECORDER_PLERDY_CONFIG'] }
