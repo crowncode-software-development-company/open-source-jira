@@ -1,4 +1,5 @@
 import { Modal } from 'antd'
+import dayjs from 'dayjs'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -20,26 +21,26 @@ import { SortTicketsBy } from '../../schema'
 
 export const KanbanPageContent = ({ tickets, refetchAllTickets }) => {
     const router = useRouter()
-    const [isTicketOpen, setTicketOpen] = useState(false)
-    const [isCreateTicketOpen, setCreateTicketOpen] = useState(false)
-    const [isSearchTicketOpen, setSearchTicketOpen] = useState(false)
+    const [isTicketOpen, setIsTicketOpen] = useState(false)
+    const [isCreateTicketOpen, setIsCreateTicketOpen] = useState(false)
+    const [isSearchTicketOpen, setIsSearchTicketOpen] = useState(false)
     const { query } = router
 
     useEffect(() => {
         if (query.ticketId && !isTicketOpen && !isCreateTicketOpen) {  
-            setSearchTicketOpen(false)
-            setTicketOpen(true)
+            setIsSearchTicketOpen(false)
+            setIsTicketOpen(true)
         } else if (query['create-modal']) {
-            setCreateTicketOpen(true)
+            setIsCreateTicketOpen(true)
         } else if (query['search-modal']) {
-            setSearchTicketOpen(true)
+            setIsSearchTicketOpen(true)
         }
     }, [router.query]) 
 
     const handleCloseModals = () => {
-        setCreateTicketOpen(false)
-        setTicketOpen(false)
-        setSearchTicketOpen(false)
+        setIsCreateTicketOpen(false)
+        setIsTicketOpen(false)
+        setIsSearchTicketOpen(false)
         router.push('/kanban', undefined, { shallow: true })
     }
     
@@ -63,11 +64,37 @@ export const KanbanPageContent = ({ tickets, refetchAllTickets }) => {
 }
 
 
+const DEFERRED_STATUS_ID = 'c14a58e0-6b5d-4ec2-b91c-980a90509c7f'
+const CANCELED_STATUS_ID = 'f0fa0093-8d86-4e69-ae1a-70a2914da82f'
+const COMPLETED_STATUS_ID = '5b9decd7-792c-42bb-b16d-822142fd2d69'
 const KanbanPage: PageComponentType = () => {
     const { organization } = useOrganization()
     const intl = useIntl()
 
     const kanbanTitle = intl.formatMessage({ id: 'kanban.title.description' })
+    
+    const newDate = useMemo(() => {
+        return dayjs().subtract(7, 'day').toDate()
+    }, [])
+
+    const statuses = [
+        DEFERRED_STATUS_ID,
+        CANCELED_STATUS_ID,
+        COMPLETED_STATUS_ID,
+    ]
+
+    const notInStatusConditions = statuses.map(status => ({
+        status: { id_not: status },
+    }))
+
+    const inStatusConditions = statuses.map(status => ({
+        AND: [
+            { status: { id: status } },
+            { updatedAt_gte: newDate.toISOString() },
+        ],
+    }))
+
+
     const {
         loading: isTicketsFetching,
         data: ticketsData,
@@ -76,15 +103,14 @@ const KanbanPage: PageComponentType = () => {
         variables: {
             where: {
                 organization: { id: organization.id },
-                // OR: [
-                //     {
-                //         status: { id_not: 'f0fa0093-8d86-4e69-ae1a-70a2914da82f' },
-                //     },
-                //     {
-                //         status: { id: 'f0fa0093-8d86-4e69-ae1a-70a2914da82f' },
-                //         updatedAt_gte: new Date(Date.now()).toISOString(),
-                //     },
-                // ],
+                OR: [
+                    {
+                        AND: notInStatusConditions,
+                    },
+                    {
+                        OR: inStatusConditions,
+                    },
+                ],
             },
             sortBy: SortTicketsBy.CreatedAtDesc,
             first: 50,

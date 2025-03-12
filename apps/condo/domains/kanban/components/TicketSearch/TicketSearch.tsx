@@ -77,7 +77,6 @@ const ProjectTicketSearch = () => {
             first: 20,
         },
         skip: !router.query['search-modal'],
-        fetchPolicy: 'network-only',
     })
     const tickets = useMemo(() => ticketsData?.tickets?.filter(Boolean) || [], [ticketsData?.tickets])
 

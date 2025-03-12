@@ -101,6 +101,7 @@ const StyledTable = styled(Table)`
 
   .number-column {
     padding-left: 0;
+    border-top-left-radius: 10px;
   }
 
   .favorite-column {

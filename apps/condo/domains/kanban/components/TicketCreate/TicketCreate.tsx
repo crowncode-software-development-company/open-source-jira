@@ -84,6 +84,9 @@ const ProjectTicketCreate = ({ closeModal, refetchTicketsBoard }) => {
 
     useEffect(() => {
         form.resetFields()
+        if (query['create-modal']){
+            refetch()
+        }
     },
     [query['create-modal']])
 
@@ -102,6 +105,7 @@ const ProjectTicketCreate = ({ closeModal, refetchTicketsBoard }) => {
     const {
         loading: totalTicketsCountLoading,
         data: totalTicketsCountData,
+        refetch,
     } = useGetTicketsCountQuery({
         variables: {
             where: {
@@ -117,8 +121,8 @@ const ProjectTicketCreate = ({ closeModal, refetchTicketsBoard }) => {
         sender: getClientSideSenderInfo(),
         status: { connect: { id: OPEN_STATUS } },
         source: { connect: { id: DEFAULT_TICKET_SOURCE_CALL_ID } },
-        kanbanOrder: (totalTicketsCount * 10000) + 100000000,
-    })
+        kanbanOrder: 10_000_000 - (totalTicketsCount * 1000),
+    }) 
 
     const { loading: propertyLoading, error: propertyError, objs: properties } = PropertyTable.useObjects({ where: { organization: { id: organization.id } } })
     const randomPropertyId = properties[0]?.id
@@ -212,7 +216,9 @@ const ProjectTicketCreate = ({ closeModal, refetchTicketsBoard }) => {
                         onChange={(value) => form.setFieldsValue({ assignee: value })}
                         options={usersOptions}
                         renderOption={({ value: userId }) => renderUser(getUserById(userId))}
-                        renderValue={({ value: userId, removeOptionValue }) => renderUser(getUserById(userId), removeOptionValue)}
+                        renderValue={({ value: userId }) => 
+                            renderUser(getUserById(userId), () => form.setFieldsValue({ assignee: null }))
+                        }
                     />
                 </CustomFormItem>
 
@@ -223,7 +229,9 @@ const ProjectTicketCreate = ({ closeModal, refetchTicketsBoard }) => {
                         onChange={(value) => form.setFieldsValue({ executor: value })}
                         options={usersOptions}
                         renderOption={({ value: userId }) => renderUser(getUserById(userId))}
-                        renderValue={({ value: userId, removeOptionValue }) => renderUser(getUserById(userId), removeOptionValue)}
+                        renderValue={({ value: userId }) => 
+                            renderUser(getUserById(userId), () => form.setFieldsValue({ executor: null }))
+                        }
                     />
                 </CustomFormItem>
 
@@ -264,9 +272,10 @@ export const renderPriority = ({ value: priority }) => (
 
 export const renderUser = (user, removeOptionValue?) => {
     return (
-        <SelectItem key={user.id} onClick={() => removeOptionValue?.()}>
+        <SelectItem key={user.id}>
             <Avatar size={20} name={user.name}/>
             <SelectItemLabel>{user.name}</SelectItemLabel>
+            {removeOptionValue && <Close size='small' color={color.textMedium} onClick={removeOptionValue} />}
         </SelectItem>
     )
 }

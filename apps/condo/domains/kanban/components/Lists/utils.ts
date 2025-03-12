@@ -9,10 +9,10 @@ export const isPositionChanged = (destination, source) => {
 
 export const calculateTicketColumnPosition = (allTickets, destination, source, droppedIssueId) => {
     const { prevTicket, nextTicket } = getAfterDropPrevNextTicket(allTickets, destination, source, droppedIssueId)
-    if (!prevTicket && !nextTicket) return 10000000 
+    if (!prevTicket && !nextTicket) return 10_000_000 
     if (!prevTicket) return nextTicket.kanbanOrder - 1000 
     if (!nextTicket) return prevTicket.kanbanOrder + 1000 
-    return Math.floor((prevTicket.kanbanOrder + nextTicket.kanbanOrder) / 2)
+    return Math.floor(prevTicket.kanbanOrder + ((nextTicket.kanbanOrder - prevTicket.kanbanOrder) / 2))
 }
 
 export const getAfterDropPrevNextTicket = (allTickets, destination, source, droppedIssueId) => {
