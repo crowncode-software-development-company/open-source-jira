@@ -91,6 +91,7 @@ const ProjectTicketCreate = ({ closeModal, refetchTicketsBoard }) => {
     [query['create-modal']])
 
     const initialValues = {
+        customClassifier: 'task',
         deadline: dayjs().add(7, 'day'),
         details: ' ',
         priority: TicketPriority.MEDIUM,
