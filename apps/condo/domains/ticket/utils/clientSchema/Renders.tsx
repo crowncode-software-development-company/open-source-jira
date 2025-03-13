@@ -24,7 +24,7 @@ import { TicketTag } from '@condo/domains/ticket/components/TicketTag'
 import { TICKET_TYPE_TAG_STYLE } from '@condo/domains/ticket/constants/style'
 import { useFavoriteTickets } from '@condo/domains/ticket/contexts/FavoriteTicketsContext'
 
-import { TicketPriorityIcon } from '../../../kanban/ui'
+import { TicketPriorityIcon, TicketTypeIcon } from '../../../kanban/ui'
 import {
     getDeadlineType,
     getHumanizeDeadlineDateDifference,
@@ -268,9 +268,15 @@ export const getClassifierRender = (intl, search?: FilterValue) => {
 export const getPriorityRender = (intl, search?: FilterValue) => {
     return function render (priority, record) {
         return (
-            <Space direction='vertical' size={7}>
-                <TicketPriorityIcon priority={priority} size='medium' />
-            </Space>
+            <TicketPriorityIcon priority={priority} size='medium' />
+        )
+    }
+}
+
+export const getTypeRender = (intl, search?: FilterValue) => {
+    return function render (customClassifier, record) {
+        return (
+            <TicketTypeIcon type={customClassifier || 'task'} size='medium' />
         )
     }
 }

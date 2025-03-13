@@ -31,6 +31,7 @@ import {
     getTicketNumberRender,
     getUnitRender,
     getPriorityRender,
+    getTypeRender,
 } from '@condo/domains/ticket/utils/clientSchema/Renders'
 import { IFilters } from '@condo/domains/ticket/utils/helpers'
 
@@ -38,12 +39,12 @@ import { IFilters } from '@condo/domains/ticket/utils/helpers'
 const COLUMNS_WIDTH = {
     commentsIndicator: '0%',
     number: '10%',
-    createdAt: '14%',
+    type: '10%',
     status: '12%',
     priority: '12%',
-    details: '21%', 
-    executor: '16%', 
-    assignee: '16%',
+    details: '23%', 
+    executor: '17%', 
+    assignee: '17%',
     address: '14%',
     unitName: '8%',
     categoryClassifier: '12%',
@@ -59,7 +60,7 @@ export function useTableColumns<T> (
 ): { columns: ColumnsType<ITicket>,  loading: boolean } {
     const intl = useIntl()
     const NumberMessage = intl.formatMessage({ id: 'ticketsTable.Number' })
-    const DateMessage = intl.formatMessage({ id: 'Date' })
+    const TypeMessage = intl.formatMessage({ id: 'global.type' })
     const StatusMessage = intl.formatMessage({ id: 'Status' })
     const PriorityMessage = intl.formatMessage({ id: 'kanban.ticket.priority.title' })
     const ClientNameMessage = intl.formatMessage({ id: 'Contact' })
@@ -175,16 +176,13 @@ export function useTableColumns<T> (
                 className: 'number-column',
             },
             {
-                title: DateMessage,
-                sortOrder: get(sorterMap, 'createdAt'),
-                filteredValue: getFilteredValue<IFilters>(filters, 'createdAt'),
-                dataIndex: 'createdAt',
-                key: 'createdAt',
-                sorter: true,
-                width: COLUMNS_WIDTH.createdAt,
-                render: getDateRender(intl, String(search)),
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'createdAt'),
-                filterIcon: getFilterIcon,
+                title: TypeMessage,
+                filteredValue: getFilteredValue<IFilters>(filters, 'customClassifier'),
+                dataIndex: 'customClassifier',
+                key: 'customClassifier',
+                width: COLUMNS_WIDTH.type,
+                render: getTypeRender(intl, search),
+                align: 'center',
             },
             {
                 title: StatusMessage,
@@ -248,7 +246,7 @@ export function useTableColumns<T> (
             },
         ],
         loading: userTicketCommentReadTimesLoading,
-    }), [intl, userTicketCommentReadTimes, breakpoints, NumberMessage, sorterMap, filters, filterMetas, search, DateMessage, StatusMessage, renderStatusFilterDropdown, AddressMessage, renderAddress, UnitMessage, DescriptionMessage, ClassifierTitle, ClientNameMessage, ExecutorMessage, renderExecutor, ResponsibleMessage, renderAssignee, userTicketCommentReadTimesLoading])
+    }), [intl, userTicketCommentReadTimes, breakpoints, NumberMessage, sorterMap, filters, filterMetas, search, TypeMessage, StatusMessage, renderStatusFilterDropdown, AddressMessage, renderAddress, UnitMessage, DescriptionMessage, ClassifierTitle, ClientNameMessage, ExecutorMessage, renderExecutor, ResponsibleMessage, renderAssignee, userTicketCommentReadTimesLoading])
 }
 
 export function useTicketQualityTableColumns (): { columns: ColumnsType<ITicket> } {
@@ -294,7 +292,7 @@ export function useTicketQualityTableColumns (): { columns: ColumnsType<ITicket>
                 dataIndex: 'createdAt',
                 key: 'createdAt',
                 sorter: true,
-                width: COLUMNS_WIDTH.createdAt,
+                width: COLUMNS_WIDTH.type,
                 render: getDateRender(intl, String(search)),
             },
             {
