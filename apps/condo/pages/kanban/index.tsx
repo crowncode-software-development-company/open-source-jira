@@ -15,6 +15,7 @@ import { ProjectBoard } from '@condo/domains/kanban/components/Board'
 import ProjectTicketCreate from '@condo/domains/kanban/components/TicketCreate/TicketCreate'
 import ProjectBoardTicketDetails from '@condo/domains/kanban/components/TicketDetails'
 import ProjectTicketSearch from '@condo/domains/kanban/components/TicketSearch/TicketSearch'
+import { STATUS_IDS } from '@condo/domains/ticket/constants/statusTransitions'
 
 import { useGetTicketsQuery } from '../../gql'
 import { SortTicketsBy } from '../../schema'
@@ -63,10 +64,6 @@ export const KanbanPageContent = ({ tickets, refetchAllTickets }) => {
     )
 }
 
-
-const DEFERRED_STATUS_ID = 'c14a58e0-6b5d-4ec2-b91c-980a90509c7f'
-const CANCELED_STATUS_ID = 'f0fa0093-8d86-4e69-ae1a-70a2914da82f'
-const COMPLETED_STATUS_ID = '5b9decd7-792c-42bb-b16d-822142fd2d69'
 const KanbanPage: PageComponentType = () => {
     const { organization } = useOrganization()
     const intl = useIntl()
@@ -77,24 +74,11 @@ const KanbanPage: PageComponentType = () => {
         return dayjs().subtract(7, 'day').toDate()
     }, [])
 
-    const statuses = [
-        DEFERRED_STATUS_ID,
-        CANCELED_STATUS_ID,
-        COMPLETED_STATUS_ID,
+    const statusesWithoutClosed = [
+        STATUS_IDS.DEFERRED,
+        STATUS_IDS.DECLINED,
+        STATUS_IDS.COMPLETED,
     ]
-
-    const notInStatusConditions = statuses.map(status => ({
-        status: { id_not: status },
-    }))
-
-    const inStatusConditions = statuses.map(status => ({
-        AND: [
-            { status: { id: status } },
-            { updatedAt_gte: newDate.toISOString() },
-        ],
-    }))
-
-
     const {
         loading: isTicketsFetching,
         data: ticketsData,
@@ -105,10 +89,13 @@ const KanbanPage: PageComponentType = () => {
                 organization: { id: organization.id },
                 OR: [
                     {
-                        AND: notInStatusConditions,
+                        status: { id_not_in: [...statusesWithoutClosed, STATUS_IDS.CLOSED] },
                     },
                     {
-                        OR: inStatusConditions,
+                        AND: [
+                            { status: { id_in: statusesWithoutClosed } },
+                            { updatedAt_gte: newDate.toISOString() },
+                        ],
                     },
                 ],
             },
