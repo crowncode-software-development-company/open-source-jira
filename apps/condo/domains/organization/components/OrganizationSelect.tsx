@@ -41,6 +41,7 @@ function compareEmployees (lhs: OrganizationEmployeeType, rhs: OrganizationEmplo
 }
 
 const DROPDOWN_OVERLAY_STYLES: CSSProperties = { maxWidth: 300, width: '100%' }
+const FAKE_ADDRESS_FOR_JIRA = 'г Екатеринбург, ул 100-летия Уральского университета, стр 1'
 
 export const InlineOrganizationSelect: React.FC = () => {
     const intl = useIntl()
@@ -103,7 +104,7 @@ export const InlineOrganizationSelect: React.FC = () => {
                     organization: { connect: { id: createdOrganization.id } },
                     type: PropertyTypeType.Building,
                     sender: getClientSideSenderInfo(), 
-                    address: 'г Екатеринбург, ул 100-летия Уральского университета, стр 1',
+                    address: FAKE_ADDRESS_FOR_JIRA,
                 })
             } catch {
                 notification.error({ message: 'Error' })
