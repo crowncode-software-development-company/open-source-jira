@@ -1,5 +1,5 @@
 import { Modal as AntModal } from 'antd'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 interface ModalProps {
     width?: number

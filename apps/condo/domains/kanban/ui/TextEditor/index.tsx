@@ -1,7 +1,6 @@
 import { notification } from 'antd'
 import dynamic from 'next/dynamic'
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react'
-import React from 'react'
 import { useIntl } from 'react-intl'
 import ReactQuill, { ReactQuillProps } from 'react-quill'
 import styled from 'styled-components'

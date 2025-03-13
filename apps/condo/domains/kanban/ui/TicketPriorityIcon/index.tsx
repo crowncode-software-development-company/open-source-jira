@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TicketPriority } from '../../constants'
 import { ArrowUp, ArrowDown } from '../../icons'
 import { issuePriorityColors } from '../../styles'

@@ -183,7 +183,6 @@ const TicketsTableContainer = ({
     const [isTicketCreateOpen, setIsTicketCreateOpen] = useState(false)
     const router = useRouter()
     const { filters, offset } = useMemo(() => parseQuery(router.query), [router.query])
-    const { organization } = useOrganization()
     const [isRefetching, setIsRefetching] = useState(false)
     const ticketsCountRef = useRef(null)
     const audio = useAudio()
@@ -303,7 +302,7 @@ const TicketsTableContainer = ({
     )
 }
 
-const SORTABLE_PROPERTIES = ['number', 'status', 'order', 'priority', 'details', 'property', 'unitName', 'assignee', 'executor', 'createdAt', 'clientName']
+const SORTABLE_PROPERTIES = ['number', 'status', 'order', 'priority', 'details', 'assignee', 'executor', 'createdAt']
 const TICKETS_DEFAULT_SORT_BY = ['order_ASC', 'createdAt_DESC']
 const SMALL_HORIZONTAL_GUTTER: RowProps['gutter'] = [10, 10]
 const TICKET_STATUS_FILTER_CONTAINER_ROW_STYLES: CSSProperties = {

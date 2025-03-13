@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { BugIcon, StoryIcon, TaskIcon } from '../../icons'
 
 interface IProps {

@@ -1,9 +1,7 @@
 import { uniq } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import { useState, useRef, useLayoutEffect } from 'react'
 import { useIntl } from 'react-intl'
-
-import { Close } from '@open-condo/icons'
 
 import { Dropdown, DropdownInput, Options, Option, OptionsNoResults } from './Styles'
 

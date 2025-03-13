@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React, { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { useIntl } from 'react-intl'
 import styled, { css } from 'styled-components'
 

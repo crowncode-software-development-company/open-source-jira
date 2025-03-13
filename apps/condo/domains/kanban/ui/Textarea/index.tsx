@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import TextArea from 'antd/lib/input/TextArea'
-import React from 'react'
+import { forwardRef } from 'react'
 import styled, { css } from 'styled-components'
 
 import { color } from '../../styles'
@@ -42,7 +42,7 @@ interface TextareaProps {
     [key: string]: any
 }
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ value, className, invalid, onChange, ...textareaProps }, ref) => (
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({ value, className, invalid, onChange, ...textareaProps }, ref) => (
     <StyledTextarea className={className} $invalid={invalid}>
         <TextArea
             ref={ref}

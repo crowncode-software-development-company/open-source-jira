@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 
-import { ChevronDown, Close, PlusCircle } from '@open-condo/icons'
+import { ChevronDown, PlusCircle } from '@open-condo/icons'
 
 import Dropdown from './Dropdown'
 import {

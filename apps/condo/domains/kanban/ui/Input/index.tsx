@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import styled, { css } from 'styled-components'
 
 import { color, font } from '../../styles'
