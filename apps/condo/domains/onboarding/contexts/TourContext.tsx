@@ -109,17 +109,17 @@ export const TourProvider = ({ children }) => {
     useEffect(() => {
         const mutationHandler = async ({ data, name }) => {
             switch (name) {
-                case 'createProperty': {
-                    if (currentImport.current && isFirstSuccessImport.current) return
-                    if (get(data, 'obj.map')) {
-                        await updateStepIfNotCompleted(TourStepTypeType.CreateProperty)
-                        await updateStepIfNotCompleted(TourStepTypeType.CreatePropertyMap)
-                    } else {
-                        await updateStepIfNotCompleted(TourStepTypeType.CreateProperty, `/property/${get(data, 'obj.id')}/map/update`)
-                    }
+                // case 'createProperty': {
+                //     if (currentImport.current && isFirstSuccessImport.current) return
+                //     if (get(data, 'obj.map')) {
+                //         await updateStepIfNotCompleted(TourStepTypeType.CreateProperty)
+                //         await updateStepIfNotCompleted(TourStepTypeType.CreatePropertyMap)
+                //     } else {
+                //         await updateStepIfNotCompleted(TourStepTypeType.CreateProperty, `/property/${get(data, 'obj.id')}/map/update`)
+                //     }
 
-                    break
-                }
+                //     break
+                // }
 
                 case 'updateProperty': {
                     if (!get(data, 'obj.map')) return
@@ -128,12 +128,12 @@ export const TourProvider = ({ children }) => {
                     break
                 }
 
-                case 'createTicket': {
-                    if (currentImport.current && isFirstSuccessImport.current) return
+                // case 'createTicket': {
+                //     if (currentImport.current && isFirstSuccessImport.current) return
 
-                    await updateStepIfNotCompleted(TourStepTypeType.CreateTicket)
-                    break
-                }
+                //     await updateStepIfNotCompleted(TourStepTypeType.CreateTicket)
+                //     break
+                // }
 
                 case 'createMeter': {
                     if (currentImport.current && isFirstSuccessImport.current) return
@@ -165,18 +165,18 @@ export const TourProvider = ({ children }) => {
 
             if (status === null && isFirstSuccessImport.current) {
                 switch (domain) {
-                    case 'property': {
-                        updateCompletedStepModalData('importProperties')
-                        break
-                    }
+                    // case 'property': {
+                    //     updateCompletedStepModalData('importProperties')
+                    //     break
+                    // }
                     case 'meter': {
                         await updateStepIfNotCompleted(TourStepTypeType.CreateMeterReadings)
                         break
                     }
-                    case 'ticket': {
-                        updateCompletedStepModalData(TourStepTypeType.CreateTicket)
-                        break
-                    }
+                    // case 'ticket': {
+                    //     updateCompletedStepModalData(TourStepTypeType.CreateTicket)
+                    //     break
+                    // }
                 }
 
                 currentImport.current = null

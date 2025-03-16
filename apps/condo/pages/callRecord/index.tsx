@@ -19,6 +19,7 @@ import { Typography } from '@open-condo/ui'
 import { colors } from '@open-condo/ui/dist/colors'
 
 import Input from '@condo/domains/common/components/antd/Input'
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageHeader, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { TablePageContent } from '@condo/domains/common/components/containers/BaseLayout/BaseLayout'
 import { EmptyListContent } from '@condo/domains/common/components/EmptyListContent'
@@ -251,13 +252,7 @@ const CallRecordsPage: PageComponentType = () => {
 
     usePreviousSortAndFilters({ employeeSpecificKey: employeeId })
 
-    return (
-        <CallRecordsPageContent
-            baseQuery={baseQuery}
-            filterMetas={filterMetas}
-            useTableColumns={useCallRecordTableColumns}
-        />
-    )
+    return <AccessDeniedPage/>
 }
 
 CallRecordsPage.requiredAccess = CallRecordReadPermissionRequired

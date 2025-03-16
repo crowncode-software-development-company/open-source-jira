@@ -1,5 +1,4 @@
 /* Side-menu */
-
 .menu.desktop-menu {
   position: fixed;
   z-index: 10;
@@ -204,7 +203,7 @@
 }
 
 .appeals-button > span {
-  color: var(--condo-global-color-green-5);
+  color: var(--condo-global-color-orange-5);
 }
 
 .appeals-button:hover > span,
@@ -235,17 +234,17 @@
 }
 
 .condo-btn.condo-btn-sbbol:hover .condo-btn-text {
-  color: var(--condo-global-color-green-5);
+  color: var(--condo-global-color-orange-5);
 }
 
 .condo-btn.condo-btn-sbbol:active .condo-btn-text {
-  color: var(--condo-global-color-green-7);
+  color: var(--condo-global-color-orange-7);
 }
 
 .condo-btn.condo-btn-sbbol:hover .condo-btn-icon svg path {
-  fill: var(--condo-global-color-green-5);
+  fill: var(--condo-global-color-orange-5);
 }
 
 .condo-btn.condo-btn-sbbol:active .condo-btn-icon svg path {
-  fill: var(--condo-global-color-green-7);
+  fill: var(--condo-global-color-orange-7);
 }

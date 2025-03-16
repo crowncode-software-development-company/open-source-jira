@@ -16,6 +16,7 @@ import { ActionBar, Button, Checkbox, Space, Tooltip } from '@open-condo/ui'
 import { colors } from '@open-condo/ui/dist/colors'
 
 import Input from '@condo/domains/common/components/antd/Input'
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageHeader, PageWrapper, useLayoutContext } from '@condo/domains/common/components/containers/BaseLayout'
 import { TablePageContent } from '@condo/domains/common/components/containers/BaseLayout/BaseLayout'
 import { EmptyListContent } from '@condo/domains/common/components/EmptyListContent'
@@ -317,15 +318,7 @@ const ContactsPage: PageComponentType = () => {
 
     usePreviousSortAndFilters({ employeeSpecificKey: employeeId })
 
-    return (
-        <ContactPageContentWrapper
-            filterMeta={filterMeta}
-            baseSearchQuery={baseSearchQuery}
-            tableColumns={tableColumns}
-            role={role}
-            loading={isLoading}
-        />
-    )
+    return <AccessDeniedPage/>
 }
 
 ContactsPage.requiredAccess = ContactsReadPermissionRequired

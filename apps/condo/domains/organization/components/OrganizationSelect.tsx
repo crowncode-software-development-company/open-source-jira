@@ -2,8 +2,8 @@ import {
     useGetActualOrganizationEmployeesQuery,
     useGetEmployeeInvitesCountQuery,
 } from '@app/condo/gql'
-import { OrganizationTypeType } from '@app/condo/schema'
-import { Dropdown } from 'antd'
+import { OrganizationTypeType, PropertyTypeType } from '@app/condo/schema'
+import { Dropdown, notification } from 'antd'
 import get from 'lodash/get'
 import uniqBy from 'lodash/uniqBy'
 import { useRouter } from 'next/router'
@@ -11,6 +11,7 @@ import React, { useCallback, useMemo, CSSProperties } from 'react'
 
 import { useCachePersistor } from '@open-condo/apollo'
 import { useDeepCompareEffect } from '@open-condo/codegen/utils/useDeepCompareEffect'
+import { getClientSideSenderInfo } from '@open-condo/codegen/utils/userId'
 import { ChevronDown, PlusCircle } from '@open-condo/icons'
 import { useAuth } from '@open-condo/next/auth'
 import { useIntl } from '@open-condo/next/intl'
@@ -23,6 +24,9 @@ import { nonNull } from '@condo/domains/common/utils/nonNull'
 import { useCreateOrganizationModalForm } from '@condo/domains/organization/hooks/useCreateOrganizationModalForm'
 
 import { SBBOLIndicator } from './SBBOLIndicator'
+
+import { useAddressApi } from '../../common/components/AddressApi'
+import { Property } from '../../property/utils/clientSchema'
 
 import type { OrganizationEmployee as OrganizationEmployeeType } from '@app/condo/schema'
 import type { DropdownProps } from 'antd'
@@ -37,6 +41,7 @@ function compareEmployees (lhs: OrganizationEmployeeType, rhs: OrganizationEmplo
 }
 
 const DROPDOWN_OVERLAY_STYLES: CSSProperties = { maxWidth: 300, width: '100%' }
+const FAKE_ADDRESS_FOR_JIRA = 'г Екатеринбург, ул 100-летия Уральского университета, стр 1'
 
 export const InlineOrganizationSelect: React.FC = () => {
     const intl = useIntl()
@@ -50,6 +55,8 @@ export const InlineOrganizationSelect: React.FC = () => {
     const textSize: TypographyTextProps['size'] = !breakpoints.TABLET_LARGE ? 'small' : 'medium'
 
     const { user } = useAuth()
+    const { addressApi } = useAddressApi()
+
     const {
         employee: activeEmployee,
         organization,
@@ -87,13 +94,26 @@ export const InlineOrganizationSelect: React.FC = () => {
     [actualEmployees]
     )
 
+    const createPropertyAction = Property.useCreate({})
+
     const { setIsVisible: showCreateOrganizationModal, ModalForm: CreateOrganizationModalForm } = useCreateOrganizationModalForm({
         onFinish: async (createdOrganization) => {
-            const organizationType = get(createdOrganization, 'type')
-
+            const organizationType = get(createdOrganization, 'type')   
+            try {
+                await createPropertyAction({
+                    organization: { connect: { id: createdOrganization.id } },
+                    type: PropertyTypeType.Building,
+                    sender: getClientSideSenderInfo(), 
+                    address: FAKE_ADDRESS_FOR_JIRA,
+                })
+            } catch {
+                notification.error({ message: 'Error' })
+            }
+            finally {
             // The slash will only be there if we have just registered and we don't have any additional parameters in the address bar.
-            if (organizationType === OrganizationTypeType.ManagingCompany && router.route === '/') {
-                await router.push('/tour')
+                if (organizationType === OrganizationTypeType.ManagingCompany && router.route === '/') {
+                    await router.push('/')
+                }
             }
         },
     })

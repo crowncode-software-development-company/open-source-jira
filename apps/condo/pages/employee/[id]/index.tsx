@@ -116,7 +116,7 @@ export const EmployeePageContent: React.FC<EmployeePageContent> = ({
     const isMyEmployee = userId && employeeUserId && userId === employeeUserId
     const isEmployeeBlocked = get(employee, 'isBlocked')
 
-    const name = get(employee, 'name')
+    const name = get(employee.user, 'name')
     const phone = get(employee, 'phone')
     const email = get(employee, 'email')
     const hasAllSpecializations = get(employee, 'hasAllSpecializations')
@@ -203,61 +203,6 @@ export const EmployeePageContent: React.FC<EmployeePageContent> = ({
                                                         fieldValue={phone}
                                                         href={`tel:${phonePrefix ? `${phonePrefix}${phone}` : phone}`}
                                                     />
-                                                    <Col lg={4} xs={10}>
-                                                        <Typography.Text type='secondary'>
-                                                            {RoleMessage}
-                                                        </Typography.Text>
-                                                    </Col>
-                                                    <Col lg={18} xs={13} offset={1}>
-                                                        <NotDefinedField
-                                                            value={get(employee, ['role', 'name'])}
-                                                            render={
-                                                                (roleName: string) => (
-                                                                    <Tag color='default'>{roleName}</Tag>
-                                                                )
-                                                            }
-                                                        />
-                                                    </Col>
-
-                                                    <Col lg={4} xs={10}>
-                                                        <Typography.Text type='secondary'>
-                                                            {PositionMessage}
-                                                        </Typography.Text>
-                                                    </Col>
-                                                    <Col lg={18} xs={13} offset={1}>
-                                                        <NotDefinedField
-                                                            value={get(employee, 'position')}
-                                                            render={
-                                                                (value: string) => (
-                                                                    <Tag color='default'>{value}</Tag>
-                                                                )
-                                                            }
-                                                        />
-                                                    </Col>
-
-                                                    <Col lg={4} xs={10}>
-                                                        <Typography.Text type='secondary'>
-                                                            {SpecializationsMessage}
-                                                        </Typography.Text>
-                                                    </Col>
-                                                    <Col lg={18} xs={13} offset={1}>
-                                                        {
-                                                            hasAllSpecializations ? AllSpecializationsMessage : (
-                                                                <NotDefinedField
-                                                                    value={get(employee, 'specializations')}
-                                                                    render={renderSpecializations}
-                                                                />
-                                                            )
-                                                        }
-                                                    </Col>
-
-                                                    {
-                                                        email && <FieldPairRow
-                                                            fieldTitle={EmailMessage}
-                                                            fieldValue={email}
-                                                            href={`mailto:${email}`}
-                                                        />
-                                                    }
                                                 </Row>
                                             </FrontLayerContainer>
                                         </Col>
@@ -265,14 +210,6 @@ export const EmployeePageContent: React.FC<EmployeePageContent> = ({
                                             <Col span={24}>
                                                 <ActionBar
                                                     actions={[
-                                                        <Link key='update' href={`/employee/${get(employee, 'id')}/update`}>
-                                                            <Button
-                                                                type='primary'
-                                                                icon={<Edit size='medium'/>}
-                                                            >
-                                                                {UpdateMessage}
-                                                            </Button>
-                                                        </Link>,
                                                         !isMyEmployee && (isReassignEmployeeTicketsEnabled && activeTicketsOrganizationEmployeeCount > 0 ?
                                                             <DeleteEmployeeButtonWithReassignmentModel
                                                                 key='delete'

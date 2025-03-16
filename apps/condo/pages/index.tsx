@@ -49,11 +49,6 @@ const IndexPage: PageComponentType = () => {
 
                 const userAccesses = Object.keys(pickBy(role, (value, key) => key.startsWith('canRead') && value === true))
 
-                if (completedTourStepsCount < SECOND_LEVEL_STEPS.length) {
-                    router.push('/tour')
-                    return
-                }
-
                 // Find first available page and redirect user from index page
                 const foundRedirect = Object.keys(ACCESS_REDIRECTS)
                     .find(accessRedirect => userAccesses.includes(accessRedirect))

@@ -75,24 +75,25 @@ const FeatureFlagsProviderWrapper: React.FC<FeatureFlagsProviderWrapperProps> = 
             if (!serverUrl) return
 
             const prev = growthbook.getFeatures()
-            let next = prev
-            fetch(`${serverUrl}/api/features`)
-                .then((res) => res.json())
-                .then((newFeatures) => {
-                    next = newFeatures
-                })
-                .catch(e => {
-                    if (!growthbook.ready && isEmpty(prev)) {
-                        // NOTE: we need to update features so that growthbook is ready to work
-                        next = prev
-                    }
-                    console.error(e)
-                })
-                .finally(() => {
-                    if (!growthbook.ready || !isEqual(prev, next)) {
-                        setFeature(next)
-                    }
-                })
+            setFeature(prev)
+            // let next = prev
+            // fetch(`${serverUrl}/api/features`)
+            //     .then((res) => res.json())
+            //     .then((newFeatures) => {
+            //         next = {}
+            //     })
+            //     .catch(e => {
+            //         if (!growthbook.ready && isEmpty(prev)) {
+            //             // NOTE: we need to update features so that growthbook is ready to work
+            //             next = prev
+            //         }
+            //         console.error(e)
+            //     })
+            //     .finally(() => {
+            //         if (!growthbook.ready || !isEqual(prev, next)) {
+            //             setFeature(next)
+            //         }
+            //     })
         }
 
         fetchFeatures()
@@ -173,8 +174,8 @@ const initOnRestore = async (ctx) => {
 
     if (isOnServerSide) {
         try {
-            const response = await fetch(`${serverUrl}/api/features`)
-            features = await response.json()
+            // const response = await fetch(`${serverUrl}/api/features`)
+            // features = await response.json()
         } catch (error) {
             console.error('Error while running `withFeatureFlags`', error)
             features = null

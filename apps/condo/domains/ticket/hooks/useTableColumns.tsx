@@ -7,7 +7,7 @@ import identity from 'lodash/identity'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import { useRouter } from 'next/router'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
 
 import { useCachePersistor } from '@open-condo/apollo'
 import { useAuth } from '@open-condo/next/auth'
@@ -25,30 +25,30 @@ import { getFilteredValue } from '@condo/domains/common/utils/helpers'
 import { getSorterMap, parseQuery } from '@condo/domains/common/utils/tables.utils'
 import { useAutoRefetchTickets } from '@condo/domains/ticket/contexts/AutoRefetchTicketsContext'
 import {
-    FavoriteTicketIndicator,
     getClassifierRender, getCommentsIndicatorRender,
     getStatusRender,
     getTicketDetailsRender,
     getTicketNumberRender,
-    getTicketUserNameRender,
     getUnitRender,
+    getPriorityRender,
+    getTypeRender,
 } from '@condo/domains/ticket/utils/clientSchema/Renders'
 import { IFilters } from '@condo/domains/ticket/utils/helpers'
 
 
 const COLUMNS_WIDTH = {
     commentsIndicator: '0%',
-    favorite: '4%',
-    number: '6%',
-    createdAt: '8%',
-    status: '8%',
+    number: '10%',
+    type: '10%',
+    status: '12%',
+    priority: '12%',
+    details: '23%', 
+    executor: '17%', 
+    assignee: '17%',
     address: '14%',
     unitName: '8%',
-    details: '12%',
     categoryClassifier: '12%',
     clientName: '10%',
-    executor: '10%',
-    assignee: '10%',
 }
 
 export function useTableColumns<T> (
@@ -60,10 +60,11 @@ export function useTableColumns<T> (
 ): { columns: ColumnsType<ITicket>,  loading: boolean } {
     const intl = useIntl()
     const NumberMessage = intl.formatMessage({ id: 'ticketsTable.Number' })
-    const DateMessage = intl.formatMessage({ id: 'Date' })
+    const TypeMessage = intl.formatMessage({ id: 'global.type' })
     const StatusMessage = intl.formatMessage({ id: 'Status' })
+    const PriorityMessage = intl.formatMessage({ id: 'kanban.ticket.priority.title' })
     const ClientNameMessage = intl.formatMessage({ id: 'Contact' })
-    const DescriptionMessage = intl.formatMessage({ id: 'Description' })
+    const DescriptionMessage = intl.formatMessage({ id: 'Title' })
     const AddressMessage = intl.formatMessage({ id: 'field.Address' })
     const ExecutorMessage = intl.formatMessage({ id: 'field.Executor' })
     const ResponsibleMessage = intl.formatMessage({ id: 'field.Responsible' })
@@ -100,6 +101,7 @@ export function useTableColumns<T> (
             return getAddressRender(propertyData, DeletedMessage, search)
         },
         [DeletedMessage, search])
+        
 
     const renderExecutor = useCallback(
         (executor) => getTableCellRenderer({ search })(get(executor, ['name'])),
@@ -148,14 +150,6 @@ export function useTableColumns<T> (
         }
     }, [isRefetchTicketsFeatureEnabled, refetch, refetchInterval, setIsRefetching])
 
-    const renderIsFavoriteTicket = useCallback((ticket) => {
-        return (
-            <FavoriteTicketIndicator
-                ticketId={ticket.id}
-            />
-        )
-    }, [])
-
     return useMemo(() => ({
         columns: [
             {
@@ -168,13 +162,6 @@ export function useTableColumns<T> (
                 className: 'comments-column',
             },
             {
-                key: 'favorite',
-                width: COLUMNS_WIDTH.favorite,
-                render: renderIsFavoriteTicket,
-                align: 'center',
-                className: 'favorite-column',
-            },
-            {
                 title: NumberMessage,
                 sortOrder: get(sorterMap, 'number'),
                 filteredValue: getFilteredValue<IFilters>(filters, 'number'),
@@ -185,20 +172,17 @@ export function useTableColumns<T> (
                 filterDropdown: getFilterDropdownByKey(filterMetas, 'number'),
                 filterIcon: getFilterIcon,
                 render: getTicketNumberRender(intl, search),
-                align: 'left',
+                align: 'center',
                 className: 'number-column',
             },
             {
-                title: DateMessage,
-                sortOrder: get(sorterMap, 'createdAt'),
-                filteredValue: getFilteredValue<IFilters>(filters, 'createdAt'),
-                dataIndex: 'createdAt',
-                key: 'createdAt',
-                sorter: true,
-                width: COLUMNS_WIDTH.createdAt,
-                render: getDateRender(intl, String(search)),
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'createdAt'),
-                filterIcon: getFilterIcon,
+                title: TypeMessage,
+                filteredValue: getFilteredValue<IFilters>(filters, 'customClassifier'),
+                dataIndex: 'customClassifier',
+                key: 'customClassifier',
+                width: COLUMNS_WIDTH.type,
+                render: getTypeRender(intl, search),
+                align: 'center',
             },
             {
                 title: StatusMessage,
@@ -213,63 +197,26 @@ export function useTableColumns<T> (
                 filterIcon: getFilterIcon,
             },
             {
-                title: AddressMessage,
-                dataIndex: 'property',
-                sortOrder: get(sorterMap, 'property'),
-                filteredValue: getFilteredValue<IFilters>(filters, 'property'),
-                key: 'property',
+                title: PriorityMessage,
+                sortOrder: get(sorterMap, 'priority'),
+                filteredValue: getFilteredValue<IFilters>(filters, 'priority'),
+                render: getPriorityRender(intl, search),
+                dataIndex: 'priority',
+                key: 'priority',
                 sorter: true,
-                width: COLUMNS_WIDTH.address,
-                render: renderAddress,
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'property'),
+                width: COLUMNS_WIDTH.priority,
                 filterIcon: getFilterIcon,
-            },
-            {
-                title: UnitMessage,
-                dataIndex: 'unitName',
-                sortOrder: get(sorterMap, 'unitName'),
-                filteredValue: getFilteredValue(filters, 'unitName'),
-                key: 'unitName',
-                sorter: true,
-                width: COLUMNS_WIDTH.unitName,
-                render: getUnitRender(intl, search),
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'unitName'),
-                filterIcon: getFilterIcon,
-                ellipsis: true,
+                align: 'center',
             },
             {
                 title: DescriptionMessage,
-                dataIndex: 'details',
+                dataIndex: 'title',
                 filteredValue: getFilteredValue<IFilters>(filters, 'details'),
                 key: 'details',
                 width: COLUMNS_WIDTH.details,
                 filterDropdown: getFilterDropdownByKey(filterMetas, 'details'),
                 filterIcon: getFilterIcon,
                 render: getTicketDetailsRender(search),
-            },
-            {
-                title: ClassifierTitle,
-                dataIndex: ['classifier', 'category', 'name'],
-                filteredValue: getFilteredValue(filters, 'categoryClassifier'),
-                key: 'categoryClassifier',
-                width: COLUMNS_WIDTH.categoryClassifier,
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'categoryClassifier'),
-                filterIcon: getFilterIcon,
-                render: getClassifierRender(intl, search),
-                ellipsis: true,
-            },
-            {
-                title: ClientNameMessage,
-                sortOrder: get(sorterMap, 'clientName'),
-                filteredValue: getFilteredValue<IFilters>(filters, 'clientName'),
-                dataIndex: 'clientName',
-                key: 'clientName',
-                sorter: true,
-                width: COLUMNS_WIDTH.clientName,
-                filterDropdown: getFilterDropdownByKey(filterMetas, 'clientName'),
-                render: getTicketUserNameRender(search),
-                filterIcon: getFilterIcon,
-                ellipsis: true,
             },
             {
                 title: ExecutorMessage,
@@ -299,7 +246,7 @@ export function useTableColumns<T> (
             },
         ],
         loading: userTicketCommentReadTimesLoading,
-    }), [intl, userTicketCommentReadTimes, breakpoints, NumberMessage, sorterMap, filters, filterMetas, search, DateMessage, StatusMessage, renderStatusFilterDropdown, AddressMessage, renderAddress, UnitMessage, DescriptionMessage, ClassifierTitle, ClientNameMessage, ExecutorMessage, renderExecutor, ResponsibleMessage, renderAssignee, userTicketCommentReadTimesLoading])
+    }), [intl, userTicketCommentReadTimes, breakpoints, NumberMessage, sorterMap, filters, filterMetas, search, TypeMessage, StatusMessage, renderStatusFilterDropdown, AddressMessage, renderAddress, UnitMessage, DescriptionMessage, ClassifierTitle, ClientNameMessage, ExecutorMessage, renderExecutor, ResponsibleMessage, renderAssignee, userTicketCommentReadTimesLoading])
 }
 
 export function useTicketQualityTableColumns (): { columns: ColumnsType<ITicket> } {
@@ -345,7 +292,7 @@ export function useTicketQualityTableColumns (): { columns: ColumnsType<ITicket>
                 dataIndex: 'createdAt',
                 key: 'createdAt',
                 sorter: true,
-                width: COLUMNS_WIDTH.createdAt,
+                width: COLUMNS_WIDTH.type,
                 render: getDateRender(intl, String(search)),
             },
             {

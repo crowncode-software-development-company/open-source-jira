@@ -167,7 +167,7 @@ const authStrategyOpts = {
 module.exports = prepareKeystone({
     extendExpressApp,
     schemas, tasks, queues: ['low', 'medium', 'high'],
-    apps, lastApp,
+    apps,
     ui: { hooks: require.resolve('@app/condo/admin-ui') },
     authStrategyOpts,
 })

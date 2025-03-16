@@ -962,6 +962,8 @@ describe('Ticket', () => {
             await expectToThrowAccessDeniedErrorToObj(async () => {
                 await Ticket.delete(client, objCreated.id)
             })
+            const readTicket = await Ticket.getOne(client, { id: objCreated.id })
+            expect(readTicket.deletedAt).toBeNull()
         })
 
         test('anonymous: delete Ticket', async () => {

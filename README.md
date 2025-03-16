@@ -1,33 +1,26 @@
-# CONDO
+# Open-source Jira
 
-[Condo](https://github.com/open-condo-software/condo) is an Open Source property management SaaS 
-that allows users to manage tickets, resident contacts, properties, 
-payment tracking, create invoices, and oversee a service marketplace, 
-all while offering an extension system for mini-apps, 
-making it an ideal platform for property management companies and those servicing shared properties.
+We built Open-Source Jira SaaS on top of the [Condo](https://github.com/open-condo-software/condo) platform, combining its flexibility with the functionality of [Jira Clone](https://github.com/oldboyxx/jira_clone). This self-hosted project management tool was created during a hackathon to provide teams with a lightweight, customizable alternative for task and workflow management.
 
-![condo](./docs/images/condo-preview.png)
+![condo](./docs/images/jira-preview.jpg)
 
 ## Table of contents
+
 - [Getting started](#getting-started)
-    1. [Databases setup](#1-databases-setup)
-    2. [Environment setup](#2-environment-setup)
-    3. [Installing dependencies](#3-installing-dependencies)
-    4. [Building `@open-condo` dependencies](#4-building-open-condo-dependencies) 
-    5. [Preparing the local app environment](#5-preparing-the-local-app-environment)
-    6. [Starting app in dev / prod mode](#6-start-app-locally-in-dev--prod-mode)
-    7. [Starting the worker](#7-start-the-worker)
-- [Developing](/docs/develop.md)
-- [Contributing](/docs/contributing.md)
-- [Migration guides](/docs/migration.md)
-- [Deploying](/docs/deploy.md)
+  1. [Databases setup](#1-databases-setup)
+  2. [Environment setup](#2-environment-setup)
+  3. [Installing dependencies](#3-installing-dependencies)
+  4. [Building `@open-condo` dependencies](#4-building-open-condo-dependencies)
+  5. [Preparing the local app environment](#5-preparing-the-local-app-environment)
+  6. [Build frontend and backend](#6-build-frontend-and-backend)
+  7. [Starti project](#7-start-project)
 
 ## Getting started
 
 ### 1. Databases setup
 
-We use [Postgres 16.4](https://www.postgresql.org) to store most of the information, 
-and [Redis 6.2](https://redis.io) to store session information, asynchronous tasks, and various caches. 
+We use [Postgres 16.4](https://www.postgresql.org) to store most of the information,
+and [Redis 6.2](https://redis.io) to store session information, asynchronous tasks, and various caches.
 In addition to them, we use s3 to store files, but it is optional to get started.
 
 You can start the databases using docker compose with this command:
@@ -42,48 +35,48 @@ Or you can bring up the databases directly on the host machine, using the corres
 
 #### Node.js 16.x
 
-All of our applications are written in [Node.js](https://nodejs.org/en), 
+All of our applications are written in [Node.js](https://nodejs.org/en),
 so you should also install it before you run the project.
 
 > **Node version must be 16.x**. You can check node version using `node -v` command in your terminal.
 
-We recommend using [nvm](https://github.com/nvm-sh/nvm) for local development, 
-and for deploying the application there is [Dockerfile](https://github.com/open-condo-software/condo/blob/main/Dockerfile)
-ready to use at the root of the repository.
+We recommend using [nvm](https://github.com/nvm-sh/nvm) for local development.
 
 #### Python 3.x
 
-We also use Python with packages for database migrations. So make sure you have one installed. 
+We also use Python with packages for database migrations. So make sure you have one installed.
 
 ### 3. Installing dependencies
 
 To install Node.js dependencies simply type the following command:
+
 ```bash
 yarn install
 ```
 
-> If you get errors related to missing yarn, 
+> If you get errors related to missing yarn,
 > use [these instructions](https://yarnpkg.com/getting-started/install) to install it.
 
-> We also use [turborepo](https://turbo.build/repo/docs) to orchestrate npm modules in this monorepo. 
-> Even though it is specified in the global `package.json`, in some environments you may get the error 
-> `“turbo: command not found”` in further steps... 
-> 
+> We also use [turborepo](https://turbo.build/repo/docs) to orchestrate npm modules in this monorepo.
+> Even though it is specified in the global `package.json`, in some environments you may get the error
+> `“turbo: command not found”` in further steps...
+>
 > In such cases, we recommend installing it globally using:
+>
 > ```bash
 > npm i -g turbo@^2
 > ```
 
-
 To install python packages type the command:
+
 ```bash
 pip install Django psycopg2-binary
 ```
 
 ### 4. Building `@open-condo` dependencies
 
-Condo depends on several packages located in `./packages` directory, 
-so it is required to build them before launching the main application. 
+Condo depends on several packages located in `./packages` directory,
+so it is required to build them before launching the main application.
 You can do it using this command:
 
 ```bash
@@ -93,15 +86,17 @@ yarn workspace @app/condo build:deps
 ### 5. Preparing the local app environment
 
 We have a mechanism in place to get applications ready for launch, specifically:
+
 1. Copy the global and local .env.example to .env
 2. Create a database for each application and perform the necessary migrations in it
 3. Assign dedicated ports to the applications
 4. Run the local prepare of each application
 
-> During the "local prepare" step each app prepares itself by filling extra environment variables, 
+> During the "local prepare" step each app prepares itself by filling extra environment variables,
 > creating test users and other entities, needed for the first launch.
 
 To launch prepare script, run the following command:
+
 ```bash
 node bin/prepare -f condo
 ```
@@ -110,72 +105,39 @@ node bin/prepare -f condo
 > so consider manually setting all environment variables
 > and migrating databases using `yarn workspace @app/condo migrate` in real deployment pipelines.
 
-### 6. Start app locally in dev / prod mode
+### 6. Build frontend and backend
 
+If you want to build the app in production mode, then to do so, execute for build backend:
 
-#### Development mode
-
-The application is now fully ready to be started. 
-To start the application locally in development mode, simply run the following command:
-```bash
-yarn workspace @app/condo dev
-```
-
-#### Production mode
-
-If, however, you want to build the app in production mode, then to do so, execute:
 ```bash
 yarn workspace @app/condo build
 ```
 
-And then run the project with:
+And frontend build:
+
+```bash
+yarn workspace @app/condo build:frontend
+```
+
+### 7. Start project
+
+To get started backend:
+
 ```bash
 yarn workspace @app/condo start
 ```
 
-Now open your browser and navigate to http://localhost:4006, where you should see the app running 🥳. 
+And frontend:
 
-> You can control the port assigned by manually setting it in `apps/condo/.env` file. 
-> Default one is assigned by prepare script during the prepare step
-> (You can verify the `SERVER_URL` and `PORT` in the `apps/condo/.env` file)
+```bash
+yarn workspace @app/condo start:frontend
+```
+
+Now open your browser and navigate to http://localhost:3000, where you should see the app running 🥳.
 
 To log in, go to http://localhost:4006/admin/signin and enter the following credentials:
+
 - **Email:** `DEFAULT_TEST_ADMIN_IDENTITY`
 - **Password:** `DEFAULT_TEST_ADMIN_SECRET`
 
 These credentials can be found in the `app/condo/.env` file, which is generated by the `./bin/prepare.js` script.
-
-### 7. Start the worker
-
-Worker is a separate process that handles asynchronous tasks (such as sending notifications, importing, exporting and others)
-
-To run it, you need to first build the application using:
-```bash
-yarn workspace @app/condo build
-```
-
-And then start it using:
-```bash
-yarn workspace @app/condo worker
-```
-
-## Major version migration guide
-
-Check [migration.md](docs/migration.md)
-
-## Developing
-
-Check [developing.md](docs/develop.md)
-
-## Contributing
-
-Check [contributing.md](docs/contributing.md)
-
-## Major versions migration guide
-
-Check [migration.md](docs/migration.md)
-
-
-## Deploying
-
-Check [deploy.md](docs/deploy.md)

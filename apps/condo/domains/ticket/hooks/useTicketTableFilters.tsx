@@ -49,7 +49,9 @@ import {
 } from './useModalFilterClassifiers'
 
 
+const filterTitle =  getStringContainsFilter('title')
 const filterNumber = getNumberFilter('number')
+const filterPriority = getNumberFilter('priority')
 const filterCreatedAtRange = getDayRangeFilter('createdAt')
 const filterDeadlineRange = getDayRangeFilter('deadline')
 const filterCompletedAtRange = getDayRangeFilter('completedAt')
@@ -95,7 +97,7 @@ export function useTicketTableFilters (): Array<FiltersMeta<TicketWhereInput, Ti
     const CompletedAtMessage = intl.formatMessage({ id: 'pages.condo.ticket.filters.CompletedAt' })
     const CompleteBeforeMessage = intl.formatMessage({ id: 'ticket.deadline.CompleteBefore' })
     const StatusMessage =  intl.formatMessage({ id: 'Status' })
-    const DescriptionMessage = intl.formatMessage({ id: 'Description' })
+    const DescriptionMessage = intl.formatMessage({ id: 'Title' })
     const AddressMessage = intl.formatMessage({ id: 'field.Address' })
     const EnterAddressMessage = intl.formatMessage({ id: 'pages.condo.meter.EnterAddress' })
     const UserNameMessage = intl.formatMessage({ id: 'filters.UserName' })
@@ -199,6 +201,7 @@ export function useTicketTableFilters (): Array<FiltersMeta<TicketWhereInput, Ti
             {
                 keyword: 'search',
                 filters: [
+                    filterTitle,
                     filterNumber,
                     filterClientName,
                     filterAddressForSearch,
@@ -223,7 +226,7 @@ export function useTicketTableFilters (): Array<FiltersMeta<TicketWhereInput, Ti
             },
             {
                 keyword: 'details',
-                filters: [filterDetails],
+                filters: [filterTitle],
                 component: {
                     type: ComponentType.Input,
                     props: {
@@ -244,6 +247,16 @@ export function useTicketTableFilters (): Array<FiltersMeta<TicketWhereInput, Ti
             {
                 keyword: 'number',
                 filters: [filterNumber],
+                component: {
+                    type: ComponentType.Input,
+                    props: {
+                        placeholder: NumberMessage,
+                    },
+                },
+            },
+            {
+                keyword: 'priority',
+                filters: [filterPriority],
                 component: {
                     type: ComponentType.Input,
                     props: {

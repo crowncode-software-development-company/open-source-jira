@@ -84,33 +84,6 @@ const OrganizationEmployeeItem: React.FC<IOrganizationEmployeeItem> = (props) =>
                         )}
                     />
                 </Col>
-                <Col lg={5} xs={10}>
-                    <Typography.Text type='secondary'>
-                        {TinMessage}
-                    </Typography.Text>
-                </Col>
-                <Col lg={18} xs={12} offset={1}>
-                    <NotDefinedField value={get(employee, ['organization', 'tin'])} />
-                </Col>
-                <Col lg={5} xs={10}>
-                    <Typography.Text type='secondary'>
-                        {PositionMessage}
-                    </Typography.Text>
-                </Col>
-                <Col lg={18} xs={12} offset={1}>
-                    <NotDefinedField value={get(employee, ['position'])} />
-                </Col>
-                <Col lg={5} xs={10}>
-                    <Typography.Text type='secondary'>
-                        {RoleMessage}
-                    </Typography.Text>
-                </Col>
-                <Col lg={18} xs={12} offset={1}>
-                    <NotDefinedField
-                        value={get(employee, ['role', 'name'])}
-                        render={(roleName) => (<Tag children={roleName as string} />)}
-                    />
-                </Col>
             </Row>
         </Col>
     )
@@ -136,7 +109,7 @@ export const UserOrganizationsList: React.FC<UserOrganizationsListProps> = ({ us
     }, [userOrganizations])
 
     return (
-        <Row gutter={[0, 60]}>
+        <Row gutter={[0, 30]}>
             {
                 !allDataLoaded ? <Skeleton active /> : list
             }

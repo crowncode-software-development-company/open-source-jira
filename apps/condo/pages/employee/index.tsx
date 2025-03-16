@@ -66,7 +66,6 @@ export const EmployeesPageContent = ({
         }
     `
 
-
     const handleRowAction = useCallback((record) => {
         return {
             onClick: () => {

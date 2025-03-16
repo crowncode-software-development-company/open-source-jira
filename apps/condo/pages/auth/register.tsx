@@ -5,8 +5,8 @@ import qs from 'qs'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 
 import { useIntl } from '@open-condo/next/intl'
+import { Button } from '@open-condo/ui'
 
-import { Button } from '@condo/domains/common/components/Button'
 import { BasicEmptyListView } from '@condo/domains/common/components/EmptyListView'
 import { fontSizes } from '@condo/domains/common/constants/style'
 import { PageComponentType } from '@condo/domains/common/types'
@@ -16,15 +16,7 @@ import { RegisterContext, RegisterContextProvider } from '@condo/domains/user/co
 import { RegisterForm } from '@condo/domains/user/components/auth/RegisterForm'
 import { ValidatePhoneForm } from '@condo/domains/user/components/auth/ValidatePhoneForm'
 import AuthLayout from '@condo/domains/user/components/containers/AuthLayout'
-import { WelcomeHeaderTitle } from '@condo/domains/user/components/UserWelcomeTitle'
 
-
-const HeaderAction = () => {
-    const router = useRouter()
-    return router.query.step == 'inputPhone' && (
-        <WelcomeHeaderTitle/>
-    )
-}
 
 const RegisterPage: PageComponentType = () => {
     const intl = useIntl()
@@ -75,8 +67,7 @@ const RegisterPage: PageComponentType = () => {
                     {PhoneConfirmTokenErrorMessage}
                 </Typography.Text>
                 <Button
-                    type='sberPrimary'
-                    style={{ marginTop: '16px' }}
+                    type='primary'
                     onClick={() => {
                         setToken(null)
                         setTokenError(null)
@@ -112,8 +103,6 @@ const RegisterPage: PageComponentType = () => {
         </>
     )
 }
-
-RegisterPage.headerAction = <HeaderAction/>
 
 RegisterPage.container = AuthLayout
 RegisterPage.skipUserPrefetch = true
