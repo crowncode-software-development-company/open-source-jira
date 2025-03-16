@@ -573,42 +573,6 @@ const USER_WITH_RIGHTS_SET = gql`
 `
 
 const TicketAutoAssignmentPermissionRequired: React.FC = ({ children }) => {
-    const { user } = useAuth()
-    const userId = get(user, 'id', null)
-
-    const { useFlag } = useFeatureFlags()
-    const hasTicketAutoAssignmentManagementFeature = useFlag(TICKET_AUTO_ASSIGNMENT_MANAGEMENT)
-
-    const { loading, error, data } = useQuery(USER_WITH_RIGHTS_SET, {
-        variables: {
-            userId: userId,
-        },
-        skip: !user,
-    })
-    const userWithRightSets = useMemo(() => {
-        if (!data && (loading || error)) return null
-        const objs = get(data, 'objs')
-        if (!isArray(objs) || objs.length !== 1) {
-            console.warn('Should be 1 item userWithRightSets')
-            return null
-        }
-        return objs[0]
-    }, [data, error, loading])
-
-    const canDirectlyManage = useMemo(
-        () => get(userWithRightSets, 'rightsSet.canManageTicketAutoAssignments')
-            && get(userWithRightSets, 'rightsSet.canReadTicketAutoAssignments'),
-        [userWithRightSets]
-    )
-
-    if (loading || error) {
-        return <LoadingOrErrorPage loading={loading} error={error} />
-    }
-
-    if (canDirectlyManage || hasTicketAutoAssignmentManagementFeature) {
-        return <PermissionsRequired permissionKeys={[]} children={children} />
-    }
-
     return <AccessDeniedPage />
 }
 

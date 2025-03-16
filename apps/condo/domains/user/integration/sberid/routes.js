@@ -119,7 +119,7 @@ class SberIdRoutes {
             return res.redirect(SBER_ID_CONFIG.residentRedirectUri || '/')
         } else if (isNil(redirectUrl)) {
             // staff entry page
-            return res.redirect('/tour')
+            return res.redirect('/kanban')
         } else {
             // specified redirect page (mobile app case)
             const link = new URL(redirectUrl)

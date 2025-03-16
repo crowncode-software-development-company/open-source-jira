@@ -11,6 +11,7 @@ import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
 import { ActionBar, Button } from '@open-condo/ui'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import {
     DeleteButtonWithConfirmModal,
@@ -163,67 +164,7 @@ const PropertyScopeIdPage: PageComponentType = () => {
         return <Loader />
     }
 
-    return (
-        <>
-            <Head>
-                <title>{PropertyScopeTitle}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <Row gutter={BIG_VERTICAL_GUTTER}>
-                        <Col span={24}>
-                            <Typography.Title>{PropertyScopeTitle}</Typography.Title>
-                        </Col>
-                        <Col span={24}>
-                            <Row gutter={MEDIUM_VERTICAL_GUTTER}>
-                                <Col span={24}>
-                                    <PageFieldRow title={NameMessage}>
-                                        {propertyScopeName}
-                                    </PageFieldRow>
-                                </Col>
-                                <Col span={24}>
-                                    <PageFieldRow title={PropertiesMessage}>
-                                        {renderPropertyScopeProperties}
-                                    </PageFieldRow>
-                                </Col>
-                                <Col span={24}>
-                                    <PageFieldRow title={EmployeesMessage}>
-                                        {renderPropertyScopeEmployees}
-                                    </PageFieldRow>
-                                </Col>
-                            </Row>
-                        </Col>
-                        {
-                            canManagePropertyScopes && (
-                                <Col span={24}>
-                                    <ActionBar
-                                        actions={[
-                                            <Link key='edit' href={`/settings/propertyScope/${scopeId}/update`}>
-                                                <Button
-                                                    type='primary'
-                                                    id='PropertyScopeVisitUpdate'
-                                                >
-                                                    {EditMessage}
-                                                </Button>
-                                            </Link>,
-                                            <DeleteButtonWithConfirmModal
-                                                key='delete'
-                                                title={ConfirmDeleteTitle}
-                                                message={ConfirmDeleteMessage}
-                                                okButtonLabel={DeleteMessage}
-                                                action={handleDeleteButtonClick}
-                                                buttonContent={DeleteMessage}
-                                            />,
-                                        ]}
-                                    />
-                                </Col>
-                            )
-                        }
-                    </Row>
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage/>
 }
 
 PropertyScopeIdPage.requiredAccess = SettingsReadPermissionRequired

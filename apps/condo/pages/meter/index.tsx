@@ -11,6 +11,7 @@ import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
 import { Radio, RadioGroup, Tabs, Typography } from '@open-condo/ui'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageHeader, PageWrapper, useLayoutContext } from '@condo/domains/common/components/containers/BaseLayout'
 import { useTracking } from '@condo/domains/common/components/TrackingContext'
 import { useGlobalHints } from '@condo/domains/common/hooks/useGlobalHints'
@@ -228,33 +229,7 @@ const MetersPage: PageComponentType = () => {
         },
     ].filter(Boolean), [MeterReadingMessage, activeType, filtersForMeterReadingsMeta, isLoading, canManageMeterReadings, baseMeterReadingsQuery, MeterMessage, filtersForMetersMeta, canManageMeters, baseMetersQuery, ReportingPeriodMessage, userOrganizationId])
 
-    return (
-        <MultipleFilterContextProvider>
-            <Head>
-                <title>{PageTitleMessage}</title>
-            </Head>
-            <StyledPageWrapper>
-                {GlobalHints}
-                <div style={{ ...PAGE_DIV_STYLE, gap: breakpoints.TABLET_LARGE ? '40px' : '24px' }}>
-                    <Row justify='space-between' align='middle' gutter={MEDIUM_VERTICAL_ROW_GUTTER}>
-                        <Col>
-                            <PageHeader title={<Typography.Title>{PageTitleMessage}</Typography.Title>} style={HEADER_STYLES}/>
-                        </Col>
-                        <Col>
-                            <MeterTypeSwitch defaultValue={METER_TYPES.unit} activeTab={activeTab}/>
-                        </Col>
-                    </Row>
-                    <Tabs
-                        defaultActiveKey={METER_TAB_TYPES.meterReading}
-                        activeKey={tab}
-                        onChange={handleTabChange}
-                        items={tabItems}
-                        destroyInactiveTabPane
-                    />
-                </div>
-            </StyledPageWrapper>
-        </MultipleFilterContextProvider>
-    )
+    return <AccessDeniedPage/>
 }
 
 MetersPage.requiredAccess = MeterReadPermissionRequired

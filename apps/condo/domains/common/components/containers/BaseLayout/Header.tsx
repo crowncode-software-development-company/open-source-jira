@@ -97,11 +97,6 @@ export const Header: React.FC<IHeaderProps> = (props) => {
                                     <div className='appeals-bar'>
                                         <Menu size='large' onClick={toggleCollapsed}/>
                                         <Logo onClick={handleLogoClick} minified/>
-                                        <div>
-                                            {hasAccessToAppeals && (
-                                                <ResidentActions minified/>
-                                            )}
-                                        </div>
                                     </div>
                                 </Layout.Header>
                             </>

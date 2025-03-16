@@ -32,7 +32,8 @@ export const ApplyChangesActionBar = ({ handleSave, isLoading, form }) => {
 
     const { push, query: { id } } = useRouter()
     const onCancel = useCallback(() => {
-        push(`/ticket/${id}`)
+        return null
+        // push(`/ticket/${id}`)
     }, [id, push])
 
     const { ticketSetting, ticketSettingLoading } = useTicketFormContext()
@@ -215,9 +216,7 @@ export const UpdateTicketForm: React.FC<IUpdateTicketForm> = ({ id }) => {
             initialValues={initialValues}
             organization={get(obj, 'organization')}
             files={files}
-            afterActionCompleted={(ticket) => {
-                replace(`/ticket/${ticket.id}`)
-            }}
+            afterActionCompleted={(ticket) => null}
             isExisted={Boolean(obj)}
         >
             {({ handleSave, isLoading, form }) => <ApplyChangesActionBar handleSave={handleSave} isLoading={isLoading} form={form} />}

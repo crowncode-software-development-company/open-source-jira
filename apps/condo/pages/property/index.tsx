@@ -13,6 +13,7 @@ import React, { useMemo } from 'react'
 import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import {
     PageHeader,
     PageWrapper,
@@ -90,14 +91,7 @@ const PropertiesPage: PageComponentType = () => {
         deletedAt: null,
     }), [organization.id])
 
-    return (
-        <PropertiesContent
-            baseSearchQuery={baseSearchQuery}
-            propertiesTableColumns={propertiesTableColumns}
-            propertyFilterMeta={propertyFilterMeta}
-            role={role}
-        />
-    )
+    return <AccessDeniedPage/>
 }
 
 PropertiesPage.requiredAccess = OrganizationRequired

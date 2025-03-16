@@ -16,6 +16,7 @@ import TicketChartView from '@condo/domains/analytics/components/TicketChartView
 import TicketListView from '@condo/domains/analytics/components/TicketListView'
 import { TICKET_ANALYTICS_REPORT_QUERY } from '@condo/domains/analytics/gql'
 import { filterToQuery, getAggregatedData, GroupTicketsByTypes } from '@condo/domains/analytics/utils/helpers'
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { Loader } from '@condo/domains/common/components/Loader'
 import { Logo } from '@condo/domains/common/components/Logo'
 import { PageComponentType } from '@condo/domains/common/types'
@@ -500,54 +501,7 @@ const PdfView = () => {
     if (addressListParsed.length > 1) {
         addressFilterTitle = ManyAddresses
     }
-    return <>
-        {loading && <Loader fill spinning tip={LoadingTip} /> }
-        <Row
-            ref={containerRef}
-            gutter={[0, 40]}
-            style={{ width: PDF_REPORT_WIDTH, paddingLeft: 80, paddingRight: 120, pointerEvents: 'none' }}
-        >
-            <Col flex={1} style={{ visibility: loading ? 'hidden' : 'visible', position: 'relative' }}>
-                <Typography.Paragraph style={{ position: 'absolute', top: 0, right: 0 }}>
-                    <Logo />
-                </Typography.Paragraph>
-                {chartLoading &&
-                    <Typography.Paragraph>
-                        <Loader fill spinning tip={LoadingTip} />
-                    </Typography.Paragraph>
-                }
-                <Typography.Title level={3}>{PageTitle}</Typography.Title>
-                <Typography.Title level={4}>
-                    {ticketTypeTitle} {dayjs(dateFrom).format('DD.MM.YYYY')} - {dayjs(dateTo).format('DD.MM.YYYY')} {addressFilterTitle} {AllCategories}
-                </Typography.Title>
-                <TicketChartView
-                    data={data}
-                    viewMode={viewMode}
-                    onChartReady={() => setChartLoading(false)}
-                    mapperInstance={mapperInstanceRef.current}
-                    chartConfig={{
-                        animationEnabled: false,
-                        chartOptions: { renderer: 'svg', height: viewMode === 'line' ? 400 : 'auto' },
-                    }}
-                />
-            </Col>
-            <Col flex={1} >
-                <TicketListView
-                    mapperInstance={mapperInstanceRef.current}
-                    data={data}
-                    viewMode={viewMode}
-                    filters={{
-                        range: [dateFrom, dateTo],
-                        addressList: addressListParsed,
-                        specification: specification,
-                        classifierList: JSON.parse(categoryClassifierList),
-                        executorList: JSON.parse(executorList),
-                        responsibleList: JSON.parse(assigneeList),
-                    }}
-                />
-            </Col>
-        </Row>
-    </>
+    return <AccessDeniedPage/>
 }
 
 const DynamicPdfView = dynamic(() => Promise.resolve(PdfView), { ssr: false })

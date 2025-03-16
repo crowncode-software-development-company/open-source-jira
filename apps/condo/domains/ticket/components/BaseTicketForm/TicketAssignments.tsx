@@ -214,7 +214,7 @@ const TicketAssignments = ({
                 <Col span={24}>
                     <Typography.Title level={3}>{TicketAssignmentTitle}</Typography.Title>
                 </Col>
-                <Col span={!breakpoints.TABLET_LARGE ? 24 : 18}>
+                <Col span={!breakpoints.TABLET_LARGE ? 18 : 18}>
                     <Row justify='space-between' gutter={[0, 12]}>
                         {
                             autoAssign && !loading && propertyId && categoryClassifier && organizationId && (

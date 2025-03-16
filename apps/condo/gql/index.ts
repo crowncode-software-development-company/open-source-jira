@@ -1767,6 +1767,7 @@ export const GetActualOrganizationEmployeesDocument = gql`
     first: 500
   ) {
     id
+    name
     organization {
       id
       name
@@ -2508,6 +2509,10 @@ export const GetTicketsDocument = gql`
     statusUpdatedAt
     completedAt
     deadline
+    title
+    kanbanOrder
+    priority
+    customClassifier
     lastResidentCommentAt
     lastCommentWithResidentTypeAt
     propertyAddressMeta {
@@ -2522,6 +2527,7 @@ export const GetTicketsDocument = gql`
     details
     clientName
     clientPhone
+    deferredUntil
     classifier {
       id
       category {
@@ -2816,6 +2822,7 @@ export const GetTicketByIdDocument = gql`
       ...AddressMetaForTableAddress
     }
     createdAt
+    updatedAt
     isEmergency
     isPayable
     isWarranty
@@ -2841,6 +2848,10 @@ export const GetTicketByIdDocument = gql`
     clientPhone
     details
     isPayable
+    title
+    kanbanOrder
+    priority
+    customClassifier
     organization {
       id
       type
@@ -2849,9 +2860,11 @@ export const GetTicketByIdDocument = gql`
       country
     }
     assignee {
+      name
       id
     }
     executor {
+      name
       id
     }
     property {

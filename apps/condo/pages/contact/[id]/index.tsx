@@ -18,6 +18,7 @@ import { useOrganization } from '@open-condo/next/organization'
 import { ActionBar, Button, Typography } from '@open-condo/ui'
 
 import Checkbox from '@condo/domains/common/components/antd/Checkbox'
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageWrapper, useLayoutContext } from '@condo/domains/common/components/containers/BaseLayout'
 import LoadingOrErrorPage from '@condo/domains/common/components/containers/LoadingOrErrorPage'
 import { DeleteButtonWithConfirmModal } from '@condo/domains/common/components/DeleteButtonWithConfirmModal'
@@ -260,13 +261,7 @@ const ContactInfoPage: PageComponentType = () => {
 
     const isContactEditable = role?.canManageContacts
 
-    return (
-        <ContactPageContent
-            contact={contact}
-            isContactEditable={isContactEditable}
-            softDeleteAction={handleDeleteAction}
-        />
-    )
+    return <AccessDeniedPage/>
 }
 
 ContactInfoPage.requiredAccess = ContactsReadPermissionRequired

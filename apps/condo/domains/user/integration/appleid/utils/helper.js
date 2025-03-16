@@ -113,7 +113,7 @@ async function authorizeUser (req, res, context, userId) {
         return res.redirect(APPLE_ID_CONFIG.residentRedirectUri || '/')
     } else if (isNil(redirectUrl)) {
         // staff entry page
-        return res.redirect('/tour')
+        return res.redirect('/kanban')
     } else {
         // specified redirect page (mobile app case)
         const link = new URL(redirectUrl)

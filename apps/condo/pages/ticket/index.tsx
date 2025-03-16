@@ -1,44 +1,32 @@
 /** @jsx jsx */
 import {
-    useGetCallRecordFragmentExistenceQuery,
     useGetTicketExistenceQuery,
-    useGetTicketsCountersByStatusQuery,
     useGetTicketsCountLazyQuery,
     useGetTicketsCountQuery,
     useGetTicketsQuery,
 } from '@app/condo/gql'
-import { SortTicketsBy, Ticket as ITicket, TicketStatusTypeType } from '@app/condo/schema'
+import { SortTicketsBy, TicketStatusTypeType } from '@app/condo/schema'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
-import { Col, Row, RowProps } from 'antd'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
-import { TableRowSelection } from 'antd/lib/table/interface'
-import debounce from 'lodash/debounce'
+import { Col, Modal, Row, RowProps } from 'antd'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 import isNull from 'lodash/isNull'
 import isNumber from 'lodash/isNumber'
-import isString from 'lodash/isString'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import Head from 'next/head'
-import Link from 'next/link'
-import { NextRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { TableComponents } from 'rc-table/lib/interface'
-import React, { CSSProperties, Key, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useCachePersistor } from '@open-condo/apollo'
-import { useDeepCompareEffect } from '@open-condo/codegen/utils/useDeepCompareEffect'
 import { useFeatureFlags } from '@open-condo/featureflags/FeatureFlagsContext'
-import { Search, Close, Phone } from '@open-condo/icons'
-import { useAuth } from '@open-condo/next/auth'
+import { PlusCircle, Search } from '@open-condo/icons'
 import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
-import { ActionBar, Typography, Button, RadioGroup, Radio, Space } from '@open-condo/ui'
+import { Typography, RadioGroup, Radio, Space } from '@open-condo/ui'
 // TODO(DOMA-4844): Replace with @open-condo/ui/colors
 import { colors } from '@open-condo/ui/dist/colors'
 
-import Checkbox from '@condo/domains/common/components/antd/Checkbox'
 import Input from '@condo/domains/common/components/antd/Input'
 import { PageHeader, PageWrapper, useLayoutContext } from '@condo/domains/common/components/containers/BaseLayout'
 import { TablePageContent } from '@condo/domains/common/components/containers/BaseLayout/BaseLayout'
@@ -51,17 +39,12 @@ import { TableFiltersContainer } from '@condo/domains/common/components/TableFil
 import { useTracking } from '@condo/domains/common/components/TrackingContext'
 import { useWindowTitleContext, WindowTitleContextProvider } from '@condo/domains/common/components/WindowTitleContext'
 import { EMOJI } from '@condo/domains/common/constants/emoji'
-import { EXCEL } from '@condo/domains/common/constants/export'
 import { TICKET_IMPORT } from '@condo/domains/common/constants/featureflags'
-import { fontSizes } from '@condo/domains/common/constants/style'
 import { useAudio } from '@condo/domains/common/hooks/useAudio'
-import { useCheckboxSearch } from '@condo/domains/common/hooks/useCheckboxSearch'
-import { useContainerSize } from '@condo/domains/common/hooks/useContainerSize'
 import { useGlobalHints } from '@condo/domains/common/hooks/useGlobalHints'
 import {
     MultipleFilterContextProvider,
     FiltersTooltip,
-    useMultipleFiltersModal,
 } from '@condo/domains/common/hooks/useMultipleFiltersModal'
 import { usePreviousSortAndFilters } from '@condo/domains/common/hooks/usePreviousQueryParams'
 import { useQueryMappers } from '@condo/domains/common/hooks/useQueryMappers'
@@ -70,9 +53,10 @@ import { PageComponentType } from '@condo/domains/common/types'
 import { getFiltersQueryData } from '@condo/domains/common/utils/filters.utils'
 import { updateQuery } from '@condo/domains/common/utils/helpers'
 import { getPageIndexFromOffset, parseQuery } from '@condo/domains/common/utils/tables.utils'
+import ProjectTicketCreate from '@condo/domains/kanban/components/TicketCreate/TicketCreate'
+import ProjectBoardTicketDetails from '@condo/domains/kanban/components/TicketDetails'
+import Button from '@condo/domains/kanban/ui/Button'
 import { TicketReadPermissionRequired } from '@condo/domains/ticket/components/PageAccess'
-import { TicketStatusFilter } from '@condo/domains/ticket/components/TicketStatusFilter/TicketStatusFilter'
-import { MAX_TICKET_BLANKS_EXPORT } from '@condo/domains/ticket/constants/export'
 import {
     AutoRefetchTicketsContextProvider,
     useAutoRefetchTickets,
@@ -82,14 +66,10 @@ import {
     useFavoriteTickets,
 } from '@condo/domains/ticket/contexts/FavoriteTicketsContext'
 import { useTicketVisibility } from '@condo/domains/ticket/contexts/TicketVisibilityContext'
-import { useBooleanAttributesSearch } from '@condo/domains/ticket/hooks/useBooleanAttributesSearch'
 import { useFiltersTooltipData } from '@condo/domains/ticket/hooks/useFiltersTooltipData'
 import { useImporterFunctions } from '@condo/domains/ticket/hooks/useImporterFunctions'
 import { useTableColumns } from '@condo/domains/ticket/hooks/useTableColumns'
-import { useTicketExportToExcelTask } from '@condo/domains/ticket/hooks/useTicketExportToExcelTask'
-import { useTicketExportToPdfTask } from '@condo/domains/ticket/hooks/useTicketExportToPdfTask'
 import { useTicketTableFilters } from '@condo/domains/ticket/hooks/useTicketTableFilters'
-import { TicketFilterTemplate } from '@condo/domains/ticket/utils/clientSchema'
 import { IFilters } from '@condo/domains/ticket/utils/helpers'
 
 
@@ -98,8 +78,7 @@ type TicketType = 'all' | 'own' | 'favorite'
 const LARGE_VERTICAL_ROW_GUTTER: RowProps['gutter'] = [0, 40]
 const MEDIUM_VERTICAL_ROW_GUTTER: RowProps['gutter'] = [0, 24]
 const HEADER_STYLES: CSSProperties = { padding: 0 }
-const CHECKBOX_STYLE: CSSProperties = { paddingLeft: '0px', fontSize: fontSizes.label }
-const DEBOUNCE_TIMEOUT = 400
+
 
 const StyledTable = styled(Table)`
   .ant-checkbox-input {
@@ -122,6 +101,7 @@ const StyledTable = styled(Table)`
 
   .number-column {
     padding-left: 0;
+    border-top-left-radius: 10px;
   }
 
   .favorite-column {
@@ -133,18 +113,6 @@ const StyledTable = styled(Table)`
   }
 `
 
-const getInitialSelectedTicketKeys = (router: NextRouter) => {
-    if ('selectedTicketIds' in router.query && isString(router.query.selectedTicketIds)) {
-        try {
-            return JSON.parse(router.query.selectedTicketIds as string)
-        } catch (error) {
-            console.warn('Failed to parse property value "selectedTicketIds"', error)
-            return []
-        }
-    }
-    return []
-}
-
 const TicketTable = ({
     sortBy,
     total,
@@ -155,123 +123,19 @@ const TicketTable = ({
     searchTicketsQuery,
     TicketImportButton,
 }) => {
-    const intl = useIntl()
-    const CancelSelectedTicketLabel = intl.formatMessage({ id: 'global.cancelSelection' })
-    const CountSelectedTicketLabel = intl.formatMessage({ id: 'pages.condo.ticket.index.CountSelectedTicket' })
-
-    const { getTrackingWrappedCallback } = useTracking()
-    const timeZone = intl.formatters.getDateTimeFormat().resolvedOptions().timeZone
-
-    const auth = useAuth() as { user: { id: string } }
-    const user = get(auth, 'user')
-
     const router = useRouter()
 
     const tooltipData = useFiltersTooltipData()
 
-    const [selectedTicketKeys, setSelectedTicketKeys] = useState<Key[]>(() => getInitialSelectedTicketKeys(router))
-
-    const changeQuery = useMemo(() => debounce(async (router: NextRouter, selectedTicketKeys: React.Key[]) => {
-        await updateQuery(router, { newParameters: { selectedTicketIds: selectedTicketKeys } }, {
-            routerAction: 'replace',
-            resetOldParameters: false,
-            shallow: true,
-        })
-    }, DEBOUNCE_TIMEOUT), [])
-
-    const updateSelectedTicketKeys = useCallback((selectedTicketKeys: Key[]) => {
-        setSelectedTicketKeys(selectedTicketKeys)
-        changeQuery(router, selectedTicketKeys)
-    }, [changeQuery, router])
-
-    const selectedRowKeysByPage = useMemo(() => {
-        return tickets.filter(ticket => selectedTicketKeys.includes(ticket.id)).map(tickets => tickets.id)
-    }, [selectedTicketKeys, tickets])
-
-    const isSelectedAllRowsByPage = !loading && selectedRowKeysByPage.length > 0 && selectedRowKeysByPage.length === tickets.length
-    const isSelectedSomeRowsByPage = !loading && selectedRowKeysByPage.length > 0 && selectedRowKeysByPage.length < tickets.length
-
-    const selectedOneTicketId = useMemo(() => {
-        if (selectedTicketKeys.length !== 1) return undefined
-        return String(selectedTicketKeys[0])
-    }, [selectedTicketKeys])
-
-    const exportToExcelTicketsWhere = useMemo(() => !isEmpty(selectedTicketKeys) ?
-        { ...searchTicketsQuery, 'id_in': selectedTicketKeys } : searchTicketsQuery,
-    [searchTicketsQuery, selectedTicketKeys])
-
-    const { TicketsExportToXlsxButton } = useTicketExportToExcelTask({
-        where: exportToExcelTicketsWhere,
-        sortBy,
-        format: EXCEL,
-        locale: intl.locale,
-        timeZone,
-        user: auth.user,
-    })
-
-    const { TicketBlanksExportToPdfModal, TicketBlanksExportToPdfButton } = useTicketExportToPdfTask({
-        ticketId: selectedOneTicketId,
-        where: {
-            ...searchTicketsQuery,
-            'id_in': selectedTicketKeys as string[],
-        },
-        sortBy,
-        user,
-        timeZone,
-        locale: intl.locale,
-        eventNamePrefix: 'TicketIndex',
-    })
-
     const handleRowAction = useCallback((record) => {
         return {
             onClick: async () => {
-                await router.push(`/ticket/${record.id}/`)
+                const currentUrl = new URL(window.location.href)
+                currentUrl.searchParams.set('ticketId', record.id)
+                await router.push(currentUrl.toString(), undefined, { shallow: true })
             },
         }
     }, [router])
-
-    const handleResetSelectedTickets = useCallback(() => {
-        updateSelectedTicketKeys([])
-    }, [updateSelectedTicketKeys])
-
-    const handleSelectAllRowsByPage = useCallback((e: CheckboxChangeEvent) => {
-        const checked = e.target.checked
-        if (checked) {
-            const newSelectedTicketKeys = tickets
-                .filter(ticket => !selectedRowKeysByPage.includes(ticket.id))
-                .map(ticket => ticket.id)
-            updateSelectedTicketKeys([...selectedTicketKeys, ...newSelectedTicketKeys])
-        } else {
-            updateSelectedTicketKeys(selectedTicketKeys.filter(key => !selectedRowKeysByPage.includes(key)))
-        }
-    }, [tickets, updateSelectedTicketKeys, selectedTicketKeys, selectedRowKeysByPage])
-
-    const handleSelectRow: (record: ITicket, checked: boolean) => void = useCallback((record, checked) => {
-        const selectedKey = record.id
-        if (checked) {
-            updateSelectedTicketKeys([...selectedTicketKeys, selectedKey])
-        } else {
-            updateSelectedTicketKeys(selectedTicketKeys.filter(key => selectedKey !== key))
-        }
-    }, [selectedTicketKeys, updateSelectedTicketKeys])
-
-    const handleSelectRowWithTracking = useMemo(
-        () => getTrackingWrappedCallback('TicketTableCheckboxSelectRow', null, handleSelectRow),
-        [getTrackingWrappedCallback, handleSelectRow])
-
-    const rowSelection: TableRowSelection<ITicket> = useMemo(() => ({
-        selectedRowKeys: selectedRowKeysByPage,
-        fixed: true,
-        onSelect: handleSelectRowWithTracking,
-        columnTitle: (
-            <Checkbox
-                checked={isSelectedAllRowsByPage}
-                indeterminate={isSelectedSomeRowsByPage}
-                onChange={handleSelectAllRowsByPage}
-                eventName='TicketTableCheckboxSelectAll'
-            />
-        ),
-    }), [handleSelectAllRowsByPage, handleSelectRowWithTracking, isSelectedAllRowsByPage, isSelectedSomeRowsByPage, selectedRowKeysByPage])
 
     const tableComponents: TableComponents<TableRecord> = useMemo(() => ({
         body: {
@@ -287,11 +151,6 @@ const TicketTable = ({
         },
     }), [tooltipData, filters, tickets, total])
 
-    useDeepCompareEffect(() => {
-        if (total === null) return
-        setSelectedTicketKeys([])
-    }, [filters, sortBy])
-
     return (
         <Row gutter={[0, 40]}>
             <Col span={24}>
@@ -303,40 +162,9 @@ const TicketTable = ({
                     onRow={handleRowAction}
                     components={tableComponents}
                     data-cy='ticket__table'
-                    rowSelection={rowSelection}
                     sticky
                 />
             </Col>
-            {
-                !loading && total > 0 && (
-                    <Col span={24}>
-                        <ActionBar
-                            message={selectedTicketKeys.length > 0 && `${CountSelectedTicketLabel}: ${selectedTicketKeys.length}`}
-                            actions={[
-                                selectedTicketKeys.length > 0 && (
-                                    <TicketBlanksExportToPdfButton
-                                        key='exportToPdf'
-                                        disabled={selectedTicketKeys.length > MAX_TICKET_BLANKS_EXPORT}
-                                    />
-                                ),
-                                selectedTicketKeys.length < 1 && TicketImportButton && TicketImportButton,
-                                // nosemgrep: generic.secrets.gitleaks.generic-api-key.generic-api-key
-                                <TicketsExportToXlsxButton key='exportToXlsx'/>,
-                                selectedTicketKeys.length > 0 && (
-                                    <Button
-                                        key='cancelSelectedTicket'
-                                        type='secondary'
-                                        children={CancelSelectedTicketLabel}
-                                        onClick={handleResetSelectedTickets}
-                                        icon={<Close size='medium'/>}
-                                    />
-                                ),
-                            ]}
-                        />
-                    </Col>
-                )
-            }
-            {TicketBlanksExportToPdfModal}
         </Row>
     )
 }
@@ -351,10 +179,10 @@ const TicketsTableContainer = ({
     playSoundOnNewTickets,
 }) => {
     const intl = useIntl()
-
+    const [isTicketOpen, setIsTicketOpen] = useState(false)
+    const [isTicketCreateOpen, setIsTicketCreateOpen] = useState(false)
     const router = useRouter()
     const { filters, offset } = useMemo(() => parseQuery(router.query), [router.query])
-
     const [isRefetching, setIsRefetching] = useState(false)
     const ticketsCountRef = useRef(null)
     const audio = useAudio()
@@ -424,39 +252,64 @@ const TicketsTableContainer = ({
     } = useTableColumns(filterMetas, tickets, refetchTickets, isRefetching, setIsRefetching)
 
     useEffect(() => {
+        if (router.query.ticketId && !isTicketOpen) {  
+            setIsTicketOpen(true)
+        }  else if (router.query['create-modal']) {
+            setIsTicketCreateOpen(true)
+        }
+    }, [router.query]) 
+
+    useEffect(() => {
         if (playSoundOnNewTickets) {
             loadNewTicketCount()
         }
     }, [loadNewTicketCount, playSoundOnNewTickets])
 
-    const loading = (isTicketsFetching || columnsLoading || baseQueryLoading) && !isRefetching
+    const handleCloseModals = async () => {
+        setIsTicketCreateOpen(false)
+        setIsTicketOpen(false)
+        const newQuery = router.query
+        delete newQuery.ticketId
+        delete newQuery['create-modal'] 
+
+        await router.push({
+            pathname: router.pathname,
+            query: newQuery,
+        }, undefined, { shallow: true })
+    }
+
+    const loading = (isTicketsFetching || columnsLoading || baseQueryLoading) && !isRefetching 
 
     return (
-        <TicketTable
-            filters={filters}
-            total={total}
-            tickets={tickets}
-            loading={loading}
-            columns={columns}
-            searchTicketsQuery={searchTicketsQuery}
-            sortBy={sortBy}
-            TicketImportButton={TicketImportButton}
-        />
+        <>
+            <Modal zIndex={100} width={1040} open={isTicketCreateOpen} onCancel={handleCloseModals} closable={false} footer={null} style={{ top: 10, padding: 5 }} transitionName=''>
+                <ProjectTicketCreate closeModal={handleCloseModals} refetchTicketsBoard={refetchTickets}/>
+            </Modal>
+            <Modal zIndex={100} width={1040} open={isTicketOpen} onCancel={handleCloseModals} footer={null} style={{ top: 20 }} closable={false} transitionName=''>
+                <ProjectBoardTicketDetails handleCloseModals = {handleCloseModals} refetchTicketsBoard={refetchTickets}/>
+            </Modal>
+            <TicketTable
+                filters={filters}
+                total={total}
+                tickets={tickets}
+                loading={loading}
+                columns={columns}
+                searchTicketsQuery={searchTicketsQuery}
+                sortBy={sortBy}
+                TicketImportButton={TicketImportButton}
+            />
+        </>
     )
 }
 
-const SORTABLE_PROPERTIES = ['number', 'status', 'order', 'details', 'property', 'unitName', 'assignee', 'executor', 'createdAt', 'clientName']
+const SORTABLE_PROPERTIES = ['number', 'status', 'order', 'priority', 'details', 'assignee', 'executor', 'createdAt']
 const TICKETS_DEFAULT_SORT_BY = ['order_ASC', 'createdAt_DESC']
-const ATTRIBUTE_NAMES_To_FILTERS = ['isEmergency', 'isRegular', 'isWarranty', 'statusReopenedCounter', 'isPayable']
-const CHECKBOX_WRAPPER_GUTTERS: RowProps['gutter'] = [8, 16]
-// todo(doma-5776): update amplitude
-const DETAILED_LOGGING = ['status', 'source', 'attributes', 'feedbackValue', 'qualityControlValue', 'unitType', 'contactIsNull']
-
-const SMALL_HORIZONTAL_GUTTER: RowProps['gutter'] = [10, 0]
+const SMALL_HORIZONTAL_GUTTER: RowProps['gutter'] = [10, 10]
 const TICKET_STATUS_FILTER_CONTAINER_ROW_STYLES: CSSProperties = {
     flexWrap: 'nowrap',
     overflowX: 'auto',
     paddingBottom: '20px',
+    marginBottom:'10px',
 }
 const ALL_TICKETS_COUNT_CONTAINER_STYLES: CSSProperties = {
     display: 'flex',
@@ -467,15 +320,8 @@ const LOADER_STYLES = { display: 'flex', alignItems: 'center', justifyContent: '
 
 const TicketStatusFilterContainer = ({ searchTicketsQuery, searchTicketsWithoutStatusQuery }) => {
     const intl = useIntl()
-    const OpenedTicketsMessage = intl.formatMessage({ id: 'ticket.status.OPEN.many' })
-    const InProgressTicketsMessage = intl.formatMessage({ id: 'ticket.status.IN_PROGRESS.many' })
-    const CanceledTicketsMessage = intl.formatMessage({ id: 'ticket.status.DECLINED.many' })
-    const CompletedTicketsMessage = intl.formatMessage({ id: 'ticket.status.COMPLETED.many' })
-    const DeferredTicketsMessage = intl.formatMessage({ id: 'ticket.status.DEFERRED.many' })
-    const ClosedTicketsMessage = intl.formatMessage({ id: 'ticket.status.CLOSED.many' })
-
-    const { persistor } = useCachePersistor()
-
+    const CreateTicketTitle = intl.formatMessage({ id: 'CreateTicket' })
+    const router = useRouter()
     const {
         data: allTicketsCountData,
         loading: allTicketsCountLoading,
@@ -483,21 +329,16 @@ const TicketStatusFilterContainer = ({ searchTicketsQuery, searchTicketsWithoutS
         variables: {
             where: searchTicketsQuery,
         },
-        skip: !persistor,
     })
     const allTicketsCount = useMemo(() => allTicketsCountData?.meta?.count, [allTicketsCountData?.meta?.count])
 
-    const {
-        data: ticketsCountByStatusesData,
-        loading: ticketsCountByStatusesLoading,
-    } = useGetTicketsCountersByStatusQuery({
-        variables: {
-            whereWithoutStatuses: searchTicketsWithoutStatusQuery,
-        },
-        skip: !persistor,
-    })
+    const loading = allTicketsCountLoading 
 
-    const loading = allTicketsCountLoading || ticketsCountByStatusesLoading
+    const handleCreateModalOpen = async () => {
+        const currentUrl = new URL(window.location.href)
+        currentUrl.searchParams.set('create-modal', 'true')
+        await router.push(currentUrl.toString(), undefined, { shallow: true })
+    }
 
     return loading ? <Loader style={LOADER_STYLES}/> : (
         <Row gutter={SMALL_HORIZONTAL_GUTTER} style={TICKET_STATUS_FILTER_CONTAINER_ROW_STYLES}>
@@ -510,134 +351,27 @@ const TicketStatusFilterContainer = ({ searchTicketsQuery, searchTicketsWithoutS
                     }
                 </Typography.Text>
             </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={OpenedTicketsMessage}
-                    type={TicketStatusTypeType.NewOrReopened}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={InProgressTicketsMessage}
-                    type={TicketStatusTypeType.Processing}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={CompletedTicketsMessage}
-                    type={TicketStatusTypeType.Completed}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={DeferredTicketsMessage}
-                    type={TicketStatusTypeType.Deferred}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={CanceledTicketsMessage}
-                    type={TicketStatusTypeType.Canceled}
-                    count={ticketsCountByStatusesData}
-                />
-            </Col>
-            <Col>
-                <TicketStatusFilter
-                    title={ClosedTicketsMessage}
-                    type={TicketStatusTypeType.Closed}
-                    count={ticketsCountByStatusesData}
-                />
+            <Col style={ALL_TICKETS_COUNT_CONTAINER_STYLES}>
+                <Button icon={<PlusCircle size='small'/>} onClick = {handleCreateModalOpen}>{CreateTicketTitle}</Button>
             </Col>
         </Row>
     )
 }
 
 const FILTERS_CONTAINER_ROW_GUTTER: RowProps['gutter'] = [20, 20]
-const CHECKBOX_WRAPPER_STYLES: CSSProperties = { flexWrap: 'nowrap', overflowX: 'auto', overflowY: 'hidden' }
-const FILTERS_BUTTON_ROW_GUTTER: RowProps['gutter'] = [16, 10]
-const FILTERS_BUTTON_ROW_STYLES: CSSProperties = { flexWrap: 'nowrap' }
-const RESET_FILTERS_BUTTON_STYLES: CSSProperties = { padding: 0 }
 
-const FiltersContainer = ({ filterMetas }) => {
+
+const FiltersContainer = () => {
     const intl = useIntl()
     const SearchPlaceholder = intl.formatMessage({ id: 'filters.FullSearch' })
-    const EmergenciesLabel = intl.formatMessage({ id: 'pages.condo.ticket.index.EmergenciesLabel' })
-    const RegularLabel = intl.formatMessage({ id: 'pages.condo.ticket.index.RegularLabel' })
-    const WarrantiesLabel = intl.formatMessage({ id: 'pages.condo.ticket.index.WarrantiesLabel' })
-    const ReturnedLabel = intl.formatMessage({ id: 'pages.condo.ticket.index.ReturnedLabel' })
-    const PayableLabel = intl.formatMessage({ id: 'pages.condo.ticket.index.PayableLabel' })
-    const ExpiredLabel = intl.formatMessage({ id: 'pages.condo.ticket.index.ExpiredLabel' })
-
-    const [{ width: contentWidth }, setRef] = useContainerSize()
-
-    const [search, changeSearch, handleResetSearch] = useSearch<IFilters>()
-    const [attributes, handleChangeAttribute, handleResetAllAttributes, handleFilterChangesAllAttributes] = useBooleanAttributesSearch(ATTRIBUTE_NAMES_To_FILTERS)
-    const {
-        isEmergency: emergency,
-        isRegular: regular,
-        isWarranty: warranty,
-        statusReopenedCounter: returned,
-        isPayable: payable,
-    } = attributes
-    const {
-        value: isCompletedAfterDeadline,
-        handleChange: handleChangeIsCompletedAfterDeadline,
-        handleFilterChanges: handleFilterChangesIsCompletedAfterDeadline,
-        handleResetWithoutUpdateQuery: handleResetIsCompletedAfterDeadline,
-    } = useCheckboxSearch('isCompletedAfterDeadline')
-
-    const handleAttributeCheckboxChange = useCallback((attributeName: string) => (e: CheckboxChangeEvent) => {
-        const isChecked = get(e, ['target', 'checked'])
-        handleChangeAttribute(isChecked, attributeName)
-    }, [handleChangeAttribute])
-
-    const handleResetFilters = useCallback(() => {
-        handleResetAllAttributes()
-        handleResetSearch()
-        handleResetIsCompletedAfterDeadline()
-    }, [handleResetAllAttributes, handleResetSearch, handleResetIsCompletedAfterDeadline])
-
-    const handleSubmitFilters = useCallback((filters) => {
-        handleFilterChangesAllAttributes(filters)
-        handleFilterChangesIsCompletedAfterDeadline(filters)
-    }, [handleFilterChangesAllAttributes, handleFilterChangesIsCompletedAfterDeadline])
-
-    const { MultipleFiltersModal, ResetFiltersModalButton, OpenFiltersButton, appliedFiltersCount } = useMultipleFiltersModal({
-        filterMetas,
-        filtersSchemaGql: TicketFilterTemplate,
-        onReset: handleResetFilters,
-        onSubmit: handleSubmitFilters,
-        eventNamePrefix: 'Ticket',
-        detailedLogging: DETAILED_LOGGING,
-    })
-
+    const [search, changeSearch] = useSearch<IFilters>()
     const handleSearchChange = useCallback((e) => {
         changeSearch(e.target.value)
     }, [changeSearch])
 
-    let checkboxColSpan = 24
-    let filterButtonColSpan = 24
-
-    const isXlContainerSize = contentWidth >= 980
-    const isXxlContainerSize = contentWidth >= 1288
-
-    if (isXlContainerSize) {
-        checkboxColSpan = 17
-        filterButtonColSpan = 7
-    }
-
-    if (isXxlContainerSize) {
-        checkboxColSpan = 18
-        filterButtonColSpan = 6
-    }
-
     return (
         <>
-            <TableFiltersContainer ref={setRef}>
+            <TableFiltersContainer>
                 <Row gutter={FILTERS_CONTAINER_ROW_GUTTER} align='middle'>
                     <Col span={24}>
                         <Input
@@ -648,103 +382,8 @@ const FiltersContainer = ({ filterMetas }) => {
                             suffix={<Search size='medium' color={colors.gray[7]}/>}
                         />
                     </Col>
-                    <Col span={checkboxColSpan}>
-                        <Row
-                            align='middle'
-                            gutter={CHECKBOX_WRAPPER_GUTTERS}
-                        >
-                            <Col span={24}>
-                                <Row gutter={CHECKBOX_WRAPPER_GUTTERS} style={!isXlContainerSize ? CHECKBOX_WRAPPER_STYLES : null}>
-                                    <Col>
-                                        <Checkbox
-                                            onChange={handleAttributeCheckboxChange('isRegular')}
-                                            checked={regular}
-                                            style={CHECKBOX_STYLE}
-                                            eventName='TicketFilterCheckboxRegular'
-                                            data-cy='ticket__filter-isRegular'
-                                        >
-                                            {RegularLabel}
-                                        </Checkbox>
-                                    </Col>
-                                    <Col>
-                                        <Checkbox
-                                            onChange={handleAttributeCheckboxChange('isEmergency')}
-                                            checked={emergency}
-                                            style={CHECKBOX_STYLE}
-                                            eventName='TicketFilterCheckboxEmergency'
-                                            data-cy='ticket__filter-isEmergency'
-                                        >
-                                            {EmergenciesLabel}
-                                        </Checkbox>
-                                    </Col>
-                                    <Col>
-                                        <Checkbox
-                                            onChange={handleAttributeCheckboxChange('isPayable')}
-                                            checked={payable}
-                                            style={CHECKBOX_STYLE}
-                                            eventName='TicketFilterCheckboxPayable'
-                                            data-cy='ticket__filter-isPayable'
-                                        >
-                                            {PayableLabel}
-                                        </Checkbox>
-                                    </Col>
-                                    <Col>
-                                        <Checkbox
-                                            onChange={handleAttributeCheckboxChange('isWarranty')}
-                                            checked={warranty}
-                                            style={CHECKBOX_STYLE}
-                                            eventName='TicketFilterCheckboxWarranty'
-                                            data-cy='ticket__filter-isWarranty'
-                                        >
-                                            {WarrantiesLabel}
-                                        </Checkbox>
-                                    </Col>
-                                    <Col>
-                                        <Checkbox
-                                            onChange={handleAttributeCheckboxChange('statusReopenedCounter')}
-                                            checked={returned}
-                                            style={CHECKBOX_STYLE}
-                                            eventName='TicketFilterCheckboxReturned'
-                                            data-cy='ticket__filter-isReturned'
-                                        >
-                                            {ReturnedLabel}
-                                        </Checkbox>
-                                    </Col>
-                                    <Col>
-                                        <Checkbox
-                                            onChange={(event) => handleChangeIsCompletedAfterDeadline(get(event, 'target.checked', false))}
-                                            checked={isCompletedAfterDeadline}
-                                            style={CHECKBOX_STYLE}
-                                            eventName='TicketFilterCheckboxIsCompletedAfterDeadline'
-                                            data-cy='ticket__filter-isCompletedAfterDeadline'
-                                            children={ExpiredLabel}
-                                        />
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Col>
-                    <Col span={filterButtonColSpan} style={{ alignSelf: 'end' }}>
-                        <Row justify={isXlContainerSize ? 'end' : 'start'} align='bottom'>
-                            <Col>
-                                <Row align='middle' gutter={FILTERS_BUTTON_ROW_GUTTER} style={FILTERS_BUTTON_ROW_STYLES}>
-                                    {
-                                        appliedFiltersCount > 0 && (
-                                            <Col>
-                                                <ResetFiltersModalButton style={RESET_FILTERS_BUTTON_STYLES}/>
-                                            </Col>
-                                        )
-                                    }
-                                    <Col>
-                                        <OpenFiltersButton />
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Col>
                 </Row>
             </TableFiltersContainer>
-            <MultipleFiltersModal/>
         </>
     )
 }
@@ -814,7 +453,7 @@ export const TicketsPageContent = ({
         return (
             <EmptyListContent
                 label={EmptyListLabel}
-                createRoute='/ticket/create'
+                createRoute='/kanban?create-modal=true'
                 accessCheck={canManageTickets}
                 importLayoutProps={isTicketImportFeatureEnabled && {
                     manualCreateEmoji: EMOJI.PHONE,
@@ -837,9 +476,7 @@ export const TicketsPageContent = ({
         <>
             <Row gutter={LARGE_VERTICAL_ROW_GUTTER}>
                 <Col span={24}>
-                    <FiltersContainer
-                        filterMetas={filterMetas}
-                    />
+                    <FiltersContainer />
                 </Col>
                 <Col span={24}>
                     <TicketStatusFilterContainer
@@ -865,11 +502,6 @@ export const TicketTypeFilterSwitch = ({ ticketFilterQuery }) => {
     const intl = useIntl()
     const AllTicketsMessage = intl.formatMessage({ id: 'pages.condo.ticket.filters.TicketType.all' })
     const OwnTicketsMessage = intl.formatMessage({ id: 'pages.condo.ticket.filters.TicketType.own' })
-    const FavoriteTicketsMessage = intl.formatMessage({ id: 'pages.condo.ticket.filters.TicketType.favorite' })
-
-    const { persistor } = useCachePersistor()
-    const { user } = useAuth()
-    const { userFavoriteTicketsCount } = useFavoriteTickets()
     const router = useRouter()
     const { filters } = useMemo(() => parseQuery(router.query), [router.query])
 
@@ -892,29 +524,15 @@ export const TicketTypeFilterSwitch = ({ ticketFilterQuery }) => {
         variables: {
             where: ticketFilterQuery,
         },
-        skip: !persistor,
     })
     const allTicketsCount = useMemo(() => allTicketsCountData?.meta?.count, [allTicketsCountData?.meta?.count])
 
     // NOTE: we have index "ticket_org_assign_exec_deletedAt" for this filter
     // If you change filter condition, you need to change index
-    const ownTicketsQuery = { OR: [{ executor: { id: user.id }, assignee: { id: user.id } }] }
-    const { data: ownTicketsCountData, refetch: refetchOwnTickets } = useGetTicketsCountQuery({
-        variables: {
-            where: {
-                ...ticketFilterQuery,
-                ...ownTicketsQuery,
-            },
-        },
-        skip: !persistor,
-    })
-    const ownTicketsCount = useMemo(() => ownTicketsCountData?.meta?.count, [ownTicketsCountData?.meta?.count])
-
     const { isRefetchTicketsFeatureEnabled, refetchInterval } = useAutoRefetchTickets()
     const refetch = useCallback(async () => {
-        await refetchOwnTickets()
         await refetchAllTickets()
-    }, [refetchAllTickets, refetchOwnTickets])
+    }, [refetchAllTickets])
 
     useEffect(() => {
         if (isRefetchTicketsFeatureEnabled) {
@@ -971,17 +589,6 @@ export const TicketTypeFilterSwitch = ({ ticketFilterQuery }) => {
                 label={
                     <>
                         {OwnTicketsMessage}
-                        {isNumber(ownTicketsCount) && <sup>{ownTicketsCount}</sup>}
-                    </>
-                }
-            />
-            <Radio
-                key='favorite'
-                value='favorite'
-                label={
-                    <>
-                        {FavoriteTicketsMessage}
-                        {isNumber(userFavoriteTicketsCount) && <sup>{userFavoriteTicketsCount}</sup>}
                     </>
                 }
             />
@@ -992,10 +599,6 @@ export const TicketTypeFilterSwitch = ({ ticketFilterQuery }) => {
 const TicketsPage: PageComponentType = () => {
     const intl = useIntl()
     const PageTitleMessage = intl.formatMessage({ id: 'pages.condo.ticket.index.PageTitle' })
-    const CallRecordsLogMessage = intl.formatMessage({ id: 'callRecord.index.title' })
-
-    const { persistor } = useCachePersistor()
-
     const { ticketFilterQuery, ticketFilterQueryLoading } = useTicketVisibility()
 
     const userOrganization = useOrganization()
@@ -1016,21 +619,10 @@ const TicketsPage: PageComponentType = () => {
         variables: {
             where: ticketFilterQuery,
         },
-        skip: !persistor,
+        fetchPolicy: 'network-only',
     })
     const isTicketsExists = useMemo(() => ticketExistenceData?.tickets?.length > 0,
         [ticketExistenceData?.tickets?.length])
-
-    const {
-        data: callRecordFragmentExistenceData,
-    } = useGetCallRecordFragmentExistenceQuery({
-        variables: {
-            organizationId: userOrganizationId,
-        },
-        skip: !persistor,
-    })
-    const isCallRecordsExists = useMemo(() => callRecordFragmentExistenceData?.callRecordFragments?.length > 0,
-        [callRecordFragmentExistenceData?.callRecordFragments?.length])
 
     return (
         <>
@@ -1058,18 +650,6 @@ const TicketsPage: PageComponentType = () => {
                                     </Col>
                                     <Col>
                                         <Space size={20} direction={breakpoints.TABLET_SMALL ? 'horizontal' : 'vertical'}>
-                                            {
-                                                isCallRecordsExists && (
-                                                    <Link href='/callRecord'>
-                                                        <Typography.Link size='large'>
-                                                            <Space size={8}>
-                                                                <Phone size='medium'/>
-                                                                {CallRecordsLogMessage}
-                                                            </Space>
-                                                        </Typography.Link>
-                                                    </Link>
-                                                )
-                                            }
                                             {
                                                 !ticketExistenceLoading && isTicketsExists && (
                                                     <TicketTypeFilterSwitch

@@ -5,6 +5,7 @@ import React from 'react'
 
 import { useIntl } from '@open-condo/next/intl'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { PageComponentType } from '@condo/domains/common/types'
 import { TicketReadAndManagePermissionRequired } from '@condo/domains/ticket/components/PageAccess'
@@ -17,23 +18,7 @@ const CreateTicketPage: PageComponentType = () => {
     const intl = useIntl()
     const PageTitleMsg = intl.formatMessage({ id:'pages.condo.ticket.index.CreateTicketModalTitle' })
 
-    return (
-        <>
-            <Head>
-                <title>{PageTitleMsg}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <Row gutter={WRAPPER_GUTTER}>
-                        <Col span={24}>
-                            <Typography.Title level={1} style={{ margin: 0 }}>{PageTitleMsg}</Typography.Title>
-                        </Col>
-                        <TicketForm/>
-                    </Row>
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage/>
 }
 
 CreateTicketPage.requiredAccess = TicketReadAndManagePermissionRequired

@@ -6,6 +6,7 @@ import React, { CSSProperties } from 'react'
 
 import { useIntl } from '@open-condo/next/intl'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { PageComponentType } from '@condo/domains/common/types'
 import { SettingsReadPermissionRequired } from '@condo/domains/settings/components/PageAccess'
@@ -21,25 +22,7 @@ const UpdateTicketPropertyHintPage: PageComponentType = () => {
     const PageTitleMsg = intl.formatMessage({ id:'pages.condo.settings.hint.editTicketPropertyHint' })
     const { query } = useRouter()
 
-    return (
-        <>
-            <Head>
-                <title>{PageTitleMsg}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <Row gutter={BIG_VERTICAL_GUTTER} style={ROW_STYLES}>
-                        <Col span={24}>
-                            <Typography.Title level={1} style={TITLE_STYLES}>{PageTitleMsg}</Typography.Title>
-                        </Col>
-                        <Col span={24}>
-                            <TicketPropertyHintForm id={query.id as string}/>
-                        </Col>
-                    </Row>
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage />
 }
 
 UpdateTicketPropertyHintPage.requiredAccess = SettingsReadPermissionRequired

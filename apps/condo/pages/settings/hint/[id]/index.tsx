@@ -10,6 +10,7 @@ import { useIntl } from '@open-condo/next/intl'
 import { useOrganization } from '@open-condo/next/organization'
 import { ActionBar, Button } from '@open-condo/ui'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import {
     DeleteButtonWithConfirmModal,
@@ -79,68 +80,7 @@ const TicketPropertyHintIdPage: PageComponentType = () => {
         return <Loader />
     }
 
-    return (
-        <>
-            <Head>
-                <title>{TicketPropertyHintTitleMessage}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <Row gutter={BIG_VERTICAL_GUTTER}>
-                        <Col span={24}>
-                            <Typography.Title>{TicketPropertyHintTitleMessage}</Typography.Title>
-                        </Col>
-                        <Col span={24}>
-                            <Row gutter={MEDIUM_VERTICAL_GUTTER}>
-                                <Col span={24}>
-                                    <PageFieldRow title={BuildingsMessage}>
-                                        {renderTicketPropertyHintProperties}
-                                    </PageFieldRow>
-                                </Col>
-                                <Col span={24}>
-                                    <PageFieldRow title={NameMessage}>
-                                        {ticketPropertyHintName}
-                                    </PageFieldRow>
-                                </Col>
-                                <Col span={24}>
-                                    <PageFieldRow title={TicketPropertyHintTitleMessage}>
-                                        <TicketPropertyHintContent
-                                            html={ticketPropertyHintContent}
-                                        />
-                                    </PageFieldRow>
-                                </Col>
-                            </Row>
-                        </Col>
-                        {
-                            canManageTicketPropertyHints && (
-                                <Col span={24}>
-                                    <ActionBar
-                                        actions={[
-                                            <Link key='update' href={`/settings/hint/${hintId}/update`}>
-                                                <Button
-                                                    type='primary'
-                                                >
-                                                    {UpdateMessage}
-                                                </Button>
-                                            </Link>,
-                                            <DeleteButtonWithConfirmModal
-                                                key='delete'
-                                                title={ConfirmDeleteTitle}
-                                                message={ConfirmDeleteMessage}
-                                                okButtonLabel={DeleteMessage}
-                                                action={handleDeleteButtonClick}
-                                                buttonContent={DeleteMessage}
-                                            />,
-                                        ]}
-                                    />
-                                </Col>
-                            )
-                        }
-                    </Row>
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage />
 }
 
 TicketPropertyHintIdPage.requiredAccess = SettingsReadPermissionRequired

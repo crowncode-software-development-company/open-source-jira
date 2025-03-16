@@ -8,7 +8,6 @@ import { TabsAuthAction } from '@condo/domains/common/components/HeaderActions'
 import { PageComponentType } from '@condo/domains/common/types'
 import { SignInForm } from '@condo/domains/user/components/auth/SignInForm'
 import AuthLayout from '@condo/domains/user/components/containers/AuthLayout'
-import { WelcomeHeaderTitle } from '@condo/domains/user/components/UserWelcomeTitle'
 
 
 const SignInPage: PageComponentType = () => {
@@ -30,7 +29,6 @@ const SignInPage: PageComponentType = () => {
     )
 }
 SignInPage.container = AuthLayout
-SignInPage.headerAction = <WelcomeHeaderTitle/>
 SignInPage.skipUserPrefetch = true
 
 export default SignInPage

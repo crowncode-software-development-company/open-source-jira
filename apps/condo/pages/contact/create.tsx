@@ -4,6 +4,7 @@ import React from 'react'
 
 import { useIntl } from '@open-condo/next/intl'
 
+import { AccessDeniedPage } from '@condo/domains/common/components/containers/AccessDeniedPage'
 import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
 import { PageComponentType } from '@condo/domains/common/types'
 import { CreateContactForm } from '@condo/domains/contact/components/CreateContactForm'
@@ -14,25 +15,7 @@ const CreateContactPage: PageComponentType = () => {
     const intl = useIntl()
     const PageTitle = intl.formatMessage({ id: 'contact.AddContact' })
 
-    return (
-        <>
-            <Head>
-                <title>{PageTitle}</title>
-            </Head>
-            <PageWrapper>
-                <PageContent>
-                    <Row gutter={[12, 40]}>
-                        <Col span={24}>
-                            <Typography.Title level={1} style={{ margin: 0 }}>{PageTitle}</Typography.Title>
-                        </Col>
-                        <Col span={24}>
-                            <CreateContactForm/>
-                        </Col>
-                    </Row>
-                </PageContent>
-            </PageWrapper>
-        </>
-    )
+    return <AccessDeniedPage/>
 }
 
 CreateContactPage.requiredAccess = ContactsReadAndManagePermissionRequired
